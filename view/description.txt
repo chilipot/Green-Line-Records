@@ -1,0 +1,7 @@
+The database will be accessed through a simple web interface. From this interface, users will be able to add, modify, or view entries (not delete). 
+The controller handling the input with ensure proper inputs and outputs. Should an entry need a foreign key, the view will add inputs to be field alongside the main entry. 
+When modifying entries, a search functionality will be provided to find current data and the data will auto-populate the fields (fields are identical to the input view) and users can change the data.
+When an entry is made, an ID associated with the entry will be returned for later use. Modifications will maintain the same ID. 
+The ID is unique to each entry in the table (perhaps we'll add a letter code to know what table it belongs to) and the field cannot be interacted with or modified.
+Since we're not sure who will have access to what view (since we do plan on providing this to other people), we did not want to add the ability to delete until later.
+We can have full access to the database simply by making queries on our local databases but when we upload to a public server, access might change (not sure how at the moment).
