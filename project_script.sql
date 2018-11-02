@@ -55,7 +55,7 @@ CREATE TABLE ar_rep (
     rep_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     member_id INT NOT NULL UNIQUE,
     PRIMARY KEY (rep_id),
-    INDEX fk_AR_Rep_Member1_idx (member_id ASC),
+    INDEX ar_rep_club_member (member_id ASC),
     FOREIGN KEY (member_id)
         REFERENCES club_member (member_id)
 );
@@ -68,7 +68,7 @@ CREATE TABLE artist (
     rep_id INT NOT NULL,
     artist_name VARCHAR(80) NOT NULL,
     PRIMARY KEY (artist_id),
-    INDEX fk_Artist_AR_Rep1_idx (rep_id ASC),
+    INDEX artist (rep_id ASC),
     FOREIGN KEY (rep_id)
         REFERENCES ar_rep (rep_id)
 );
@@ -80,8 +80,8 @@ CREATE TABLE artist_writes_project (
     project_id INT NULL,
     artist_id INT NOT NULL,
     PRIMARY KEY (project_id , artist_id),
-    INDEX fk_Release_has_Artist_Artist1_idx (artist_id ASC),
-    INDEX fk_Release_has_Artist_Release1_idx (project_id ASC),
+    INDEX artist_writes_project_artist_idx (artist_id ASC),
+    INDEX artist_writes_project_project_idx (project_id ASC),
     FOREIGN KEY (project_id)
         REFERENCES project (project_id),
     FOREIGN KEY (artist_id)
@@ -98,14 +98,14 @@ CREATE TABLE song (
 );
 
 
--- song_has_artist --
-DROP TABLE IF EXISTS song_has_artist;
-CREATE TABLE song_has_artist (
+-- artist_writes_song --
+DROP TABLE IF EXISTS artist_writes_song;
+CREATE TABLE artist_writes_song (
     song_id INT NULL UNIQUE,
     artist_id INT NOT NULL UNIQUE,
     PRIMARY KEY (song_id , artist_id),
-    INDEX fk_Song_has_Artist_Artist1_idx (artist_id ASC),
-    INDEX fk_Song_has_Artist_Song1_idx (song_id ASC),
+    INDEX artist_writes_song_artist_idx (artist_id ASC),
+    INDEX artist_writes_song_song_idx (song_id ASC),
     FOREIGN KEY (song_id)
         REFERENCES song (song_id),
     FOREIGN KEY (artist_id)
@@ -113,14 +113,14 @@ CREATE TABLE song_has_artist (
 );
 
 
--- project_has_song --
-DROP TABLE IF EXISTS project_has_song;
-CREATE TABLE project_has_song (
+-- track --
+DROP TABLE IF EXISTS track;
+CREATE TABLE track (
     song_id INT NOT NULL,
     project_id INT NOT NULL,
     PRIMARY KEY (song_id , project_id),
-    INDEX fk_Song_has_Release_Release1_idx (project_id ASC),
-    INDEX fk_Song_has_Release_Song1_idx (song_id ASC),
+    INDEX track_project_idx (project_id ASC),
+    INDEX track_song_idx (song_id ASC),
     FOREIGN KEY (song_id)
         REFERENCES song (song_id),
     FOREIGN KEY (project_id)
@@ -135,20 +135,20 @@ CREATE TABLE engineer (
     member_id INT UNIQUE NOT NULL,
     level ENUM('Assistant', 'Lead', 'EIT') NOT NULL,
     PRIMARY KEY (engineer_id),
-    INDEX fk_Engineer_Member1_idx (member_id ASC),
+    INDEX engineer_club_member_idx (member_id ASC),
     FOREIGN KEY (member_id)
         REFERENCES club_member (member_id)
 );
 
 
--- project_has_engineer --
-DROP TABLE IF EXISTS project_has_engineer;
-CREATE TABLE Project_has_Engineer (
+-- project_assignment --
+DROP TABLE IF EXISTS project_assignment;
+CREATE TABLE project_assignment (
     project_id INT NULL,
     engineer_id INT NOT NULL,
     PRIMARY KEY (project_id , engineer_id),
-    INDEX fk_Release_has_Engineer_Engineer1_idx (engineer_id ASC),
-    INDEX fk_Release_has_Engineer_Release1_idx (project_id ASC),
+    INDEX project_assignment_engineer_idx (engineer_id ASC),
+    INDEX project_assignment_project_idx (project_id ASC),
     FOREIGN KEY (project_id)
         REFERENCES project (project_id),
     FOREIGN KEY (engineer_id)
@@ -163,20 +163,20 @@ CREATE TABLE recording_session (
     project_id INT NOT NULL,
     date DATETIME NOT NULL,
     PRIMARY KEY (recording_session_id , project_id),
-    INDEX fk_Recording_Session_Release1_idx (project_id ASC),
+    INDEX recording_session_project_idx (project_id ASC),
     FOREIGN KEY (project_id)
         REFERENCES project (project_id)
 );
 
 
--- engineer_has_recording --
-DROP TABLE IF EXISTS engineer_has_recording_session;
-CREATE TABLE engineer_has_recording_session (
+-- assigned_recording_session --
+DROP TABLE IF EXISTS assigned_recording_session;
+CREATE TABLE assigned_recording_session (
     engineer_id INT NOT NULL,
     recording_session_id INT NULL,
     PRIMARY KEY (engineer_id , recording_session_id),
-    INDEX fk_Engineer_has_Recording_Session_Recording_Session1_idx (recording_session_id ASC),
-    INDEX fk_Engineer_has_Recording_Session_Engineer1_idx (engineer_id ASC),
+    INDEX assigned_recording_session_recording_session_idx (recording_session_id ASC),
+    INDEX assigned_recording_session_engineer_idx (engineer_id ASC),
     FOREIGN KEY (engineer_id)
         REFERENCES engineer (engineer_id),
     FOREIGN KEY (recording_session_id)
@@ -194,8 +194,8 @@ CREATE TABLE live_session (
 
 
 -- event --
-DROP TABLE IF EXISTS event;
-CREATE TABLE event (
+DROP TABLE IF EXISTS `event`;
+CREATE TABLE `event` (
     event_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     date DATETIME NOT NULL,
     description VARCHAR(700) NULL,
@@ -204,29 +204,29 @@ CREATE TABLE event (
 );
 
 
--- event_has_artist --
-DROP TABLE IF EXISTS event_has_artist;
-CREATE TABLE event_has_artist (
+-- booking --
+DROP TABLE IF EXISTS booking;
+CREATE TABLE booking (
     event_id INT NULL,
     artist_id INT NOT NULL,
     PRIMARY KEY (event_id , artist_id),
-    INDEX fk_Event_has_Artist_Artist1_idx (artist_id ASC),
-    INDEX fk_Event_has_Artist_Event1_idx (event_id ASC),
+    INDEX booking_artist_idx (artist_id ASC),
+    INDEX booking_event_idx (event_id ASC),
     FOREIGN KEY (event_id)
-        REFERENCES event (event_id),
+        REFERENCES `event` (event_id),
     FOREIGN KEY (artist_id)
         REFERENCES artist (artist_id)
 );
 
 
--- live_session_has_engineer --
-DROP TABLE IF EXISTS live_session_has_engineer;
-CREATE TABLE live_session_has_engineer (
+-- assigned_live_session --
+DROP TABLE IF EXISTS assigned_live_session;
+CREATE TABLE assigned_live_session (
     live_session_id INT NULL,
     engineer_id INT NULL,
     PRIMARY KEY (live_session_id , engineer_id),
-    INDEX fk_Live_Session_has_Engineer_Engineer1_idx (engineer_id ASC),
-    INDEX fk_Live_Session_has_Engineer_Live_Session1_idx (live_session_id ASC),
+    INDEX assigned_live_session_engineer_idx (engineer_id ASC),
+    INDEX assigned_live_session_live_session_idx (live_session_id ASC),
     FOREIGN KEY (live_session_id)
         REFERENCES live_session (live_session_id),
     FOREIGN KEY (engineer_id)
@@ -242,7 +242,7 @@ CREATE TABLE `release` (
     plays INT NOT NULL DEFAULT 0,
     release_date DATE NOT NULL,
     PRIMARY KEY (release_id),
-    INDEX fk_Release_Project1_idx (project_id ASC),
+    INDEX release_project_idx (project_id ASC),
     FOREIGN KEY (project_id)
         REFERENCES project (project_id)
 );
@@ -255,21 +255,21 @@ CREATE TABLE department (
     dept_head_id INT NOT NULL,
     title VARCHAR(30) NULL,
     PRIMARY KEY (department_id , dept_head_id),
-    INDEX fk_Department_Member1_idx (dept_head_id ASC),
+    INDEX department_club_member_idx (dept_head_id ASC),
     FOREIGN KEY (dept_head_id)
         REFERENCES club_member (member_id)
 );
 
 
--- department_has_member --
-DROP TABLE IF EXISTS department_has_member;
-CREATE TABLE department_has_member (
+-- department_membership --
+DROP TABLE IF EXISTS department_membership;
+CREATE TABLE department_membership (
     member_id INT NOT NULL,
     department_id INT NOT NULL,
     dept_meetings_attended INT NOT NULL DEFAULT 0,
     PRIMARY KEY (member_id , department_id),
-    INDEX fk_MemberDepartment_Department1_idx (department_id ASC),
-    INDEX fk_MemberDepartment_Member1_idx (member_id ASC),
+    INDEX department_membership_department_idx (department_id ASC),
+    INDEX department_membership_club_member_idx (member_id ASC),
     FOREIGN KEY (member_id)
         REFERENCES club_member (member_id),
     FOREIGN KEY (department_id)
@@ -283,7 +283,7 @@ CREATE TABLE eboard_member (
     title VARCHAR(30) NOT NULL,
     member_id INT NOT NULL,
     eboard_id INT NOT NULL UNIQUE AUTO_INCREMENT,
-    INDEX fk_EBoard_Member_Member1_idx (member_id ASC),
+    INDEX eboard_member_club_member_idx (member_id ASC),
     PRIMARY KEY (eboard_id),
     FOREIGN KEY (member_id)
         REFERENCES club_member (member_id)
