@@ -22,14 +22,14 @@ CREATE TABLE genre (
 );
 
 
--- project_has_genre --
-DROP TABLE IF EXISTS project_has_genre;
-CREATE TABLE project_has_genre (
+-- genre_of_project --
+DROP TABLE IF EXISTS genre_of_project;
+CREATE TABLE genre_of_project (
     project_id INT NULL UNIQUE,
     genre_id INT NOT NULL UNIQUE,
     PRIMARY KEY (project_id , genre_id),
-    INDEX fk_Release_has_Genre_Genre1_idx (genre_id ASC),
-    INDEX fk_Release_has_Genre_Release_idx (project_id ASC),
+    INDEX genre_of_project_genre_idx (genre_id ASC),
+    INDEX genre_of_project_project_idx (project_id ASC),
     FOREIGN KEY (project_id)
         REFERENCES project (project_id),
     FOREIGN KEY (genre_id)
