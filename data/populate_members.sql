@@ -153,7 +153,12 @@ values ('Chow', 'Aaron'),
        ('Finn', 'Ethan'),
        ('Clune', 'Will'),
        ('Samson', 'Jacob'),
-       ('Birch', 'Spencer');
+       ('Birch', 'Spencer'),
+       ('De Arestegui', 'Sebastian'),
+       ('Bettio', 'Veronica'),
+       ('Fox', 'Aidan'),
+       ('Kerwin', 'Jack');
+
 
 select *
 from club_member;
@@ -293,6 +298,19 @@ values (find_member_id('Zac', 'Kerwin'), 'Lead'),
        (find_member_id('Joey', 'Molloy'), 'EIT');
 
 
+select *
+from engineer;
+
+insert into ar_member(member_id)
+values (find_member_id('Sagar', 'Kumar')),
+       (find_member_id('Jonathan', 'Prus')),
+       (find_member_id('Candace', 'Reyes')),
+       (find_member_id('Melanie', 'Senk')),
+       (find_member_id('Sebastian', 'De Arestegui')),
+       (find_member_id('Ryan', 'Stelmach')),
+       (find_member_id('Veronica', 'Bettio')),
+       (find_member_id('Aidan', 'Fox')),
+       (find_member_id('Jack', 'Kerwin'));
 
 
 

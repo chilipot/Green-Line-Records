@@ -4,7 +4,7 @@ CREATE DATABASE green_line_records;
 USE green_line_records;
 
 /** TODO:
-engineer projectassignment
+engineer project assignment
 dept membership
 events
 genre of project
@@ -12,6 +12,11 @@ a&r member
 booking
 assigned live session
 MAYBE drop recording session & assigned recording session?
+play count CURRENTLY ALL NULL
+general meetings attended ? currently all 0
+need to get info from other department heads about dept members
+
+
  */
 
 -- project -- 
