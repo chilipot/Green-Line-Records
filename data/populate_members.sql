@@ -301,7 +301,7 @@ values (find_member_id('Zac', 'Kerwin'), 'Lead'),
 select *
 from engineer;
 
-insert into ar_member(member_id)
+insert into ar_member(club_member_id)
 values (find_member_id('Sagar', 'Kumar')),
        (find_member_id('Jonathan', 'Prus')),
        (find_member_id('Candace', 'Reyes')),
@@ -311,6 +311,9 @@ values (find_member_id('Sagar', 'Kumar')),
        (find_member_id('Veronica', 'Bettio')),
        (find_member_id('Aidan', 'Fox')),
        (find_member_id('Jack', 'Kerwin'));
+
+select *
+from ar_member;
 
 
 
