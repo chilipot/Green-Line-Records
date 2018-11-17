@@ -7,8 +7,9 @@ USE green_line_records;
 DROP TABLE IF EXISTS project;
 CREATE TABLE project (
   project_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
-  project_name VARCHAR(50) NOT NULL,
-  completed    TINYINT(1)  NOT NULL,
+  project_name VARCHAR(80) NOT NULL,
+  type ENUM('Single', 'EP', 'Album', 'Video', 'Other') NOT NULL,
+  status ENUM('Unconfirmed', 'Confirmed', 'In-Progress', 'Completed', 'On Hold', 'Cancelled')  NOT NULL,
   PRIMARY KEY (project_id)
 );
 
