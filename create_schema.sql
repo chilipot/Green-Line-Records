@@ -3,6 +3,17 @@ CREATE DATABASE green_line_records;
 
 USE green_line_records;
 
+/** TODO:
+engineer projectassignment
+dept membership
+events
+genre of project
+a&r member
+booking
+assigned live session
+MAYBE drop recording session & assigned recording session?
+ */
+
 -- project -- 
 DROP TABLE IF EXISTS project;
 CREATE TABLE project (
