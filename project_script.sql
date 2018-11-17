@@ -60,7 +60,7 @@ CREATE TABLE ar_rep (
 DROP TABLE IF EXISTS artist;
 CREATE TABLE artist (
   artist_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
-  rep_id      INT         NOT NULL,
+  rep_id      INT         NULL,
   artist_name VARCHAR(80) NOT NULL,
   PRIMARY KEY (artist_id),
   INDEX artist (rep_id ASC),
@@ -201,7 +201,7 @@ CREATE TABLE live_session (
 DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   event_id    INT                            NOT NULL UNIQUE AUTO_INCREMENT,
-  date        DATE                           NOT NULL,
+  date        DATETIME                           NOT NULL,
   description VARCHAR(700)                   NULL,
   turnout     ENUM ('Low', 'Medium', 'High') NULL,
   PRIMARY KEY (event_id),
