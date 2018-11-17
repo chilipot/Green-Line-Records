@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS greenlinerecords;
-CREATE DATABASE greenlinerecords;
+DROP DATABASE IF EXISTS green_line_records;
+CREATE DATABASE green_line_records;
 
-USE greenlinerecords;
+USE green_line_records;
 
 -- project -- 
 DROP TABLE IF EXISTS project;
