@@ -173,8 +173,8 @@ CREATE TABLE assigned_recording_session (
 -- location --
 DROP TABLE IF EXISTS location;
 CREATE TABLE location (
-  location_id INT         NOT NULL UNIQUE AUTO_INCREMENT,
-  location_name    varchar(75) NOT NULL,
+  location_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
+  location_name varchar(75) NOT NULL UNIQUE,
   PRIMARY KEY (location_id),
   INDEX location_idx (location_name ASC)
 );
