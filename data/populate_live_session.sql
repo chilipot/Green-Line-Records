@@ -1,6 +1,10 @@
 USE green_line_records;
 
+SET FOREIGN_KEY_CHECKS=0;
 
+TRUNCATE TABLE live_session;
+
+SET FOREIGN_KEY_CHECKS=1;
 
 INSERT INTO live_session (show_name, date, start_time, end_time, location_id)
 VALUES ('Solo Euphonium and NU Wind Ensemble', '2018-10-04', '19:20:00', '20:30:00', 2),
