@@ -22,3 +22,5 @@ Returns the table rows without any special formating or additional data.
 
 <pre><code>https://&lt;host&gt;/live_session/id/{live_session_id} <b>=></b> SELECT * FROM live_session where live_session_id={live_session_id};</code></pre>
 Returns the row correspoding to the given PRIMARY_KEY.
+
+<h3>Advanced Queries</h3>
