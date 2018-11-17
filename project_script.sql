@@ -12,7 +12,6 @@ CREATE TABLE project (
     PRIMARY KEY (project_id)
 );
 
-
 -- genre --
 DROP TABLE IF EXISTS genre;
 CREATE TABLE genre (
@@ -20,7 +19,6 @@ CREATE TABLE genre (
     genre_name VARCHAR(50) UNIQUE NOT NULL,
     PRIMARY KEY (genre_id)
 );
-
 
 -- genre_of_project --
 DROP TABLE IF EXISTS genre_of_project;
@@ -36,7 +34,6 @@ CREATE TABLE genre_of_project (
         REFERENCES genre (genre_id)
 );
 
-
 -- member --
 DROP TABLE IF EXISTS club_member;
 CREATE TABLE club_member (
@@ -47,7 +44,6 @@ CREATE TABLE club_member (
     general_meetings_attended INT NOT NULL DEFAULT 0,
     PRIMARY KEY (member_id)
 );
-
 
 -- ar_rep --
 DROP TABLE IF EXISTS ar_rep;
@@ -183,6 +179,14 @@ CREATE TABLE assigned_recording_session (
         REFERENCES recording_session (recording_session_id)
 );
 
+-- location --
+DROP TABLE IF EXISTS location;
+CREATE TABLE location (
+  location_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
+  location_name varchar(75) NOT NULL UNIQUE,
+  PRIMARY KEY (location_id),
+  INDEX location_idx (location_name ASC)
+);
 
 -- live_session --
 DROP TABLE IF EXISTS live_session;
