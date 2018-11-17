@@ -1,5 +1,6 @@
 use green_line_records;
 
+
 insert into genre (genre_name)
 values ('Indie'),
        ('Post-Hardcore'),
@@ -30,4 +31,7 @@ values ('Indie'),
        ('Emo'),
        ('Electronic'),
        ('Future-funk'),
-       ('Funk');
+       ('Funk'),
+       ('Lo-fi'),
+       ('EDM'),
+       ('Metal');

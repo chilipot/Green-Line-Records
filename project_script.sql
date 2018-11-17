@@ -60,7 +60,7 @@ CREATE TABLE ar_rep (
 DROP TABLE IF EXISTS artist;
 CREATE TABLE artist (
   artist_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
-  rep_id      INT         NOT NULL,
+  rep_id      INT         NULL,
   artist_name VARCHAR(80) NOT NULL,
   PRIMARY KEY (artist_id),
   INDEX artist (rep_id ASC),
@@ -184,12 +184,7 @@ DROP TABLE IF EXISTS live_session;
 CREATE TABLE live_session (
   live_session_id INT      NOT NULL UNIQUE AUTO_INCREMENT,
   date            DATETIME NOT NULL,
-  location_id     INT      NOT NULL,
-  PRIMARY KEY (live_session_id),
-  INDEX live_session_idx (live_session_id ASC),
-  INDEX live_session_location_idx (location_id ASC),
-  FOREIGN KEY (location_id)
-  REFERENCES `location` (location_id)
+  PRIMARY KEY (live_session_id)
 );
 
 -- event --
