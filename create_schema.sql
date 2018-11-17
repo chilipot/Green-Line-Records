@@ -61,7 +61,7 @@ CREATE TABLE ar_rep (
 DROP TABLE IF EXISTS artist;
 CREATE TABLE artist (
     artist_id INT NOT NULL UNIQUE AUTO_INCREMENT,
-    rep_id INT NOT NULL,
+    rep_id INT NULL,
     artist_name VARCHAR(80) NOT NULL,
     PRIMARY KEY (artist_id),
     INDEX artist (rep_id ASC),
@@ -109,9 +109,9 @@ CREATE TABLE artist_writes_song (
 );
 
 
--- track --
-DROP TABLE IF EXISTS track;
-CREATE TABLE track (
+-- song_on_album --
+DROP TABLE IF EXISTS song_on_album;
+CREATE TABLE song_on_album (
     song_id INT NOT NULL,
     project_id INT NOT NULL,
     PRIMARY KEY (song_id , project_id),
