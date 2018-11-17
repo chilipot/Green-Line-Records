@@ -100,16 +100,34 @@ insert into club_member(lastname, firstname) values
 select *
 from club_member;
 
+DELIMITER //
+
+-- NOTE: if there are multiple members with the same full name, this function cannot distinguish them --
+create function find_member_id
+  (
+    first_name varchar(50),
+    last_name varchar(50)
+  )
+  returns int
+  BEGIN
+    return (select member_id
+            from club_member
+            where firstname like first_name and lastname like last_name
+            limit 1);
+  END //
+
+DELIMITER ;
+
 insert into eboard_member(title, member_id) values
-                                                   ('Head of Marketing', 24),
-                                                   ('Head of Merchandise and Design', 45),
-                                                   ('Head of Recording', 64),
-                                                   ('Head of Events', 68),
-                                                   ('Head of Video', 10),
-                                                   ('Head of Artists and Repertoire', 57),
-                                                   ('President', 69),
-                                                   ('Vice President', 10),
-                                                   ('Head of Operations', 70);
+                                                   ('Head of Marketing', find_member_id('Gianna', 'Barletta')),
+                                                   ('Head of Merchandise & Design', find_member_id('Nia', 'Naval')),
+                                                   ('Head of Recording', find_member_id('Zac', 'Kerwin')),
+                                                   ('Head of Events', find_member_id('Luke', 'Osenberg')),
+                                                   ('Head of Video', find_member_id('Cairo', 'Marques-Neto')),
+                                                   ('Head of Artists & Repertoire', find_member_id('Sagar', 'Kumar')),
+                                                   ('President', find_member_id('William', 'Kast')),
+                                                   ('Vice President', find_member_id('Cairo', 'Marques-Neto')),
+                                                   ('Operations Manager', find_member_id('Rachel', 'Lipson'));
 
 select *
 from eboard_member;
