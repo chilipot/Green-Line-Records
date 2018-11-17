@@ -72,7 +72,8 @@ insert into club_member(email, lastname, firstname) values
                                ('crgreenleaf@gmail.com', 'Greenleaf', 'Casey'),
                                ('osenberg.l@husky.neu.edu', 'Osenberg', 'Luke'),
                                ('kast.w@husky.neu.edu', 'Kast', 'William'),
-                               ('lipson.r@husky.neu.edu', 'Lipson', 'Rachel');
+                               ('lipson.r@husky.neu.edu', 'Lipson', 'Rachel'),
+                               ('mulligan.d@husky.neu.edu', 'Mulligan', 'Dan');
 
 
 insert into club_member(lastname, firstname) values
@@ -81,7 +82,6 @@ insert into club_member(lastname, firstname) values
                                                     ('Tamarin', 'Ben'),
                                                     ('Pelletier', 'Casper'),
                                                     ('Bobowicz', 'Christian'),
-                                                    ('Mulligan', 'Dan'),
                                                     ('Benjamin', 'Dell'),
                                                     ('Efrat', 'Elliot'),
                                                     ('Pino', 'Gabriel'),
@@ -93,9 +93,8 @@ insert into club_member(lastname, firstname) values
                                                     ('Golkaryeh', 'Omeed'),
                                                     ('Kiorpes', 'Stefanos'),
                                                     ('Joseph', 'Susie'),
-                                                    ('Hayley', 'Nick');
-
-
+                                                    ('Hayley', 'Nick'),
+                                                    ('Smith', 'Nick');
 
 select *
 from club_member;
@@ -113,6 +112,64 @@ insert into eboard_member(title, member_id) values
 
 select *
 from eboard_member;
+
+# insert into engineer(member_id, `level`) values
+#                                                 (47, 'Lead'),
+#                                                 (71, 'Lead'),
+#                                                 (10, 'Lead'),
+#                                                 (41, 'Lead'),
+#                                                 (58, 'Lead'),
+#                                                 (34, 'Lead'),
+#                                                 (15, 'Lead'),
+#                                                 (46, 'Lead'),
+#                                                 (16, 'Lead'),
+#                                                 (2, 'Lead'),
+#                                                 (64, 'Lead'),
+#                                                 (50, 'Assistant'),
+#                                                 (61, 'Assistant'),
+#                                                 (89, 'Assistant'),
+#                                                 (27, 'Assistant'),
+#                                                 (70, 'Assistant'),
+#                                                 (20, 'Assistant'),
+#                                                 (75, 'EIT'),
+#                                                 (77, 'EIT'),
+#                                                 (51, 'EIT'),
+#                                                 (79, 'EIT'),
+#                                                 (14, 'EIT'),
+#                                                 (1, 'EIT'),
+#                                                 (69, 'EIT'),
+#                                                 (33, 'EIT'),
+#                                                 (25, 'EIT'),
+#                                                 (60, 'EIT'),
+#                                                 (36, 'EIT'),
+#                                                 (9, 'EIT'),
+#                                                 (78, 'EIT'),
+#                                                 (31, 'EIT'),
+#                                                 (49, 'EIT'),
+#                                                 (43, 'EIT'),
+#                                                 (29, 'EIT'),
+#                                                 (57, 'EIT');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
