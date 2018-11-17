@@ -182,12 +182,17 @@ CREATE TABLE location (
 -- live_session --
 DROP TABLE IF EXISTS live_session;
 CREATE TABLE live_session (
-  live_session_id INT      NOT NULL UNIQUE AUTO_INCREMENT,
-  date            DATETIME NOT NULL,
-  location_id     INT      NOT NULL,
+  live_session_id INT          NOT NULL UNIQUE AUTO_INCREMENT,
+  show_name       VARCHAR(150) NOT NULL,
+  date            DATETIME     NOT NULL,
+  location_id     INT          NOT NULL,
+  start_time      TIME         NOT NULL,
+  end_time        TIME,
   PRIMARY KEY (live_session_id),
   INDEX live_session_idx (live_session_id ASC),
   INDEX live_session_location_idx (location_id ASC),
+  INDEX live_session_data_idx (date DESC),
+  INDEX live_session_name_idx (show_name ASC),
   FOREIGN KEY (location_id)
   REFERENCES `location` (location_id)
 );
@@ -196,10 +201,11 @@ CREATE TABLE live_session (
 DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   event_id    INT                            NOT NULL UNIQUE AUTO_INCREMENT,
-  date        DATETIME                       NOT NULL,
+  date        DATE                           NOT NULL,
   description VARCHAR(700)                   NULL,
   turnout     ENUM ('Low', 'Medium', 'High') NULL,
-  PRIMARY KEY (event_id)
+  PRIMARY KEY (event_id),
+  INDEX event_date_idx (date DESC)
 );
 
 -- booking --
