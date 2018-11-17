@@ -41,9 +41,9 @@ CREATE TABLE genre_of_project (
 DROP TABLE IF EXISTS club_member;
 CREATE TABLE club_member (
     member_id INT NOT NULL UNIQUE AUTO_INCREMENT,
-    email VARCHAR(50) NOT NULL UNIQUE,
-    lastname VARCHAR(50) NOT NULL UNIQUE,
-    firstname VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(50) NULL UNIQUE,
+    lastname VARCHAR(50) NOT NULL,
+    firstname VARCHAR(50) NOT NULL,
     general_meetings_attended INT NOT NULL DEFAULT 0,
     PRIMARY KEY (member_id)
 );
