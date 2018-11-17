@@ -22,10 +22,10 @@ need to get info from other department heads about dept members
 -- project -- 
 DROP TABLE IF EXISTS project;
 CREATE TABLE project (
-  project_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
-  project_name VARCHAR(80) NOT NULL,
-  type ENUM('Single', 'EP', 'Album', 'Video', 'Other') NOT NULL,
-  status ENUM('Unconfirmed', 'Confirmed', 'In-Progress', 'Completed', 'On Hold', 'Cancelled')  NOT NULL,
+  project_id   INT                                                                                   NOT NULL UNIQUE AUTO_INCREMENT,
+  project_name VARCHAR(80)                                                                           NOT NULL,
+  type         ENUM ('Single', 'EP', 'Album', 'Video', 'Other')                                      NOT NULL,
+  status       ENUM ('Unconfirmed', 'Confirmed', 'In-Progress', 'Completed', 'On Hold', 'Cancelled') NOT NULL,
   PRIMARY KEY (project_id)
 );
 
@@ -193,15 +193,25 @@ CREATE TABLE location (
   location_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
   location_name varchar(75) NOT NULL UNIQUE,
   PRIMARY KEY (location_id),
-  INDEX location_idx (location_name ASC)
+  INDEX location_idx (location_id ASC),
+  INDEX location_name_idx (location_name ASC)
 );
 
 -- live_session --
 DROP TABLE IF EXISTS live_session;
 CREATE TABLE live_session (
-  live_session_id INT      NOT NULL UNIQUE AUTO_INCREMENT,
-  date            DATETIME NOT NULL,
-  PRIMARY KEY (live_session_id)
+  live_session_id INT          NOT NULL UNIQUE AUTO_INCREMENT,
+  show_name       VARCHAR(150) NOT NULL,
+  date            DATE         NOT NULL,
+  start_time      TIME         NOT NULL,
+  end_time        TIME         NULL,
+  location_id     INT          NOT NULL,
+  PRIMARY KEY (live_session_id),
+  INDEX live_session_idx (live_session_id ASC),
+  INDEX live_session_name_idx (show_name ASC),
+  INDEX live_session_date_idx (date DESC),
+  FOREIGN KEY (location_id)
+  REFERENCES location (location_id)
 );
 
 -- event --
@@ -247,7 +257,7 @@ DROP TABLE IF EXISTS `release`;
 CREATE TABLE `release` (
   release_id   INT  NOT NULL UNIQUE AUTO_INCREMENT,
   project_id   INT  NOT NULL,
-  plays        INT  NOT NULL DEFAULT 0,
+  plays        INT  NOT NULL        DEFAULT 0,
   release_date DATE NOT NULL,
   PRIMARY KEY (release_id),
   INDEX release_project_idx (project_id ASC),
