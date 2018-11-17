@@ -7,8 +7,9 @@ USE green_line_records;
 DROP TABLE IF EXISTS project;
 CREATE TABLE project (
   project_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
-  project_name VARCHAR(50) NOT NULL,
-  completed    TINYINT(1)  NOT NULL,
+  project_name VARCHAR(80) NOT NULL,
+  type ENUM('Single', 'EP', 'Album', 'Video', 'Other') NOT NULL,
+  status ENUM('Unconfirmed', 'Confirmed', 'In-Progress', 'Completed', 'On Hold', 'Cancelled')  NOT NULL,
   PRIMARY KEY (project_id)
 );
 
@@ -39,20 +40,20 @@ DROP TABLE IF EXISTS club_member;
 CREATE TABLE club_member (
   member_id                 INT         NOT NULL UNIQUE AUTO_INCREMENT,
   email                     VARCHAR(50) NULL UNIQUE,
-  lastname                  VARCHAR(50) NOT NULL UNIQUE,
-  firstname                 VARCHAR(50) NOT NULL UNIQUE,
+  lastname                  VARCHAR(50) NOT NULL,
+  firstname                 VARCHAR(50) NOT NULL,
   general_meetings_attended INT         NOT NULL        DEFAULT 0,
   PRIMARY KEY (member_id)
 );
 
--- ar_rep --
-DROP TABLE IF EXISTS ar_rep;
-CREATE TABLE ar_rep (
-  rep_id    INT NOT NULL UNIQUE AUTO_INCREMENT,
-  member_id INT NOT NULL UNIQUE,
-  PRIMARY KEY (rep_id),
-  INDEX ar_rep_club_member (member_id ASC),
-  FOREIGN KEY (member_id)
+-- ar_member --
+DROP TABLE IF EXISTS ar_member;
+CREATE TABLE ar_member (
+  ar_member_id   INT NOT NULL UNIQUE AUTO_INCREMENT,
+  club_member_id INT NOT NULL UNIQUE,
+  PRIMARY KEY (ar_member_id),
+  INDEX ar_member_club_member (club_member_id ASC),
+  FOREIGN KEY (club_member_id)
   REFERENCES club_member (member_id)
 );
 
@@ -65,7 +66,7 @@ CREATE TABLE artist (
   PRIMARY KEY (artist_id),
   INDEX artist (rep_id ASC),
   FOREIGN KEY (rep_id)
-  REFERENCES ar_rep (rep_id)
+  REFERENCES ar_member (ar_member_id)
 );
 
 -- artist_writes_project --
@@ -104,9 +105,9 @@ CREATE TABLE artist_writes_song (
   REFERENCES artist (artist_id)
 );
 
--- track --
-DROP TABLE IF EXISTS track;
-CREATE TABLE track (
+-- song_on_album --
+DROP TABLE IF EXISTS song_on_album;
+CREATE TABLE song_on_album (
   song_id    INT NOT NULL,
   project_id INT NOT NULL,
   PRIMARY KEY (song_id, project_id),
@@ -147,10 +148,9 @@ CREATE TABLE project_assignment (
 -- recording_session --
 DROP TABLE IF EXISTS recording_session;
 CREATE TABLE recording_session (
-  recording_session_id INT                                      NOT NULL UNIQUE AUTO_INCREMENT,
-  project_id           INT                                      NOT NULL,
-  date                 DATETIME                                 NOT NULL,
-  sudio                ENUM ('Green Line', 'Snell', 'Shillman') NULL,
+  recording_session_id INT      NOT NULL UNIQUE AUTO_INCREMENT,
+  project_id           INT      NOT NULL,
+  date                 DATETIME NOT NULL,
   PRIMARY KEY (recording_session_id, project_id),
   INDEX recording_session_project_idx (project_id ASC),
   FOREIGN KEY (project_id)
@@ -183,19 +183,9 @@ CREATE TABLE location (
 -- live_session --
 DROP TABLE IF EXISTS live_session;
 CREATE TABLE live_session (
-  live_session_id INT          NOT NULL UNIQUE AUTO_INCREMENT,
-  show_name       VARCHAR(150) NOT NULL,
-  date            DATETIME     NOT NULL,
-  location_id     INT          NOT NULL,
-  start_time      TIME         NOT NULL,
-  end_time        TIME,
-  PRIMARY KEY (live_session_id),
-  INDEX live_session_idx (live_session_id ASC),
-  INDEX live_session_location_idx (location_id ASC),
-  INDEX live_session_data_idx (date DESC),
-  INDEX live_session_name_idx (show_name ASC),
-  FOREIGN KEY (location_id)
-  REFERENCES `location` (location_id)
+  live_session_id INT      NOT NULL UNIQUE AUTO_INCREMENT,
+  date            DATETIME NOT NULL,
+  PRIMARY KEY (live_session_id)
 );
 
 -- event --
@@ -203,13 +193,9 @@ DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   event_id    INT                            NOT NULL UNIQUE AUTO_INCREMENT,
   date        DATETIME                       NOT NULL,
-  location_id INT NOT NULL,
   description VARCHAR(700)                   NULL,
   turnout     ENUM ('Low', 'Medium', 'High') NULL,
-  PRIMARY KEY (event_id),
-  FOREIGN KEY (location_id),
-  INDEX event_date_idx (date DESC),
-  INDEX event_location_idx (location_id ASC)
+  PRIMARY KEY (event_id)
 );
 
 -- booking --
@@ -243,7 +229,7 @@ CREATE TABLE assigned_live_session (
 -- release --
 DROP TABLE IF EXISTS `release`;
 CREATE TABLE `release` (
-  release_id   INT  NOT NULL AUTO_INCREMENT,
+  release_id   INT  NOT NULL UNIQUE AUTO_INCREMENT,
   project_id   INT  NOT NULL,
   plays        INT  NOT NULL DEFAULT 0,
   release_date DATE NOT NULL,
@@ -256,7 +242,7 @@ CREATE TABLE `release` (
 -- department --
 DROP TABLE IF EXISTS department;
 CREATE TABLE department (
-  department_id INT         NOT NULL,
+  department_id INT         NOT NULL UNIQUE AUTO_INCREMENT,
   dept_head_id  INT         NOT NULL,
   title         VARCHAR(30) NULL,
   PRIMARY KEY (department_id, dept_head_id),
