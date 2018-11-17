@@ -100,8 +100,8 @@ insert into club_member(lastname, firstname) values
 select *
 from club_member;
 
+drop function if exists find_member_id;
 DELIMITER //
-
 -- NOTE: if there are multiple members with the same full name, this function cannot distinguish them --
 create function find_member_id
   (
@@ -115,7 +115,6 @@ create function find_member_id
             where firstname like first_name and lastname like last_name
             limit 1);
   END //
-
 DELIMITER ;
 
 insert into eboard_member(title, member_id) values

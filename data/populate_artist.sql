@@ -1,6 +1,6 @@
 use green_line_records;
 
-insert into artist(artist_name)
+insert into artist (artist_name)
 values ('Quarrels'),
        ('Gracie'),
        ('Garrett Finn'),
@@ -84,12 +84,12 @@ values ('Quarrels'),
        ('Glass Arrowhead'),
        ('James Landino'),
        ('Max Doyle'),
-       ('John E Funk and Skunks'),
+       ('John E Funk & The Skunks'),
        ('Date Night'),
        ('Wildcat Slim'),
        ('Giant Kings'),
        ('Maxims'),
-       ('Julie Cira'),
+       ('Julie Cira & The Wake'),
        ('Birdwatching'),
        ('Flatswamp'),
        ('Sweeps'),
@@ -105,4 +105,8 @@ values ('Quarrels'),
        ('D-$oundz'),
        ('Brennan Wedl'),
        ('Dewey'),
-       ('Avi Jacob');
+       ('Avi Jacob'),
+       ('ColorGrave'),
+       ('daisybones'),
+       ('NU Songwriting Club'),
+       ('James Burke');

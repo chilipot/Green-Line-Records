@@ -7,7 +7,7 @@ USE green_line_records;
 DROP TABLE IF EXISTS project;
 CREATE TABLE project (
   project_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
-  project_name VARCHAR(80) NOT NULL,
+  title VARCHAR(100) NOT NULL,
   type ENUM('Single', 'EP', 'Album', 'Video', 'Other') NOT NULL,
   status ENUM('Unconfirmed', 'Confirmed', 'In-Progress', 'Completed', 'On Hold', 'Cancelled')  NOT NULL,
   PRIMARY KEY (project_id)
@@ -81,42 +81,6 @@ CREATE TABLE artist_writes_project (
   REFERENCES project (project_id),
   FOREIGN KEY (artist_id)
   REFERENCES artist (artist_id)
-);
-
--- song --
-DROP TABLE IF EXISTS song;
-CREATE TABLE song (
-  song_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
-  song_name VARCHAR(50) NOT NULL,
-  PRIMARY KEY (song_id)
-);
-
--- artist_writes_song --
-DROP TABLE IF EXISTS artist_writes_song;
-CREATE TABLE artist_writes_song (
-  song_id   INT NOT NULL UNIQUE,
-  artist_id INT NOT NULL UNIQUE,
-  PRIMARY KEY (song_id, artist_id),
-  INDEX artist_writes_song_artist_idx (artist_id ASC),
-  INDEX artist_writes_song_song_idx (song_id ASC),
-  FOREIGN KEY (song_id)
-  REFERENCES song (song_id),
-  FOREIGN KEY (artist_id)
-  REFERENCES artist (artist_id)
-);
-
--- song_on_album --
-DROP TABLE IF EXISTS song_on_album;
-CREATE TABLE song_on_album (
-  song_id    INT NOT NULL,
-  project_id INT NOT NULL,
-  PRIMARY KEY (song_id, project_id),
-  INDEX track_project_idx (project_id ASC),
-  INDEX track_song_idx (song_id ASC),
-  FOREIGN KEY (song_id)
-  REFERENCES song (song_id),
-  FOREIGN KEY (project_id)
-  REFERENCES project (project_id)
 );
 
 -- engineer --
@@ -281,7 +245,7 @@ CREATE TABLE eboard_member (
 -- link --
 DROP TABLE IF EXISTS link;
 CREATE TABLE link (
-  type       ENUM ('Bandcamp', 'Soundcloud', 'Spotify', 'Apple Music') NOT NULL,
+  type       ENUM ('Bandcamp', 'Soundcloud', 'Spotify', 'Apple Music', 'Tidal', 'Pandora', 'Other') NOT NULL,
   url        VARCHAR(300)                                              NOT NULL,
   link_id    INT                                                       NOT NULL AUTO_INCREMENT,
   release_id INT                                                       NOT NULL,
