@@ -156,7 +156,7 @@ values ('SoundCloud',
         find_release_id('I Have No Time')),
        ('Bandcamp',
         'https://maggierosenberg.bandcamp.com/track/angry-4evr-greenline-version',
-        find_release_id('~*Angry 4evr*~')),
+        find_release_id('~*Angry 4evr*~'));
 
 
 -- TODO: add GENRE to this query!
