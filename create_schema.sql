@@ -3,7 +3,23 @@ CREATE DATABASE green_line_records;
 
 USE green_line_records;
 
--- project -- 
+/** TODO:
+engineer project assignment
+dept membership
+events
+genre of project
+a&r member
+booking
+assigned live session
+MAYBE drop recording session & assigned recording session?
+play count CURRENTLY ALL NULL
+general meetings attended ? currently all 0
+need to get info from other department heads about dept members
+
+
+ */
+
+-- project --
 DROP TABLE IF EXISTS project;
 CREATE TABLE project (
   project_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
@@ -141,15 +157,25 @@ CREATE TABLE location (
   location_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
   location_name varchar(75) NOT NULL UNIQUE,
   PRIMARY KEY (location_id),
-  INDEX location_idx (location_name ASC)
+  INDEX location_idx (location_id ASC),
+  INDEX location_name_idx (location_name ASC)
 );
 
 -- live_session --
 DROP TABLE IF EXISTS live_session;
 CREATE TABLE live_session (
-  live_session_id INT      NOT NULL UNIQUE AUTO_INCREMENT,
-  date            DATETIME NOT NULL,
-  PRIMARY KEY (live_session_id)
+  live_session_id INT          NOT NULL UNIQUE AUTO_INCREMENT,
+  show_name       VARCHAR(150) NOT NULL,
+  date            DATE         NOT NULL,
+  start_time      TIME         NOT NULL,
+  end_time        TIME         NULL,
+  location_id     INT          NOT NULL,
+  PRIMARY KEY (live_session_id),
+  INDEX live_session_idx (live_session_id ASC),
+  INDEX live_session_name_idx (show_name ASC),
+  INDEX live_session_date_idx (date DESC),
+  FOREIGN KEY (location_id)
+  REFERENCES location (location_id)
 );
 
 -- event --
