@@ -1,3 +1,5 @@
+use green_line_records;
+
 insert into artist(artist_name)
 values ('Quarrels'),
        ('Gracie'),
