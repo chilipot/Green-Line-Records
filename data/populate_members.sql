@@ -316,6 +316,22 @@ select *
 from ar_member;
 
 
+insert into department_membership(member_id, department_id)
+(select a.club_member_id, d.department_id
+           from ar_member a
+           join department d
+            where d.title like 'Artists & Repertoire');
+
+insert into department_membership(member_id, department_id)
+(select a.club_member_id, d.department_id
+           from ar_member a
+           join department d
+            where d.title like 'Artists & Repertoire');
+
+
+
+select * from department_membership;
+
 
 
 

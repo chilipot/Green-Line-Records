@@ -16,7 +16,6 @@ play count CURRENTLY ALL NULL
 general meetings attended ? currently all 0
 need to get info from other department heads about dept members
 
-
  */
 
 -- project -- 
