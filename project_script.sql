@@ -147,9 +147,10 @@ CREATE TABLE project_assignment (
 -- recording_session --
 DROP TABLE IF EXISTS recording_session;
 CREATE TABLE recording_session (
-  recording_session_id INT      NOT NULL UNIQUE AUTO_INCREMENT,
-  project_id           INT      NOT NULL,
-  date                 DATETIME NOT NULL,
+  recording_session_id INT                                      NOT NULL UNIQUE AUTO_INCREMENT,
+  project_id           INT                                      NOT NULL,
+  date                 DATETIME                                 NOT NULL,
+  sudio                ENUM ('Green Line', 'Snell', 'Shillman') NULL,
   PRIMARY KEY (recording_session_id, project_id),
   INDEX recording_session_project_idx (project_id ASC),
   FOREIGN KEY (project_id)
@@ -201,11 +202,14 @@ CREATE TABLE live_session (
 DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   event_id    INT                            NOT NULL UNIQUE AUTO_INCREMENT,
-  date        DATETIME                           NOT NULL,
+  date        DATETIME                       NOT NULL,
+  location_id INT NOT NULL,
   description VARCHAR(700)                   NULL,
   turnout     ENUM ('Low', 'Medium', 'High') NULL,
   PRIMARY KEY (event_id),
-  INDEX event_date_idx (date DESC)
+  FOREIGN KEY (location_id),
+  INDEX event_date_idx (date DESC),
+  INDEX event_location_idx (location_id ASC)
 );
 
 -- booking --
