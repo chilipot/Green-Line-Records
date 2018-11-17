@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS greenlinerecords;
-CREATE DATABASE greenlinerecords;
+DROP DATABASE IF EXISTS green_line_records;
+CREATE DATABASE green_line_records;
 
-USE greenlinerecords;
+USE green_line_records;
 
 -- project -- 
 DROP TABLE IF EXISTS project;
@@ -25,7 +25,7 @@ CREATE TABLE genre (
 -- genre_of_project --
 DROP TABLE IF EXISTS genre_of_project;
 CREATE TABLE genre_of_project (
-    project_id INT NULL UNIQUE,
+    project_id INT NOT NULL UNIQUE,
     genre_id INT NOT NULL UNIQUE,
     PRIMARY KEY (project_id , genre_id),
     INDEX genre_of_project_genre_idx (genre_id ASC),
@@ -77,7 +77,7 @@ CREATE TABLE artist (
 -- artist_writes_project --
 DROP TABLE IF EXISTS artist_writes_project;
 CREATE TABLE artist_writes_project (
-    project_id INT NULL,
+    project_id INT NOT NULL,
     artist_id INT NOT NULL,
     PRIMARY KEY (project_id , artist_id),
     INDEX artist_writes_project_artist_idx (artist_id ASC),
@@ -101,7 +101,7 @@ CREATE TABLE song (
 -- artist_writes_song --
 DROP TABLE IF EXISTS artist_writes_song;
 CREATE TABLE artist_writes_song (
-    song_id INT NULL UNIQUE,
+    song_id INT NOT NULL UNIQUE,
     artist_id INT NOT NULL UNIQUE,
     PRIMARY KEY (song_id , artist_id),
     INDEX artist_writes_song_artist_idx (artist_id ASC),
@@ -144,7 +144,7 @@ CREATE TABLE engineer (
 -- project_assignment --
 DROP TABLE IF EXISTS project_assignment;
 CREATE TABLE project_assignment (
-    project_id INT NULL,
+    project_id INT NOT NULL,
     engineer_id INT NOT NULL,
     PRIMARY KEY (project_id , engineer_id),
     INDEX project_assignment_engineer_idx (engineer_id ASC),
@@ -173,7 +173,7 @@ CREATE TABLE recording_session (
 DROP TABLE IF EXISTS assigned_recording_session;
 CREATE TABLE assigned_recording_session (
     engineer_id INT NOT NULL,
-    recording_session_id INT NULL,
+    recording_session_id INT NOT NULL,
     PRIMARY KEY (engineer_id , recording_session_id),
     INDEX assigned_recording_session_recording_session_idx (recording_session_id ASC),
     INDEX assigned_recording_session_engineer_idx (engineer_id ASC),
@@ -207,7 +207,7 @@ CREATE TABLE `event` (
 -- booking --
 DROP TABLE IF EXISTS booking;
 CREATE TABLE booking (
-    event_id INT NULL,
+    event_id INT NOT NULL,
     artist_id INT NOT NULL,
     PRIMARY KEY (event_id , artist_id),
     INDEX booking_artist_idx (artist_id ASC),
@@ -222,8 +222,8 @@ CREATE TABLE booking (
 -- assigned_live_session --
 DROP TABLE IF EXISTS assigned_live_session;
 CREATE TABLE assigned_live_session (
-    live_session_id INT NULL,
-    engineer_id INT NULL,
+    live_session_id INT NOT NULL,
+    engineer_id INT NOT NULL,
     PRIMARY KEY (live_session_id , engineer_id),
     INDEX assigned_live_session_engineer_idx (engineer_id ASC),
     INDEX assigned_live_session_live_session_idx (live_session_id ASC),
