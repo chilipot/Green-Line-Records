@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use('/', indexRouter);
-app.use('/locations', locationsRouter);
+app.use('/location', locationsRouter);
 app.use('/live_session', sessionRouter);
 
 // catch 404 and forward to error handler
