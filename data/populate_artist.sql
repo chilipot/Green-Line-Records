@@ -109,4 +109,6 @@ values ('Quarrels'),
        ('ColorGrave'),
        ('daisybones'),
        ('NU Songwriting Club'),
-       ('James Burke');
+       ('James Burke'),
+       ('Maggie Rosenberg'),
+       ('Groundlift');

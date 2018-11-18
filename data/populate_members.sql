@@ -74,7 +74,9 @@ values ('bollu.a@husky.neu.edu', 'Bollu', 'Akhil'),
        ('kast.w@husky.neu.edu', 'Kast', 'William'),
        ('lipson.r@husky.neu.edu', 'Lipson', 'Rachel'),
        ('mulligan.d@husky.neu.edu', 'Mulligan', 'Dan'),
-       ('lambrecht.w@husky.neu.edu', 'Lambrecht', 'Walker');
+       ('lambrecht.w@husky.neu.edu', 'Lambrecht', 'Walker'),
+       ('tran.a@husky.neu.edu', 'Tran', 'Alex'),
+       ('andre.b@husky.neu.edu', 'Andre', 'Ben');
 
 
 insert into club_member (lastname, firstname)
@@ -104,7 +106,6 @@ values ('Chow', 'Aaron'),
        ('Miller', 'Chris'),
        ('Teitler', 'Alex'),
        ('Horchani', 'Mohamed'),
-       ('Carroll', 'Christina'),
        ('Gao', 'Vivienne'),
        ('Modugno', 'Connor'),
        ('Leach', 'Denzil'),
@@ -132,7 +133,7 @@ values ('Chow', 'Aaron'),
        ('Calli', 'John'),
        ('Berman', 'Arabella'),
        ('Wenglikowski', 'Hunter'),
-       ('Hipara', 'Pavan'),
+       ('Hirpara', 'Pavan'),
        ('Harrold', 'Ben'),
        ('Newman-Boulle', 'Alia'),
        ('Raponi', 'Bella'),
@@ -157,11 +158,16 @@ values ('Chow', 'Aaron'),
        ('De Arestegui', 'Sebastian'),
        ('Bettio', 'Veronica'),
        ('Fox', 'Aidan'),
-       ('Kerwin', 'Jack');
+       ('Kerwin', 'Jack'),
+       ('Gifford', 'Andrew'),
+       ('Alatalo', 'Sam'),
+       ('Dwyer', 'Kaitlyn'),
+       ('Elowe', 'Brooke'),
+       ('Bonner-Desravines', 'Cliff'),
+       ('Gurland', 'Allie'),
+       ('Robinson', 'Nick'),
+       ('Ward', 'Thomas');
 
-
-select *
-from club_member;
 
 drop function if exists find_member_id;
 DELIMITER //
@@ -192,8 +198,6 @@ values ('Head of Marketing', find_member_id('Gianna', 'Barletta')),
        ('Vice President', find_member_id('Cairo', 'Marques-Neto')),
        ('Operations Manager', find_member_id('Rachel', 'Lipson'));
 
-select *
-from eboard_member;
 
 insert into engineer (member_id, `level`)
 values (find_member_id('Zac', 'Kerwin'), 'Lead'),
@@ -216,6 +220,8 @@ values (find_member_id('Zac', 'Kerwin'), 'Lead'),
        (find_member_id('Aleksandra', 'Pasek'), 'Lead'),
        (find_member_id('William', 'Kast'), 'Lead'),
        (find_member_id('Walker', 'Lambrecht'), 'Lead'),
+       (find_member_id('Alex', 'Tran'), 'Lead'),
+       (find_member_id('Ben', 'Andre'), 'Lead'),
        (find_member_id('Nick', 'Smith'), 'Assistant'),
        (find_member_id('Gabriel', 'Pino'), 'Assistant'),
        (find_member_id('Mike', 'Econ'), 'Assistant'),
@@ -226,6 +232,9 @@ values (find_member_id('Zac', 'Kerwin'), 'Lead'),
        (find_member_id('Micah', 'Travis'), 'Assistant'),
        (find_member_id('Will', 'Clune'), 'Assistant'),
        (find_member_id('Ethan', 'Finn'), 'Assistant'),
+       (find_member_id('Cliff', 'Bonner-Desravines'), 'Assistant'),
+       (find_member_id('Nick', 'Robinson'), 'Assistant'),
+       (find_member_id('Allie', 'Gurland'), 'Assistant'),
        (find_member_id('Jacob', 'Samson'), 'Assistant'),
        (find_member_id('Hussain', 'Hamoudi'), 'Assistant'),
        (find_member_id('Denzil', 'Leach'), 'Assistant'),
@@ -239,9 +248,10 @@ values (find_member_id('Zac', 'Kerwin'), 'Lead'),
        (find_member_id('Thomas', 'Hinds'), 'Assistant'),
        (find_member_id('Sagar', 'Kumar'), 'Assistant'),
        (find_member_id('Jake', 'Poulios'), 'Assistant'),
+       (find_member_id('Andrew', 'Gifford'), 'Assistant'),
        (find_member_id('Chuck', 'Stein'), 'EIT'),
        (find_member_id('Ryan', 'Busse'), 'EIT'),
-       (find_member_id('Pavan', 'Hipara'), 'EIT'),
+       (find_member_id('Pavan', 'Hirpara'), 'EIT'),
        (find_member_id('Christian', 'Bobowicz'), 'EIT'),
        (find_member_id('Ben', 'Harrold'), 'EIT'),
        (find_member_id('Alex', 'Teitler'), 'EIT'),
@@ -290,15 +300,18 @@ values (find_member_id('Zac', 'Kerwin'), 'Lead'),
        (find_member_id('Erika', 'Hansen'), 'EIT'),
        (find_member_id('Nathan', 'Newbury'), 'EIT'),
        (find_member_id('Cassidy', 'Pelletier'), 'EIT'),
+       (find_member_id('Casper', 'Pelletier'), 'EIT'),
        (find_member_id('Rohan', 'Upadhyayula'), 'EIT'),
        (find_member_id('Nick', 'Kaffine'), 'EIT'),
        (find_member_id('Emmett', 'Dwyer'), 'EIT'),
        (find_member_id('Sam', 'Baumgartel'), 'EIT'),
+       (find_member_id('Sam', 'Alatalo'), 'EIT'),
+       (find_member_id('Kaitlyn', 'Dwyer'), 'EIT'),
+       (find_member_id('Brooke', 'Elowe'), 'EIT'),
+       (find_member_id('Thomas', 'Ward'), 'EIT'),
+       (find_member_id('Jaime', 'Gomez Diez'), 'EIT'),
        (find_member_id('Joey', 'Molloy'), 'EIT');
 
-
-select *
-from engineer;
 
 insert into ar_member(club_member_id)
 values (find_member_id('Sagar', 'Kumar')),
@@ -311,26 +324,8 @@ values (find_member_id('Sagar', 'Kumar')),
        (find_member_id('Aidan', 'Fox')),
        (find_member_id('Jack', 'Kerwin'));
 
-select *
-from ar_member;
 
 
-insert into department_membership(member_id, department_id)
-(select a.club_member_id, d.department_id
-           from ar_member a
-           join department d
-            where d.title like 'Artists & Repertoire');
-
-insert into department_membership(member_id, department_id)
-(select e.member_id, d.department_id
-           from engineer e
-           join department d
-            where d.title like 'Recording');
-
-
-
-
-select * from department_membership;
 
 
 
