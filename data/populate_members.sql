@@ -323,10 +323,11 @@ insert into department_membership(member_id, department_id)
             where d.title like 'Artists & Repertoire');
 
 insert into department_membership(member_id, department_id)
-(select a.club_member_id, d.department_id
-           from ar_member a
+(select e.member_id, d.department_id
+           from engineer e
            join department d
-            where d.title like 'Artists & Repertoire');
+            where d.title like 'Recording');
+
 
 
 
