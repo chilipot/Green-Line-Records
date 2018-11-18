@@ -173,10 +173,29 @@ create function find_member_id
   )
   returns int
   BEGIN
-    return (select member_id
-            from club_member
-            where firstname like first_name
-              and lastname like last_name
+    return (select member_id from club_member where firstname like first_name
+                                                and lastname like last_name limit 1);
+  END //
+
+DELIMITER ;
+
+DROP function if exists find_engineer_id;
+
+DELIMITER //
+
+-- NOTE: if there are multiple members with the same full name, this function cannot distinguish them --
+create function find_engineer_id
+  (
+    first_name varchar(50),
+    last_name  varchar(50)
+  )
+  returns int
+  BEGIN
+    return (select engineer_id
+            from engineer
+                   join club_member as m on engineer.member_id = m.member_id
+            where m.firstname like first_name
+              and m.lastname like last_name
             limit 1);
   END //
 
@@ -301,7 +320,7 @@ values (find_member_id('Zac', 'Kerwin'), 'Lead'),
 select *
 from engineer;
 
-insert into ar_member(club_member_id)
+insert into ar_member (club_member_id)
 values (find_member_id('Sagar', 'Kumar')),
        (find_member_id('Jonathan', 'Prus')),
        (find_member_id('Candace', 'Reyes')),

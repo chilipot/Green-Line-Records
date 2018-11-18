@@ -10,7 +10,6 @@ events
 genre of project
 a&r member
 booking
-assigned live session
 MAYBE drop recording session & assigned recording session?
 play count CURRENTLY ALL NULL
 general meetings attended ? currently all 0
@@ -242,8 +241,7 @@ CREATE TABLE booking (
 DROP TABLE IF EXISTS assigned_live_session;
 CREATE TABLE assigned_live_session (
   live_session_id INT NOT NULL,
-  engineer_id     INT NOT NULL,
-  PRIMARY KEY (live_session_id, engineer_id),
+  engineer_id     INT NULL,
   INDEX assigned_live_session_engineer_idx (engineer_id ASC),
   INDEX assigned_live_session_live_session_idx (live_session_id ASC),
   FOREIGN KEY (live_session_id)
