@@ -1,7 +1,7 @@
 use green_line_records;
 
+drop function if exists find_head;
 DELIMITER //
-
 create function find_head
   (
     department varchar(50)
@@ -14,7 +14,6 @@ create function find_head
             where title like concat('%', department)
             limit 1);
   END //
-
 DELIMITER ;
 
 insert into department (title, dept_head_id)

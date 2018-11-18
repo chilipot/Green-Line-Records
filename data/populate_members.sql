@@ -163,8 +163,8 @@ values ('Chow', 'Aaron'),
 select *
 from club_member;
 
+drop function if exists find_member_id;
 DELIMITER //
-
 -- NOTE: if there are multiple members with the same full name, this function cannot distinguish them --
 create function find_member_id
   (
@@ -198,7 +198,6 @@ create function find_engineer_id
               and m.lastname like last_name
             limit 1);
   END //
-
 DELIMITER ;
 
 insert into eboard_member (title, member_id)
@@ -334,6 +333,23 @@ values (find_member_id('Sagar', 'Kumar')),
 select *
 from ar_member;
 
+
+insert into department_membership(member_id, department_id)
+(select a.club_member_id, d.department_id
+           from ar_member a
+           join department d
+            where d.title like 'Artists & Repertoire');
+
+insert into department_membership(member_id, department_id)
+(select e.member_id, d.department_id
+           from engineer e
+           join department d
+            where d.title like 'Recording');
+
+
+
+
+select * from department_membership;
 
 
 
