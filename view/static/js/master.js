@@ -13,8 +13,20 @@ var hideDrop = function(menu) {
   menu.parent().removeClass('show');
 }
 
+// Query Data
+class QueryData {
+  constructor(trans, table, query) {
+
+  }
+}
+
+
+
+
+// Runtime functionality
 $('body').ready(function() {
 
+  // Dropdown Listeners
   $('.dropdown-menu').hide().removeClass('show');
   $('.dropdown-toggle').mouseenter(
     function() {
@@ -39,4 +51,18 @@ $('body').ready(function() {
       hideDrop($(this).parent());
     }
   )
+
+  // Input Listener
+  $('body').keypress(function(event) {
+    if (event.keyCode == 13) {
+      var str = $('.text-input').val();
+      console.log(str);
+      if (str.length > 0) {
+        event.preventDefault();
+        console.log("Enter");
+      } else {
+        console.log("No input");
+      }
+    }
+  })
 });
