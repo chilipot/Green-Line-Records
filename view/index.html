@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<link href="https://fonts.googleapis.com/css?family=Oswald|Roboto:500" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="static\css\master.css">
+	<title>Green Line Records Database</title>
+	<style type="text/css">
+		div {
+			margin: 0px;
+			padding: 0px;
+			position: relative;
+		}
+
+		.content {
+			box-shadow: 0px 0px 30px lightgray;
+			border-radius: 25px;
+			height: auto;
+			weight: auto;
+			max-width: 1200px;
+			margin: auto;
+			border: 1px solid gray;
+			margin-top: 25px;
+			margin-bottom: 25px;
+		}
+
+		.jumbotron {
+			position: relative;
+			z-index: -1;
+		}
+
+		.backsplash {
+			width: 100%;
+			height: auto;
+			border-top-left-radius: 25px;
+			border-top-right-radius: 25px;
+
+		}
+
+		.center-text {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -100%);
+		}
+
+		.logo {
+			position: absolute;
+			left: 15px;
+			top: 15px;
+		}
+
+		.title {
+			font-size: 50px;
+			color: white;
+			font-family: 'Oswald', 'sans-serif';
+		}
+
+		.data-input {
+			top: 40px;
+			width: 90%;
+			height: 55px;
+			position: relative;
+			margin: auto;
+			text-align: center;
+			box-shadow: 0px 0px 10px darkgray;
+			border-radius: 15px;
+		}
+
+		.data-input .text-input {
+			height: 100%;
+			width: 100%;
+			border-top-right-radius: 15px;
+			border-bottom-right-radius: 15px;
+			border-left: 0px;
+			border-color: #C0C0C0;
+			border-style: solid;
+		}
+
+		.input-group-prepend {
+			width: 100%;
+		}
+
+		.input-group-prepend>.btn-group:first-child>button {
+			border-top-left-radius: 15px;
+			border-bottom-left-radius: 15px;
+		}
+
+		.input-group-prepend>.btn-group>button {
+			border-radius: 0px;
+		}
+
+		#table-info {
+			position: relative;
+			top: -50px;
+			background-color: white;
+			width: 100%;
+			height: 900px;
+			border-radius: 25px;
+		}
+
+		table {
+			top: 70px;
+			margin: auto;
+			position: relative;
+			height: 750px;
+			width: 1075px;
+			border-radius: 5px;
+			box-shadow: 0px 0px 10px darkgray;
+		}
+
+		body {
+			font-family: 'Roboto', 'sans-serif';
+		}
+
+		.dropdown-menu {
+			position: absolute;
+			transform: translate3d(0px, 55px, 0px);
+			top: 0px;
+			left: 0px;
+			will-change: transform;
+		}
+	</style>
+	<link rel="stylesheet" href="static/css/bootstrap-reboot.min.css">
+	<!-- <link rel="stylesheet" href="static/css/bootstrap.css"> -->
+</head>
+
+<body>
+	<div class="content">
+
+
+		<!-- Header image and title -->
+		<div class="jumbotron">
+			<img class="backsplash" src="static\img\Backsplash.png" alt="Background Img">
+			<img class="logo" src="static\img\GreenLineRecordsLogoText.png" alt="GreenLineRecordsLogoText">
+			<h1 class="center-text title">Database Access</h1>
+		</div>
+
+		<div id="table-info" class="">
+
+			<div class="input-group mb-3 data-input">
+				<div class="input-group-prepend">
+					<div class="btn-group">
+						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Query</button>
+						<div class="dropdown-menu" x-placement="bottom-start">
+							<a class="dropdown-item" href="#">Search</a>
+							<a class="dropdown-item" href="#">Modify</a>
+							<a class="dropdown-item" href="#">Add</a>
+							<a class="dropdown-item" href="#">Delete</a>
+						</div>
+					</div>
+
+					<div class="btn-group">
+						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Table</button>
+						<div class="dropdown-menu" x-placement="bottom-start">
+							<a class="dropdown-item" href="#">Artists</a>
+							<a class="dropdown-item" href="#">Release</a>
+							<a class="dropdown-item" href="#">Member</a>
+							<div role="separator" class="dropdown-divider"></div>
+							<a class="dropdown-item" href="#">Live Event</a>
+							<a class="dropdown-item" href="#">Recording</a>
+						</div>
+					</div>
+					<input type="text" class="form-control text-input" aria-label="Text input with dropdown button">
+				</div>
+			</div>
+
+			<!-- Dynamic Data -->
+			<table>
+
+			</table>
+		</div>
+	</div>
+
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="static/js/master.js" charset="utf-8"></script>
+	<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
+</body>
+
+</html>
