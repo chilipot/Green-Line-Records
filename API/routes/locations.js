@@ -3,7 +3,7 @@ var router = express.Router();
 
 var selectQuery = function(req, res, queryString) {
   	global.connection.query(queryString, function (error, results, fields) {
-  		if (error) throw error;
+  		if (error) res.send(error);
   		// res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
       res.send(results);
   	});
@@ -26,5 +26,10 @@ router.get('/datetime', function(req, res) {
   selectQuery(req, res, 'SELECT location.location_id, location_name, live_session.location_id, live_session.date, live_session.start_time, live_session.end_time FROM location join live_session on live_session.location_id = location.location_id');
 });
 
+router.get('/add/:locationName', function(req, res) {
+  var name = req.params.locationName
+  var str = 'INSERT INTO LOCATION (location_name) VALUES (\'' + name + '\')';
+  selectQuery(req, res,  str)
+})
 
 module.exports = router;
