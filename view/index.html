@@ -98,18 +98,42 @@
 			top: -50px;
 			background-color: white;
 			width: 100%;
-			height: 900px;
+			padding-bottom: 100px;
 			border-radius: 25px;
 		}
 
+		.table-wrap {
+			position: relative;
+			top: 80px;
+			max-width: 900px;
+			margin: auto;
+		}
+
 		table {
+			width: 100%;
+		}
+
+		th {
+			padding: 10px;
+			background-color: lightgray;
+			color: green;
+			border: 1px solid grey;
+		}
+
+		td {
+			background-color: white;
+			border: 1px solid grey;
+		}
+
+		.data-table {
 			top: 70px;
 			margin: auto;
 			position: relative;
-			height: 750px;
-			width: 1075px;
+			min-height: 150px;
+			max-width: 1025px;
 			border-radius: 5px;
 			box-shadow: 0px 0px 10px darkgray;
+			text-align: center;
 		}
 
 		body {
@@ -140,45 +164,48 @@
 		</div>
 
 		<div id="table-info" class="">
-
-			<div class="input-group mb-3 data-input">
-				<div class="input-group-prepend">
-					<div class="btn-group">
-						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Query</button>
-						<div class="dropdown-menu" x-placement="bottom-start">
-							<a class="dropdown-item" href="#">Search</a>
-							<a class="dropdown-item" href="#">Modify</a>
-							<a class="dropdown-item" href="#">Add</a>
-							<a class="dropdown-item" href="#">Delete</a>
+			<div class="data-table">
+				<div class="input-group mb-3 data-input">
+					<div class="input-group-prepend">
+						<div class="btn-group">
+							<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Query</button>
+							<div class="dropdown-menu" x-placement="bottom-start">
+								<a class="dropdown-item" href="#">Search</a>
+								<a class="dropdown-item" href="#">Modify</a>
+								<a class="dropdown-item" href="#">Add</a>
+								<a class="dropdown-item" href="#">Delete</a>
+							</div>
 						</div>
-					</div>
 
-					<div class="btn-group">
-						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Table</button>
-						<div class="dropdown-menu" x-placement="bottom-start">
-							<a class="dropdown-item" href="#">Artists</a>
-							<a class="dropdown-item" href="#">Release</a>
-							<a class="dropdown-item" href="#">Member</a>
-							<div role="separator" class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">Live Event</a>
-							<a class="dropdown-item" href="#">Recording</a>
+						<div class="btn-group">
+							<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Table</button>
+							<div class="dropdown-menu" x-placement="bottom-start">
+								<a class="dropdown-item" href="#">Location</a>
+								<a class="dropdown-item" href="#">Live Session</a>
+								<a class="dropdown-item" href="#">Member</a>
+								<div role="separator" class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#">Live Event</a>
+								<a class="dropdown-item" href="#">Recording</a>
+							</div>
 						</div>
+						<input type="text" class="form-control text-input" aria-label="Text input with dropdown button">
 					</div>
-					<input type="text" class="form-control text-input" aria-label="Text input with dropdown button">
+				</div>
+
+				<!-- Dynamic Data -->
+				<div class="table-wrap">
+					<table id="response-table">
+
+					</table>
 				</div>
 			</div>
-
-			<!-- Dynamic Data -->
-			<table>
-
-			</table>
 		</div>
 	</div>
 
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="static/js/master.js" charset="utf-8"></script>
 	<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->

@@ -6,7 +6,6 @@ USE green_line_records;
 /** TODO:
 engineer project assignment
 dept membership
-events
 add more releases
 a&r member
 booking
@@ -181,6 +180,7 @@ DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   event_id    INT                            NOT NULL UNIQUE AUTO_INCREMENT,
   date        DATETIME                       NOT NULL,
+  title       VARCHAR(100)                   NOT NULL,
   description VARCHAR(700)                   NULL,
   turnout     ENUM ('Low', 'Medium', 'High') NULL,
   PRIMARY KEY (event_id)
@@ -243,7 +243,6 @@ DROP TABLE IF EXISTS department_membership;
 CREATE TABLE department_membership (
   member_id              INT NOT NULL,
   department_id          INT NOT NULL,
-  dept_meetings_attended INT NOT NULL DEFAULT 0,
   PRIMARY KEY (member_id, department_id),
   INDEX department_membership_department_idx (department_id ASC),
   INDEX department_membership_club_member_idx (member_id ASC),

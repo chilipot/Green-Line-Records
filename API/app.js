@@ -15,9 +15,9 @@ var mysql = require("mysql");
 //Database connection
 app.use(function(req, res, next){
 	global.connection = mysql.createConnection({
-		host     : 'localhost',
-		user     : 'root',
-		password : 'password',
+		host     : 'database-design.clxfur70m41w.us-east-1.rds.amazonaws.com',
+		user     : 'awsroot',
+		password : 'charlesstein',
 		database : 'green_line_records'
 	});
 	connection.connect();
