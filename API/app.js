@@ -1,43 +1,43 @@
 var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 // Query Routes
 var indexRouter = require('./routes/index');
 var locationsRouter = require('./routes/locations');
 var sessionRouter = require('./routes/live_sessions');
+var artistRouter = require('./routes/artists');
+var memberRouter = require('./routes/members');
 
 var app = express();
 
 var mysql = require("mysql");
 //Database connection
-app.use(function(req, res, next){
-	global.connection = mysql.createConnection({
-		host     : 'database-design.clxfur70m41w.us-east-1.rds.amazonaws.com',
-		user     : 'awsroot',
-		password : 'charlesstein',
-		database : 'green_line_records'
-	});
-	connection.connect();
-	next();
+app.use(function(req, res, next) {
+  global.connection = mysql.createConnection({
+    host: 'database-design.clxfur70m41w.us-east-1.rds.amazonaws.com',
+    user: 'awsroot',
+    password: 'charlesstein',
+    database: 'green_line_records'
+  });
+  connection.connect();
+  next();
 });
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({
+  extended: false
+}));
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 // Routes
 app.use('/', indexRouter);
 app.use('/location', locationsRouter);
 app.use('/live_session', sessionRouter);
+app.use('/artist', artistRouter);
+app.use('/club_member', memberRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
