@@ -3,7 +3,6 @@ use green_line_records;
 DROP function if exists find_location_id;
 
 DELIMITER //
-
 create function find_location_id
   (
     location_name_s varchar(100)
@@ -31,4 +30,3 @@ VALUES ('Snell Quad'),
        ('The Burren Backroom'),
        ('Phil\'s House'),
        ('Freshman Quad');
-

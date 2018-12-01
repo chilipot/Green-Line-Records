@@ -14,6 +14,11 @@ router.get('/', function(req, res) {
   selectQuery(req, res, "SELECT * FROM location");
 });
 
+router.get('/id/:id', function(req, res) {
+  var id = req.params.id;
+  selectQuery(req, res, "SELECT * FROM location where location_id=" + id + ";");
+})
+
 router.get('/count', function(req, res) {
   selectQuery(req, res, 'SELECT location.location_name, count(location.location_id) as Count FROM live_session join location on live_session.location_id = location.location_id group by location.location_id');
 });
