@@ -158,7 +158,7 @@ var updateHeight = function() {
  * @throws {Error}            Endpoint Error.
  */
 var sendQuery = function(endpoint, table) {
-  const host = "https://green-line-records-api.herokuapp.com/";
+  const host = "https://cors-anywhere.herokuapp.com/https://green-line-records-api.herokuapp.com/";
   // const host = "http://localhost:3000/";
   table = table.replace(" ", "_");
   var url = host + table + endpoint;
