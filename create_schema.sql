@@ -7,12 +7,12 @@ USE green_line_records;
 engineer project assignment
 dept membership
 events
-genre of project
+add more releases
 a&r member
 booking
-MAYBE drop recording session & assigned recording session?
+drop recording session & assigned recording session
 play count CURRENTLY ALL NULL
-general meetings attended ? currently all 0
+drop attendance
 need to get info from other department heads about dept members
 
  */
@@ -268,7 +268,7 @@ CREATE TABLE eboard_member (
 -- link --
 DROP TABLE IF EXISTS link;
 CREATE TABLE link (
-  type       ENUM ('Bandcamp', 'Soundcloud', 'Spotify', 'Apple Music', 'Tidal', 'Pandora', 'Other') NOT NULL,
+  type       ENUM ('Bandcamp', 'Soundcloud', 'Spotify', 'Apple Music', 'Tidal', 'Pandora', 'YouTube', 'Other') NOT NULL,
   url        VARCHAR(300)                                              NOT NULL,
   link_id    INT                                                       NOT NULL AUTO_INCREMENT,
   release_id INT                                                       NOT NULL,

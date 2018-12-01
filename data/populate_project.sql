@@ -43,10 +43,10 @@ values ('Mike Morrissey single', 'Single', 'On Hold'),
        ('Mandy Kessler single', 'Single', 'Cancelled'),
        ('Trevor Dering single', 'Single', 'Cancelled'),
        ('Gentle Temper single', 'Single', 'Completed'),
-       ('Sweeps single', 'Single', 'Completed'),
-       ('The Water Cycle single', 'Single', 'Completed'),
+       ('a tale from tomorrow', 'Single', 'Completed'),
+       ('Old Enough', 'Single', 'Completed'),
        ('Give It Up', 'Single', 'Completed'),
-       ('Kid Wolf single', 'Single', 'Completed'),
+       ('Heart of the Sun', 'Single', 'Completed'),
        ('Cruel Miracle single', 'Single', 'Cancelled'),
        ('Time Out of Mind', 'Single', 'Completed'),
        ('~*Angry 4evr*~', 'Single', 'Completed'),
@@ -58,9 +58,8 @@ values ('Mike Morrissey single', 'Single', 'On Hold'),
        ('Broken by the Fix', 'Single', 'Completed'),
        ('I Have No Time', 'Single', 'Completed'),
        ('NU Songwriting Club Compilation 2018', 'Album', 'Completed');
+        -- need to include Glass Arrowhead project
 
-select *
-from project;
 
 drop function if exists find_project_id;
 DELIMITER //
@@ -99,6 +98,28 @@ create function find_release_id
   END //
 DELIMITER ;
 
+insert into genre_of_project (project_id, genre_id)
+values (find_project_id('Broken by the Fix'), find_genre_id('Electronic')),
+       (find_project_id('Broken by the Fix'), find_genre_id('Rock')),
+       (find_project_id('Reckless'), find_genre_id('Rock')),
+       (find_project_id('Reckless'), find_genre_id('Country')),
+       (find_project_id('frog.png'), find_genre_id('Indie')),
+       (find_project_id('frog.png'), find_genre_id('Rock')),
+       (find_project_id('frog.png'), find_genre_id('Punk')),
+       (find_project_id('NU Songwriting Club Compilation 2018'), find_genre_id('Singer-songwriter')),
+       (find_project_id('Time Out of Mind'), find_genre_id('Progressive Rock')),
+       (find_project_id('Give It Up'), find_genre_id('Funk')),
+       (find_project_id('I Have No Time'), find_genre_id('Lo-fi')),
+       (find_project_id('I Have No Time'), find_genre_id('Ambient')),
+       (find_project_id('~*Angry 4evr*~'), find_genre_id('Singer-songwriter')),
+       (find_project_id('Till You Run Out of Time'), find_genre_id('Rock')),
+       (find_project_id('Heart of the Sun'), find_genre_id('Rock')),
+       (find_project_id('Heart of the Sun'), find_genre_id('Folk')),
+       (find_project_id('Old Enough'), find_genre_id('Indie')),
+       (find_project_id('Old Enough'), find_genre_id('Rock')),
+       (find_project_id('a tale from tomorrow'), find_genre_id('Electronic')),
+       (find_project_id('a tale from tomorrow'), find_genre_id('Rap'));
+
 insert into artist_writes_project (project_id, artist_id)
 values (find_project_id('Broken by the Fix'), find_artist_id('ColorGrave')),
        (find_project_id('Reckless'), find_artist_id('Julie Cira & The Wake')),
@@ -108,7 +129,10 @@ values (find_project_id('Broken by the Fix'), find_artist_id('ColorGrave')),
        (find_project_id('Give It Up'), find_artist_id('John E Funk & The Skunks')),
        (find_project_id('I Have No Time'), find_artist_id('James Burke')),
        (find_project_id('~*Angry 4evr*~'), find_artist_id('Maggie Rosenberg')),
-       (find_project_id('Till You Run Out of Time'), find_artist_id('Groundlift'));
+       (find_project_id('Till You Run Out of Time'), find_artist_id('Groundlift')),
+       (find_project_id('Heart of the Sun'), find_artist_id('Kid Wolf')),
+       (find_project_id('Old Enough'), find_artist_id('The Water Cycle')),
+       (find_project_id('a tale from tomorrow'), find_artist_id('Sweeps'));
 
 insert into `release` (project_id, release_date)
 values (find_project_id('Broken by the Fix'), '2018-06-02'),
@@ -119,7 +143,10 @@ values (find_project_id('Broken by the Fix'), '2018-06-02'),
        (find_project_id('Give It Up'), '2017-12-08'),
        (find_project_id('I Have No Time'), '2018-04-20'),
        (find_project_id('~*Angry 4evr*~'), '2018-03-31'),
-       (find_project_id('Till You Run Out of Time'), '2018-05-04');
+       (find_project_id('Till You Run Out of Time'), '2018-05-04'),
+       (find_project_id('Heart of the Sun'), '2017-12-29'),
+       (find_project_id('Old Enough'), '2017-12-15'),
+       (find_project_id('a tale from tomorrow'), '2017-12-01');
 
 insert into link (type, url, release_id)
 values ('SoundCloud',
@@ -155,7 +182,20 @@ values ('SoundCloud',
         find_release_id('I Have No Time')),
        ('Bandcamp',
         'https://maggierosenberg.bandcamp.com/track/angry-4evr-greenline-version',
-        find_release_id('~*Angry 4evr*~'));
+        find_release_id('~*Angry 4evr*~')),
+       ('Bandcamp',
+        'https://kidwolf.bandcamp.com/album/heart-of-the-sun-single',
+        find_release_id('Heart of the Sun')),
+       ('YouTube',
+        'https://www.youtube.com/watch?v=jVHIXA_uNTw',
+        find_release_id('Old Enough')),
+       ('Spotify',
+        'https://open.spotify.com/track/5azFS5RgqOfDaZcA5oj25Q',
+        find_release_id('Old Enough')),
+       ('Bandcamp',
+        'https://thewatercyclemusic.bandcamp.com/track/old-enough-2',
+        find_release_id('Old Enough'));
+
 
 
 -- TODO: add GENRE to this query!
