@@ -13,7 +13,14 @@ var hideDrop = function(menu) {
   menu.parent().removeClass('show');
 }
 
-// Helpers
+// Analyzes Search string
+
+const tableParameters = {
+  'location' : [],
+  'live_session' : [],
+  'artist' : [],
+  'member' : [],
+}
 
 /**
  * var analyzeSearch - Builds the endpoint using the given search string.
@@ -24,32 +31,41 @@ var hideDrop = function(menu) {
  */
 var analyzeSearch = function(search) {
   var endpoint = "";
-  if (search == 0) {
+  if (search.length == 0) {
     return "";
   }
   var paramDict = {};
-  console.log(search);
-  var params = search.spilt(" ");
+  var params = search.split(",");
   for (param in params) {
-    var kv = param.split('=');
+    var kv = params[param].split("=");
     paramDict[kv[0]] = kv[1];
   }
-
   var keys = Object.keys(paramDict);
+  console.log(keys);
   for (k in keys) {
-    var val = paramDict[k];
-
-    switch(k) {
-      case 'id':
+    var val = paramDict[keys[k]];
+    switch(keys[k]) {
+      case "id":
         endpoint += '/id/' + val;
         break;
+      case "name":
+        endpoint += '/name/' + val;
+        break;
+      default:
+        console.log('Call special params');
+
     }
   }
 
   console.log(paramDict);
+  console.log(endpoint);
 
   return endpoint;
 }
+
+
+// Helpers
+
 
 /**
  * var convertToDict - Converts a JSON string into a dictionary structure.
@@ -74,6 +90,7 @@ var convertToDict = function(json) {
  * @return {String}      Table headers.
  */
 var getHeaders = function(dict) {
+  console.log(dict);
   const keys = Object.keys(dict);
   var html = "";
   for (header in keys) {
@@ -98,7 +115,6 @@ var getRows = function(dict) {
     var rowHTML = "";
     for (headerRow in rowKeys) {
       var rowVal = rowDict[rowKeys[headerRow]];
-      console.log(rowVal);
       rowHTML += '<td>' + rowVal + '</td>';
     }
     html += '<tr>' + rowHTML + '</tr>';
@@ -116,7 +132,7 @@ var getRows = function(dict) {
  */
 var updateTable = function(dict) {
   const table = $('#response-table');
-  var header = getHeaders(dict[1]);
+  var header = getHeaders(dict[0]);
   var rows = getRows(dict);
 
   table.html(header + rows);
@@ -141,9 +157,11 @@ var updateHeight = function() {
  * @return {JSON}             The JSON response from the API.
  * @throws {Error}            Endpoint Error.
  */
-var sendQuery = function(endpoint, transaction) {
-  const host = "https://green-line-records-api.herokuapp.com/";
-  var url = host + transaction + endpoint;
+var sendQuery = function(endpoint, table) {
+  const host = "https://cors-anywhere.herokuapp.com/https://green-line-records-api.herokuapp.com/";
+  // const host = "http://localhost:3000/";
+  table = table.replace(" ", "_");
+  var url = host + table + endpoint;
   console.log(url);
   fetch(url)
     .then((response) => {
@@ -201,11 +219,9 @@ $('body').ready(function() {
   $('body').keypress(function(event) {
     if (event.keyCode == 13) {
       var str = $('.text-input').val();
-
       if (str.length == 0) {
         str = "";
       }
-
       event.preventDefault();
 
       if (table == null) {

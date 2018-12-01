@@ -12,27 +12,27 @@ var selectQuery = function(req, res, queryString) {
 
 /* GET users listing. */
 router.get('/', function(req, res) {
-  selectQuery(req, res, "SELECT * FROM location");
+  selectQuery(req, res, "SELECT * FROM artist");
 });
 
 router.get('/id/:id', function(req, res) {
   var id = req.params.id;
-  var qres = new Query('location')
+  var qres = new Query('artist')
   qres.setStatement('SELECT')
   qres.addColumn('*');
-  qres.addWhereCond("where location_id=" + id)
+  qres.addWhereCond("where artist_id=" + id)
   selectQuery(req, res, qres.buildQuery());
 })
 
-// Gets According to Location names
+// Gets According to artist names
 router.get('/name', function(req, res) {
-  selectQuery(req, res, 'SELECT location_name FROM location');
+  selectQuery(req, res, 'SELECT artist_name FROM artist');
 });
 
 router.get('/name/:name', function(req, res) {
   var name = req.params.name;
-  var str = new Query('location')
-  selectQuery(req, res, str.getByName(name, 'location_name'));
+  var str = new Query('artist')
+  selectQuery(req, res, str.getByName(name, 'artist_name'));
 });
 
 

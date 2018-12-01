@@ -1,4 +1,5 @@
 var express = require('express');
+const Query = require('./modules/default');
 var router = express.Router();
 
 // middleware that is specific to this router
@@ -21,10 +22,23 @@ router.get('/', function(req, res) {
 });
 
 router.get('/id/:id', function(req, res) {
-  // res.send(req.params)
   var id = req.params.id;
-  var str = 'SELECT * FROM live_session where live_session_id=' + id;
-  selectQuery(req, res, str);
+  var qres = new Query('live_session')
+  qres.setStatement('SELECT')
+  qres.addColumn('*');
+  qres.addWhereCond("where live_session_id=" + id)
+  selectQuery(req, res, qres.buildQuery());
+});
+
+// Gets According to Show names
+router.get('/name', function(req, res) {
+  selectQuery(req, res, 'SELECT show_name FROM live_session');
+});
+
+router.get('/name/:name', function(req, res) {
+  var name = req.params.name;
+  var str = new Query('live_session')
+  selectQuery(req, res, str.getByName(name, 'show_name'));
 });
 
 // Gwts According to location
@@ -45,17 +59,6 @@ router.get('/location/name/:name', function(req, res) {
   var str = 'SELECT * FROM live_session join location on live_session.location_id = location.location_id where location.location_name = \'' + id + '\'';
   selectQuery(req, res, str);
 })
-
-// Gets According to Show names
-router.get('/name', function(req, res) {
-  selectQuery(req, res, 'SELECT show_name FROM live_session');
-});
-
-router.get('/name/:name', function(req, res) {
-  var name = req.params.name;
-  var str = 'SELECT * FROM live_session where show_name like \'%' + name + '%\'';
-  selectQuery(req, res, str);
-});
 
 // Gets According to Date and/or Time
 router.get('/datetime/:YY-:MM-:DD-:HH-:MI-:SS', function(req, res) {
