@@ -1,5 +1,8 @@
 use green_line_records;
 
+set foreign_key_checks = 0;
+
+truncate project;
 insert into project (title, type, status)
 values ('Mike Morrissey single', 'Single', 'On Hold'),
        ('Leo Son & The Q-tip Bandits single', 'Single', 'In-Progress'),
@@ -36,13 +39,14 @@ values ('Mike Morrissey single', 'Single', 'On Hold'),
        ('Migrant Motel single', 'Single', 'Cancelled'),
        ('Mint Green single', 'Single', 'Completed'),
        ('Able Days EP', 'EP', 'Completed'),
-       ('Maggie Whitlock EP', 'EP', 'Completed'),
-       ('Red Mill single', 'Single', 'Completed'),
+       ('the seams', 'EP', 'Completed'),
+       ('Your Book', 'Single', 'Completed'),
        ('Flamingo Club single', 'Single', 'Completed'),
        ('Systematic single', 'Single', 'Cancelled'),
        ('Mandy Kessler single', 'Single', 'Cancelled'),
        ('Trevor Dering single', 'Single', 'Cancelled'),
-       ('Gentle Temper single', 'Single', 'Completed'),
+       ('Hurt Nobody by Tashawn Taylor', 'Single', 'Cancelled'),
+       ('Sugar', 'Single', 'Completed'),
        ('a tale from tomorrow', 'Single', 'Completed'),
        ('Old Enough', 'Single', 'Completed'),
        ('Give It Up', 'Single', 'Completed'),
@@ -57,9 +61,9 @@ values ('Mike Morrissey single', 'Single', 'On Hold'),
        ('Cosmic Johnny single', 'Single', 'Completed'),
        ('Broken by the Fix', 'Single', 'Completed'),
        ('I Have No Time', 'Single', 'Completed'),
-       ('NU Songwriting Club Compilation 2018', 'Album', 'Completed');
-        -- need to include Glass Arrowhead project
-
+       ('NU Songwriting Club Compilation 2018', 'Album', 'Completed'),
+       ('Brother Be Wise', 'Single', 'Completed');
+-- need to include Glass Arrowhead project
 
 drop function if exists find_project_id;
 DELIMITER //
@@ -98,6 +102,19 @@ create function find_release_id
   END //
 DELIMITER ;
 
+drop function if exists find_genre_id;
+DELIMITER //
+create function find_genre_id
+  (
+    genre varchar(50)
+  )
+  returns int
+  BEGIN
+    return (select genre_id from genre where genre_name like genre limit 1);
+  END //
+DELIMITER ;
+
+truncate genre_of_project;
 insert into genre_of_project (project_id, genre_id)
 values (find_project_id('Broken by the Fix'), find_genre_id('Electronic')),
        (find_project_id('Broken by the Fix'), find_genre_id('Rock')),
@@ -118,8 +135,20 @@ values (find_project_id('Broken by the Fix'), find_genre_id('Electronic')),
        (find_project_id('Old Enough'), find_genre_id('Indie')),
        (find_project_id('Old Enough'), find_genre_id('Rock')),
        (find_project_id('a tale from tomorrow'), find_genre_id('Electronic')),
-       (find_project_id('a tale from tomorrow'), find_genre_id('Rap'));
+       (find_project_id('a tale from tomorrow'), find_genre_id('Rap')),
+       (find_project_id('Sugar'), find_genre_id('Folk')),
+       (find_project_id('Your Book'), find_genre_id('Rock')),
+       (find_project_id('the seams'), find_genre_id('Singer-songwriter')),
+       (find_project_id('Able Days EP'), find_genre_id('Alternative')),
+       (find_project_id('Able Days EP'), find_genre_id('Indie')),
+       (find_project_id('Able Days EP'), find_genre_id('Rock')),
+       (find_project_id('Take Care'), find_genre_id('Rock')),
+       (find_project_id('Take Care'), find_genre_id('Punk')),
+       (find_project_id('Brother Be Wise'), find_genre_id('R&B')),
+       (find_project_id('Brother Be Wise'), find_genre_id('Funk')),
+       (find_project_id('Brother Be Wise'), find_genre_id('Soul'));
 
+truncate artist_writes_project;
 insert into artist_writes_project (project_id, artist_id)
 values (find_project_id('Broken by the Fix'), find_artist_id('ColorGrave')),
        (find_project_id('Reckless'), find_artist_id('Julie Cira & The Wake')),
@@ -132,8 +161,15 @@ values (find_project_id('Broken by the Fix'), find_artist_id('ColorGrave')),
        (find_project_id('Till You Run Out of Time'), find_artist_id('Groundlift')),
        (find_project_id('Heart of the Sun'), find_artist_id('Kid Wolf')),
        (find_project_id('Old Enough'), find_artist_id('The Water Cycle')),
-       (find_project_id('a tale from tomorrow'), find_artist_id('Sweeps'));
+       (find_project_id('a tale from tomorrow'), find_artist_id('Sweeps')),
+       (find_project_id('Sugar'), find_artist_id('Gentle Temper')),
+       (find_project_id('Your Book'), find_artist_id('Red Mill')),
+       (find_project_id('the seams'), find_artist_id('Maggie Whitlock')),
+       (find_project_id('Able Days EP'), find_artist_id('Able Days')),
+       (find_project_id('Take Care'), find_artist_id('Mint Green')),
+       (find_project_id('Brother Be Wise'), find_artist_id('Harry Jay Smith and The Bling'));
 
+truncate `release`;
 insert into `release` (project_id, release_date)
 values (find_project_id('Broken by the Fix'), '2018-06-02'),
        (find_project_id('Reckless'), '2018-05-04'),
@@ -146,8 +182,15 @@ values (find_project_id('Broken by the Fix'), '2018-06-02'),
        (find_project_id('Till You Run Out of Time'), '2018-05-04'),
        (find_project_id('Heart of the Sun'), '2017-12-29'),
        (find_project_id('Old Enough'), '2017-12-15'),
-       (find_project_id('a tale from tomorrow'), '2017-12-01');
+       (find_project_id('a tale from tomorrow'), '2017-12-01'),
+       (find_project_id('Sugar'), '2017-11-10'),
+       (find_project_id('Your Book'), '2017-08-25'),
+       (find_project_id('the seams'), '2017-04-28'),
+       (find_project_id('Able Days EP'), '2017-04-14'),
+       (find_project_id('Take Care'), '2017-04-7'),
+       (find_project_id('Brother Be Wise'), '2017-02-03');
 
+truncate `link`;
 insert into link (type, url, release_id)
 values ('SoundCloud',
         'https://soundcloud.com/colorgrave/broken-by-the-fix?fbclid=IwAR0NYqqX-U1cwDFRhNS80pNNhpg2bN3fjOI_hYAJ5oIYMDs1-tav67GB0Os',
@@ -168,40 +211,65 @@ values ('SoundCloud',
        ('Spotify',
         'https://open.spotify.com/track/3WFZULbf7WD0r07D5oXKQM',
         find_release_id('Till You Run Out of Time')),
-       ('Spotify',
-        'https://open.spotify.com/track/3FDtd6SvIsg5Jk7XguQ3pS',
-        find_release_id('I Have No Time')),
+       ('Spotify', 'https://open.spotify.com/track/3FDtd6SvIsg5Jk7XguQ3pS', find_release_id('I Have No Time')),
        ('Apple Music',
         'https://itunes.apple.com/us/album/i-have-no-time-single/1375123700',
         find_release_id('I Have No Time')),
-       ('Tidal',
-        'https://tidal.com/track/87802225',
-        find_release_id('I Have No Time')),
+       ('Tidal', 'https://tidal.com/track/87802225', find_release_id('I Have No Time')),
        ('Pandora',
         'https://www.pandora.com/artist/james-burke/i-have-no-time-single/AL5tvgqrZ7xnVpw',
         find_release_id('I Have No Time')),
        ('Bandcamp',
         'https://maggierosenberg.bandcamp.com/track/angry-4evr-greenline-version',
         find_release_id('~*Angry 4evr*~')),
-       ('Bandcamp',
-        'https://kidwolf.bandcamp.com/album/heart-of-the-sun-single',
-        find_release_id('Heart of the Sun')),
-       ('YouTube',
-        'https://www.youtube.com/watch?v=jVHIXA_uNTw',
-        find_release_id('Old Enough')),
-       ('Spotify',
-        'https://open.spotify.com/track/5azFS5RgqOfDaZcA5oj25Q',
-        find_release_id('Old Enough')),
-       ('Bandcamp',
-        'https://thewatercyclemusic.bandcamp.com/track/old-enough-2',
-        find_release_id('Old Enough'));
+       ('Bandcamp', 'https://kidwolf.bandcamp.com/album/heart-of-the-sun-single', find_release_id('Heart of the Sun')),
+       ('YouTube', 'https://www.youtube.com/watch?v=jVHIXA_uNTw', find_release_id('Old Enough')),
+       ('Spotify', 'https://open.spotify.com/track/5azFS5RgqOfDaZcA5oj25Q', find_release_id('Old Enough')),
+       ('Bandcamp', 'https://thewatercyclemusic.bandcamp.com/track/old-enough-2', find_release_id('Old Enough')),
+       ('YouTube', 'https://www.youtube.com/watch?v=8nOE0I-f7ec', find_release_id('Sugar')),
+       ('Bandcamp', 'https://gentletemper.bandcamp.com/track/sugar', find_release_id('Sugar')),
+       ('Spotify', 'https://open.spotify.com/track/7HvhELsUJQkORjvUoDTeNz', find_release_id('Sugar')),
+       ('Google Play',
+        'https://play.google.com/music/preview/Tychqp5u6dlx2nd3o2uy5j6z5lu?play=1&u=0',
+        find_release_id('Sugar')),
+       ('Bandcamp', 'https://redmill.bandcamp.com/track/your-book-single', find_release_id('Your Book')),
+       ('Bandcamp', 'https://maggiewhitlock.bandcamp.com/album/the-seams-ep', find_release_id('the seams')),
+       ('Bandcamp', 'https://abledays.bandcamp.com/album/able-days-ep', find_release_id('Able Days EP')),
+       ('Bandcamp', 'https://abledays.bandcamp.com/album/able-days-ep', find_release_id('Able Days EP')),
+       ('Bandcamp', 'https://mintgreenma.bandcamp.com/track/take-care', find_release_id('Take Care')),
+       ('Spotify', 'https://open.spotify.com/track/64AgLnL40kvuVIGPuFSMC2', find_release_id('Take Care')),
+       ('Google Play',
+        'https://play.google.com/music/preview/T24kbtzdtwtakk56pt34fslgcey?play=1&u=0',
+        find_release_id('Take Care')),
+       ('Google Play',
+        'https://play.google.com/music/preview/To77xpupliwyucrcnhfzrw32wrm?play=1&u=0',
+        find_release_id('Brother Be Wise')),
+       ('YouTube', 'https://www.youtube.com/watch?v=tOcgmlVbV6A', find_release_id('Brother Be Wise')),
+       ('Amazon Music',
+        'https://www.amazon.com/Brother-Wise-Harry-Smith-Bling/dp/B06XDTZNH2',
+        find_release_id('Brother Be Wise')),
+       ('Bandcamp', 'https://harryjayblings.bandcamp.com/track/brother-be-wise', find_release_id('Brother Be Wise'));
 
+set foreign_key_checks = 1;
 
-
--- TODO: add GENRE to this query!
-select artist_name as 'artist', title, p.type as 'type', status, l.type as 'platform', url
+select artist_name as 'artist', title, genre_name, p.type as 'type', status, l.type as 'platform', url
 from artist_writes_project
        join project p using (project_id)
        join artist a using (artist_id)
        left join `release` r using (project_id)
-       left join link l using (release_id);
+       left join link l using (release_id)
+       left join genre_of_project using (project_id)
+       left join genre using (genre_id);
+
+
+select genre_name, count(genre_id) as num_releases
+from genre_of_project
+       join genre using (genre_id)
+       join `release` using (project_id)
+group by genre_name
+order by num_releases desc;
+
+
+select genre_name
+from genre_of_project
+       join genre using (genre_id);

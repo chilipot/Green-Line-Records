@@ -9,7 +9,6 @@ dept membership
 add more releases
 a&r member
 booking
-drop recording session & assigned recording session
 play count CURRENTLY ALL NULL
 drop attendance
 need to get info from other department heads about dept members
@@ -19,10 +18,10 @@ need to get info from other department heads about dept members
 -- project --
 DROP TABLE IF EXISTS project;
 CREATE TABLE project (
-  project_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
-  title VARCHAR(100) NOT NULL,
-  type ENUM('Single', 'EP', 'Album', 'Video', 'Other') NOT NULL,
-  status ENUM('Unconfirmed', 'Confirmed', 'In-Progress', 'Completed', 'On Hold', 'Cancelled')  NOT NULL,
+  project_id INT                                                                                   NOT NULL UNIQUE AUTO_INCREMENT,
+  title      VARCHAR(100)                                                                          NOT NULL,
+  type       ENUM ('Single', 'EP', 'Album', 'Video', 'Other')                                      NOT NULL,
+  status     ENUM ('Unconfirmed', 'Confirmed', 'In-Progress', 'Completed', 'On Hold', 'Cancelled') NOT NULL,
   PRIMARY KEY (project_id)
 );
 
@@ -37,11 +36,9 @@ CREATE TABLE genre (
 -- genre_of_project --
 DROP TABLE IF EXISTS genre_of_project;
 CREATE TABLE genre_of_project (
-  project_id INT NOT NULL UNIQUE,
-  genre_id   INT NOT NULL UNIQUE,
+  project_id INT NOT NULL,
+  genre_id   INT NOT NULL,
   PRIMARY KEY (project_id, genre_id),
-  INDEX genre_of_project_genre_idx (genre_id ASC),
-  INDEX genre_of_project_project_idx (project_id ASC),
   FOREIGN KEY (project_id)
   REFERENCES project (project_id),
   FOREIGN KEY (genre_id)
@@ -51,11 +48,10 @@ CREATE TABLE genre_of_project (
 -- member --
 DROP TABLE IF EXISTS club_member;
 CREATE TABLE club_member (
-  member_id                 INT         NOT NULL UNIQUE AUTO_INCREMENT,
-  email                     VARCHAR(50) NULL UNIQUE,
-  lastname                  VARCHAR(50) NOT NULL,
-  firstname                 VARCHAR(50) NOT NULL,
-  general_meetings_attended INT         NOT NULL        DEFAULT 0,
+  member_id INT         NOT NULL UNIQUE AUTO_INCREMENT,
+  email     VARCHAR(50) NULL UNIQUE,
+  lastname  VARCHAR(50) NOT NULL,
+  firstname VARCHAR(50) NOT NULL,
   PRIMARY KEY (member_id)
 );
 
@@ -120,32 +116,6 @@ CREATE TABLE project_assignment (
   REFERENCES project (project_id),
   FOREIGN KEY (engineer_id)
   REFERENCES engineer (engineer_id)
-);
-
--- recording_session --
-DROP TABLE IF EXISTS recording_session;
-CREATE TABLE recording_session (
-  recording_session_id INT      NOT NULL UNIQUE AUTO_INCREMENT,
-  project_id           INT      NOT NULL,
-  date                 DATETIME NOT NULL,
-  PRIMARY KEY (recording_session_id, project_id),
-  INDEX recording_session_project_idx (project_id ASC),
-  FOREIGN KEY (project_id)
-  REFERENCES project (project_id)
-);
-
--- assigned_recording_session --
-DROP TABLE IF EXISTS assigned_recording_session;
-CREATE TABLE assigned_recording_session (
-  engineer_id          INT NOT NULL,
-  recording_session_id INT NOT NULL,
-  PRIMARY KEY (engineer_id, recording_session_id),
-  INDEX assigned_recording_session_recording_session_idx (recording_session_id ASC),
-  INDEX assigned_recording_session_engineer_idx (engineer_id ASC),
-  FOREIGN KEY (engineer_id)
-  REFERENCES engineer (engineer_id),
-  FOREIGN KEY (recording_session_id)
-  REFERENCES recording_session (recording_session_id)
 );
 
 -- location --
@@ -218,7 +188,7 @@ DROP TABLE IF EXISTS `release`;
 CREATE TABLE `release` (
   release_id   INT  NOT NULL UNIQUE AUTO_INCREMENT,
   project_id   INT  NOT NULL,
-  plays        INT  NOT NULL DEFAULT 0,
+  plays        INT  NOT NULL        DEFAULT 0,
   release_date DATE NOT NULL,
   PRIMARY KEY (release_id),
   INDEX release_project_idx (project_id ASC),
@@ -241,8 +211,8 @@ CREATE TABLE department (
 -- department_membership --
 DROP TABLE IF EXISTS department_membership;
 CREATE TABLE department_membership (
-  member_id              INT NOT NULL,
-  department_id          INT NOT NULL,
+  member_id     INT NOT NULL,
+  department_id INT NOT NULL,
   PRIMARY KEY (member_id, department_id),
   INDEX department_membership_department_idx (department_id ASC),
   INDEX department_membership_club_member_idx (member_id ASC),
@@ -267,10 +237,10 @@ CREATE TABLE eboard_member (
 -- link --
 DROP TABLE IF EXISTS link;
 CREATE TABLE link (
-  type       ENUM ('Bandcamp', 'Soundcloud', 'Spotify', 'Apple Music', 'Tidal', 'Pandora', 'YouTube', 'Other') NOT NULL,
-  url        VARCHAR(300)                                              NOT NULL,
-  link_id    INT                                                       NOT NULL AUTO_INCREMENT,
-  release_id INT                                                       NOT NULL,
+  type       ENUM ('Bandcamp', 'Soundcloud', 'Spotify', 'Apple Music', 'Tidal', 'Pandora', 'YouTube', 'Google Play', 'Amazon Music', 'Other') NOT NULL,
+  url        VARCHAR(300)                                                                                                                     NOT NULL,
+  link_id    INT                                                                                                                              NOT NULL AUTO_INCREMENT,
+  release_id INT                                                                                                                              NOT NULL,
   PRIMARY KEY (link_id),
   INDEX fk_Link_Release1_idx (release_id ASC),
   FOREIGN KEY (release_id)
