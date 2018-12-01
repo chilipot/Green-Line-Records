@@ -5,14 +5,14 @@ USE green_line_records;
 
 /** TODO:
 dept membership
-events --> 15 done for now will continue to add more
+events --> will continue to add more
 genre of project
 a&r member
 booking
-MAYBE drop recording session & assigned recording session?
+MAYBE drop recording session & assigned recording session? ???
 play count CURRENTLY ALL NULL
-general meetings attended ? currently all 0
 need to get info from other department heads about dept members
+removed attendance from dept membership
  */
 
 -- project --
@@ -242,7 +242,6 @@ DROP TABLE IF EXISTS department_membership;
 CREATE TABLE department_membership (
   member_id              INT NOT NULL,
   department_id          INT NOT NULL,
-  dept_meetings_attended INT NOT NULL DEFAULT 0,
   PRIMARY KEY (member_id, department_id),
   INDEX department_membership_department_idx (department_id ASC),
   INDEX department_membership_club_member_idx (member_id ASC),
