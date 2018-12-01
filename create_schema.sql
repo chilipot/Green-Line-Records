@@ -4,9 +4,8 @@ CREATE DATABASE green_line_records;
 USE green_line_records;
 
 /** TODO:
-engineer project assignment
 dept membership
-events
+events --> 15 done for now will continue to add more
 genre of project
 a&r member
 booking
@@ -14,7 +13,6 @@ MAYBE drop recording session & assigned recording session?
 play count CURRENTLY ALL NULL
 general meetings attended ? currently all 0
 need to get info from other department heads about dept members
-
  */
 
 -- project --
@@ -181,6 +179,7 @@ DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   event_id    INT                            NOT NULL UNIQUE AUTO_INCREMENT,
   date        DATETIME                       NOT NULL,
+  title       VARCHAR(100)                   NOT NULL,
   description VARCHAR(700)                   NULL,
   turnout     ENUM ('Low', 'Medium', 'High') NULL,
   PRIMARY KEY (event_id)
