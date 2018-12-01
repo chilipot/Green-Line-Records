@@ -4,15 +4,16 @@ CREATE DATABASE green_line_records;
 USE green_line_records;
 
 /** TODO:
+engineer project assignment
 dept membership
-events --> 15 done for now will continue to add more
-genre of project
+add more releases
 a&r member
 booking
-MAYBE drop recording session & assigned recording session?
+drop recording session & assigned recording session
 play count CURRENTLY ALL NULL
-general meetings attended ? currently all 0
+drop attendance
 need to get info from other department heads about dept members
+
  */
 
 -- project --
@@ -242,7 +243,6 @@ DROP TABLE IF EXISTS department_membership;
 CREATE TABLE department_membership (
   member_id              INT NOT NULL,
   department_id          INT NOT NULL,
-  dept_meetings_attended INT NOT NULL DEFAULT 0,
   PRIMARY KEY (member_id, department_id),
   INDEX department_membership_department_idx (department_id ASC),
   INDEX department_membership_club_member_idx (member_id ASC),
@@ -267,7 +267,7 @@ CREATE TABLE eboard_member (
 -- link --
 DROP TABLE IF EXISTS link;
 CREATE TABLE link (
-  type       ENUM ('Bandcamp', 'Soundcloud', 'Spotify', 'Apple Music', 'Tidal', 'Pandora', 'Other') NOT NULL,
+  type       ENUM ('Bandcamp', 'Soundcloud', 'Spotify', 'Apple Music', 'Tidal', 'Pandora', 'YouTube', 'Other') NOT NULL,
   url        VARCHAR(300)                                              NOT NULL,
   link_id    INT                                                       NOT NULL AUTO_INCREMENT,
   release_id INT                                                       NOT NULL,
