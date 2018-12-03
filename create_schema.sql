@@ -4,15 +4,12 @@ CREATE DATABASE green_line_records;
 USE green_line_records;
 
 /** TODO:
-engineer project assignment
 dept membership
 add more releases
 a&r member
 booking
 play count CURRENTLY ALL NULL
-drop attendance
 need to get info from other department heads about dept members
-
  */
 
 -- project --
