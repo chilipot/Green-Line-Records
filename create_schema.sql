@@ -32,7 +32,6 @@ CREATE TABLE project (
   title      VARCHAR(100)                                                                          NOT NULL,
   type       ENUM ('Single', 'EP', 'Album', 'Video', 'Other')                                      NOT NULL,
   status     ENUM ('Unconfirmed', 'Confirmed', 'In-Progress', 'Completed', 'On Hold', 'Cancelled') NOT NULL,
-  start_date DATE                                                                                  NULL,
   PRIMARY KEY (project_id)
 );
 
