@@ -112,4 +112,7 @@ values ('Quarrels'),
        ('James Burke'),
        ('Maggie Rosenberg'),
        ('Groundlift'),
-       ('The Water Cycle');
+       ('The Water Cycle'),
+       ('Mint Green'),
+       ('Red Mill'),
+       ('Gentle Temper');

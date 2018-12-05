@@ -1,7 +1,5 @@
 use green_line_records;
 
-show tables;
-
 insert into club_member (email, lastname, firstname)
 values ('bollu.a@husky.neu.edu', 'Bollu', 'Akhil'),
        ('pasek.a@husky.neu.edu', 'Pasek', 'Aleksandra'),
@@ -25,7 +23,7 @@ values ('bollu.a@husky.neu.edu', 'Bollu', 'Akhil'),
        ('burke.emily@husky.neu.edu', 'Burke', 'Emily'),
        ('farman.e@husky.neu.edu', 'Farman', 'Emma'),
        ('fray.e@husky.neu.edu', 'Fray', 'Erynn'),
-       ('lee.euv@husky.neu.edu', 'Lee', 'Euvin Daniel'),
+       ('lee.euv@husky.neu.edu', 'Lee', 'Euvin'),
        ('barletta.g@husky.neu.edu', 'Barletta', 'Gianna'),
        ('leo.g@husky.neu.edu', 'Leo', 'Greg'),
        ('bates.h@husky.neu.edu', 'Bates', 'Hannah'),
@@ -76,8 +74,14 @@ values ('bollu.a@husky.neu.edu', 'Bollu', 'Akhil'),
        ('mulligan.d@husky.neu.edu', 'Mulligan', 'Dan'),
        ('lambrecht.w@husky.neu.edu', 'Lambrecht', 'Walker'),
        ('tran.a@husky.neu.edu', 'Tran', 'Alex'),
-       ('andre.b@husky.neu.edu', 'Andre', 'Ben');
-
+       ('andre.b@husky.neu.edu', 'Andre', 'Ben'),
+       ('williams.kai@husky.neu.edu', 'Williams', 'Kailey'),
+       ('thompson.col@husky.neu.edu', 'Thompson', 'Colin'),
+       ('evans.mary@husky.neu.edu', 'Evans', 'Mary'),
+       ('ernst.al@husky.neu.edu', 'Ernst', 'Alexander'),
+       ('jung.st@husky.neu.edu', 'Jung', 'Stephanie'),
+       ('timsit.o@husky.neu.edu', 'Timsit', 'Oriana'),
+       ('canary.m@husky.neu.edu', 'Canary', 'Matt');
 
 insert into club_member (lastname, firstname)
 values ('Chow', 'Aaron'),
@@ -166,7 +170,16 @@ values ('Chow', 'Aaron'),
        ('Bonner-Desravines', 'Cliff'),
        ('Gurland', 'Allie'),
        ('Robinson', 'Nick'),
-       ('Ward', 'Thomas');
+       ('Ward', 'Thomas'),
+       ('Masterson', 'Lindsay'),
+       ('Youm', 'Ibra'),
+       ('Pires', 'Shannon'),
+       ('Richards', 'Kathryn'),
+       ('Markow', 'Elizabeth'),
+       ('Arko', 'Kasey'),
+       ('Lee', 'Darren'),
+       ('Eagle', 'Delaney'),
+       ('Dobine', 'Cheyenne');
 
 
 drop function if exists find_member_id;
@@ -179,11 +192,8 @@ create function find_member_id
   )
   returns int
   BEGIN
-    return (select member_id
-            from club_member
-            where firstname like first_name
-              and lastname like last_name
-            limit 1);
+    return (select member_id from club_member where firstname like first_name
+                                                and lastname like last_name limit 1);
   END //
 DELIMITER ;
 
@@ -197,7 +207,6 @@ values ('Head of Marketing', find_member_id('Gianna', 'Barletta')),
        ('President', find_member_id('William', 'Kast')),
        ('Vice President', find_member_id('Cairo', 'Marques-Neto')),
        ('Operations Manager', find_member_id('Rachel', 'Lipson'));
-
 
 insert into engineer (member_id, `level`)
 values (find_member_id('Zac', 'Kerwin'), 'Lead'),
@@ -313,7 +322,7 @@ values (find_member_id('Zac', 'Kerwin'), 'Lead'),
        (find_member_id('Joey', 'Molloy'), 'EIT');
 
 
-insert into ar_member(club_member_id)
+insert into ar_member (club_member_id)
 values (find_member_id('Sagar', 'Kumar')),
        (find_member_id('Jonathan', 'Prus')),
        (find_member_id('Candace', 'Reyes')),
@@ -322,7 +331,16 @@ values (find_member_id('Sagar', 'Kumar')),
        (find_member_id('Ryan', 'Stelmach')),
        (find_member_id('Veronica', 'Bettio')),
        (find_member_id('Aidan', 'Fox')),
-       (find_member_id('Jack', 'Kerwin'));
+       (find_member_id('Jack', 'Kerwin')),
+       (find_member_id('Lindsay', 'Masterson')),
+       (find_member_id('James', 'Barden')),
+       (find_member_id('Elliot', 'Efrat')),
+       (find_member_id('Luke', 'Osenberg')),
+       (find_member_id('Pavan', 'Hirpara')),
+       (find_member_id('Ryan', 'Busse')),
+       (find_member_id('Joey', 'Molloy')),
+       (find_member_id('Ibra', 'Youm')),
+       (find_member_id('Alexis', 'Hamner'));
 
 
 

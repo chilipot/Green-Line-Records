@@ -15,7 +15,7 @@ values ('Mike Morrissey single', 'Single', 'On Hold'),
        ('Avi Jacob single', 'Single', 'Confirmed'),
        ('Brennan single', 'Single', 'Confirmed'),
        ('Atlas Lab single', 'Single', 'Completed'),
-       ('3 songs by Du Vide', 'EP', 'Completed'),
+       ('3-song EP by Du Vide', 'EP', 'Completed'),
        ('Maggie Whitlock single', 'Single', 'Completed'),
        ('Grace & The Carnivore EP', 'EP', 'Completed'),
        ('Grey Season single', 'Single', 'Completed'),
@@ -37,7 +37,7 @@ values ('Mike Morrissey single', 'Single', 'On Hold'),
        ('Bedbug single', 'Single', 'Completed'),
        ('Sam Haiman Band single', 'Single', 'Completed'),
        ('Migrant Motel single', 'Single', 'Cancelled'),
-       ('Mint Green single', 'Single', 'Completed'),
+       ('Take Care', 'Single', 'Completed'),
        ('Able Days EP', 'EP', 'Completed'),
        ('the seams', 'EP', 'Completed'),
        ('Your Book', 'Single', 'Completed'),
@@ -106,11 +106,29 @@ drop function if exists find_genre_id;
 DELIMITER //
 create function find_genre_id
   (
-    genre varchar(50)
+    name varchar(50)
   )
   returns int
   BEGIN
-    return (select genre_id from genre where genre_name like genre limit 1);
+    return (select genre_id from genre where genre_name like name limit 1);
+  END //
+DELIMITER ;
+
+drop function if exists find_engineer_id;
+DELIMITER //
+create function find_engineer_id
+  (
+    first varchar(50),
+    last  varchar(50)
+  )
+  returns int
+  BEGIN
+    return (select engineer_id
+            from engineer
+                   join club_member using (member_id)
+            where firstname like first
+              and lastname like last
+            limit 1);
   END //
 DELIMITER ;
 
@@ -135,7 +153,7 @@ values (find_project_id('Broken by the Fix'), find_genre_id('Electronic')),
        (find_project_id('Old Enough'), find_genre_id('Indie')),
        (find_project_id('Old Enough'), find_genre_id('Rock')),
        (find_project_id('a tale from tomorrow'), find_genre_id('Electronic')),
-       (find_project_id('a tale from tomorrow'), find_genre_id('Rap')),
+       (find_project_id('a tale from tomorrow'), find_genre_id('Hip-hop')),
        (find_project_id('Sugar'), find_genre_id('Folk')),
        (find_project_id('Your Book'), find_genre_id('Rock')),
        (find_project_id('the seams'), find_genre_id('Singer-songwriter')),
@@ -168,6 +186,7 @@ values (find_project_id('Broken by the Fix'), find_artist_id('ColorGrave')),
        (find_project_id('Able Days EP'), find_artist_id('Able Days')),
        (find_project_id('Take Care'), find_artist_id('Mint Green')),
        (find_project_id('Brother Be Wise'), find_artist_id('Harry Jay Smith and The Bling'));
+
 
 truncate `release`;
 insert into `release` (project_id, release_date)
@@ -235,7 +254,6 @@ values ('SoundCloud',
        ('Bandcamp', 'https://redmill.bandcamp.com/track/your-book-single', find_release_id('Your Book')),
        ('Bandcamp', 'https://maggiewhitlock.bandcamp.com/album/the-seams-ep', find_release_id('the seams')),
        ('Bandcamp', 'https://abledays.bandcamp.com/album/able-days-ep', find_release_id('Able Days EP')),
-       ('Bandcamp', 'https://abledays.bandcamp.com/album/able-days-ep', find_release_id('Able Days EP')),
        ('Bandcamp', 'https://mintgreenma.bandcamp.com/track/take-care', find_release_id('Take Care')),
        ('Spotify', 'https://open.spotify.com/track/64AgLnL40kvuVIGPuFSMC2', find_release_id('Take Care')),
        ('Google Play',
@@ -248,28 +266,112 @@ values ('SoundCloud',
        ('Amazon Music',
         'https://www.amazon.com/Brother-Wise-Harry-Smith-Bling/dp/B06XDTZNH2',
         find_release_id('Brother Be Wise')),
-       ('Bandcamp', 'https://harryjayblings.bandcamp.com/track/brother-be-wise', find_release_id('Brother Be Wise'));
+       ('Bandcamp', 'https://harryjayblings.bandcamp.com/track/brother-be-wise', find_release_id('Brother Be Wise')),
+       ('SoundCloud',
+        'https://soundcloud.com/sweepsbeats/sweeps-a-tale-from-tomorrow',
+        find_release_id('a tale from tomorrow'));
 
-set foreign_key_checks = 1;
+truncate project_assignment;
+insert into project_assignment (project_id, engineer_id)
+values (find_project_id('Able Days EP'), find_engineer_id('Paul', 'Kouris'));
 
-select artist_name as 'artist', title, genre_name, p.type as 'type', status, l.type as 'platform', url
+
+-- TODO: add a column concating all genre names for each release
+select artist_name as 'artist', title, p.type as 'type', status, l.type as 'platform', url
 from artist_writes_project
        join project p using (project_id)
        join artist a using (artist_id)
        left join `release` r using (project_id)
-       left join link l using (release_id)
-       left join genre_of_project using (project_id)
-       left join genre using (genre_id);
+       left join link l using (release_id);
 
-
-select genre_name, count(genre_id) as num_releases
-from genre_of_project
-       join genre using (genre_id)
-       join `release` using (project_id)
+-- how many releases of each genre?
+select genre_name, count(release_id) as num_releases
+from genre
+       left join genre_of_project using (genre_id)
+       left join `release` using (project_id)
 group by genre_name
 order by num_releases desc;
 
+-- genres with most popular releases
+select title, group_concat(genre_name) as 'genres', plays
+from `release`
+       join project using (project_id)
+       join genre_of_project using (project_id)
+       join genre using (genre_id)
+group by title
+order by plays desc;
 
-select genre_name
-from genre_of_project
-       join genre using (genre_id);
+-- most popular genres?
+select genre_name as 'genre',
+       avg(plays) as 'average_play_count'
+from `release`
+       join project using (project_id)
+       join genre_of_project using (project_id)
+       join genre using (genre_id)
+group by genre_name
+order by avg(plays) desc
+limit 10;
+
+-- most popular engineers?
+select concat(firstname, ' ', lastname) as 'lead_engineer',
+       avg(plays)                       as 'average_play_count'
+from `release`
+       join project using (project_id)
+       join project_assignment using (project_id)
+       join engineer using (engineer_id)
+       join club_member using (member_id)
+where level = 'Lead'
+group by concat(firstname, ' ', lastname)
+order by avg(plays) desc
+limit 10;
+
+-- most popular releases?
+select plays                            as 'play_count',
+       artist_name                      as 'artist',
+       title                            as 'release',
+       group_concat(genre_name)         as 'genres',
+       concat(firstname, ' ', lastname) as 'lead_engineer'
+from `release`
+       join project using (project_id)
+       join artist_writes_project using (project_id)
+       join artist using (artist_id)
+       left join genre_of_project using (project_id)
+       left join genre using (genre_id)
+       left join project_assignment using (project_id)
+       left join engineer using (engineer_id)
+       left join club_member using (member_id)
+where level = 'Lead'
+group by title
+order by plays desc
+limit 10;
+
+-- how many projects were released in the Spring 2017 semester?
+select count(release_id) as 'num_releases',
+       min(release_date) as 'first_release',
+       max(release_date) as 'last_release'
+from `release`
+where release_date >= '2017-01-01'
+       and release_date <= '2017-04-31';
+
+-- what projects released in the Fall 2017 semester?
+select release_date,
+       artist_name                       as 'artist',
+       title                             as 'release',
+       group_concat(distinct genre_name) as 'genres',
+       concat(firstname, ' ', lastname)  as 'lead_engineer',
+       group_concat(url)                 as 'links'
+from `release`
+       join project using (project_id)
+       join artist_writes_project using (project_id)
+       join artist using (artist_id)
+       left join genre_of_project using (project_id)
+       left join genre using (genre_id)
+       left join project_assignment using (project_id)
+       left join engineer using (engineer_id)
+       left join club_member using (member_id)
+       left join link using (release_id)
+where release_date >= '2017-09-01'
+  and release_date <= '2017-12-31'
+  and level = 'Lead'
+group by title
+order by release_date;

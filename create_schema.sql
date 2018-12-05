@@ -4,15 +4,25 @@ CREATE DATABASE green_line_records;
 USE green_line_records;
 
 /** TODO:
-engineer project assignment
-dept membership
+project assignment
+dept membership for video & events
 add more releases
-a&r member
 booking
 play count CURRENTLY ALL NULL
-drop attendance
-need to get info from other department heads about dept members
+(remove plays as an attribute of releases for the class submission)
+add contributions
+login credentials (not a priority for class submission)
+organize sql files
+find a way to translate foreign keys and many-to-many tables into user-friendly data in web app
 
+PROCEDURES:
+scrape and update play counts
+set active members based on who has made a contribution this semester?
+update voting privileges based on projects/contributions
+update engineer roles/send email to head of recording
+
+PROBLEMS:
+looking for the lead/assistant/EIT from a certain project, since the ranks of those who worked on the project may have changed since the recording
  */
 
 -- project --
@@ -22,6 +32,7 @@ CREATE TABLE project (
   title      VARCHAR(100)                                                                          NOT NULL,
   type       ENUM ('Single', 'EP', 'Album', 'Video', 'Other')                                      NOT NULL,
   status     ENUM ('Unconfirmed', 'Confirmed', 'In-Progress', 'Completed', 'On Hold', 'Cancelled') NOT NULL,
+  start_date DATE                                                                                  NULL,
   PRIMARY KEY (project_id)
 );
 
@@ -246,4 +257,22 @@ CREATE TABLE link (
   FOREIGN KEY (release_id)
   REFERENCES `release` (release_id)
 );
+
+-- contribution --
+DROP TABLE IF EXISTS contribution;
+CREATE TABLE contribution (
+  contribution_id INT          NOT NULL UNIQUE AUTO_INCREMENT,
+  date            DATE         NOT NULL,
+  description     VARCHAR(300) NOT NULL,
+  member_id       INT          NOT NULL,
+  department_id   INT,
+  PRIMARY KEY (contribution_id),
+  INDEX contribution_club_member_idx (member_id ASC),
+  INDEX contribution_department_idx (department_id ASC),
+  FOREIGN KEY (department_id)
+  REFERENCES department (department_id),
+  FOREIGN KEY (member_id)
+  REFERENCES club_member (member_id)
+);
+
 
