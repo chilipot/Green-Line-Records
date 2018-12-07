@@ -174,4 +174,8 @@ insert into `event`(date, title, description, turnout) values
     Hosted at Afterhours in the Curry Student Center at Northeastern University. Free show
     available to Northeastern students only. Doors open at 6:30.', 'High');
 
-
+insert into `event`(date, title, description, turnout)
+value ('2018-12-06 19:00:00', 'GLR Presents: Empress Of, Photocomfort', 'Live show
+     presented by Green Line Records featuring artists Empress Of and Photocomfort.
+     Hosted at Afterhours in the Curry Student Center at Northeastern University. Free show
+     available to Northeastern students and +1 only. Doors open at 6:30.', 'Low');
