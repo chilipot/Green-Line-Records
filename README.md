@@ -17,10 +17,10 @@ This API is allowed to be used by any member of the public for non-commercial us
 These are general SQL queries to get data access from each table in the database.
 
 <h4>Live Sessions</h4>
-<pre><code>https://&lt;host&gt;/live_session <b>=></b> SELECT * FROM live_session;</code></pre>
+<pre><code>https://&lt;host&gt;/live_recording <b>=></b> SELECT * FROM live_recording;</code></pre>
 Returns the table rows without any special formating or additional data.
 
-<pre><code>https://&lt;host&gt;/live_session/id/{live_session_id} <b>=></b> SELECT * FROM live_session where live_session_id={live_session_id};</code></pre>
+<pre><code>https://&lt;host&gt;/live_recording/id/{live_recording_id} <b>=></b> SELECT * FROM live_recording where live_recording_id={live_recording_id};</code></pre>
 Returns the row correspoding to the given PRIMARY_KEY.
 
 <h3>Advanced Queries</h3>

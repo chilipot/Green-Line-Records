@@ -13,32 +13,30 @@ USE green_line_records;
 -member_designs_something? ~~date of completed design
 -(ar_rep attribute of artist/project) ~~release date
 
-project assignment
 dept membership for video & events
 add more releases
-booking
-project ar_reps
 projects need a "date added"
-play count CURRENTLY ALL NULL
-add 'scheduled' to project status enum
-(remove plays as an attribute of releases for the class submission)
-add contributions
+populate contributions
 login credentials (not a priority for class submission)
-organize sql files
 find a way to translate foreign keys and many-to-many tables into user-friendly data in web app
 
 PROCEDURES:
-scrape and update play counts
 set active members based on who has made a contribution this semester?
 update voting privileges based on projects/contributions
 update engineer roles/send email to head of recording
 stuff from presentation that's not here
 
 TRIGGERS?:
-when a release is added, update project status
+when a release is added, update project status to 'released'
 
-PROBLEMS:
-looking for the lead/assistant/EIT from a certain project, since the ranks of those who worked on the project may have changed since the recording
+BEFORE SUBMISSION:
+set foreign key checks = 1
+organize sql files
+resolve all TODOs
+remove comments
+
+FUTURE:
+add plays/reach
 */
 
 -- club_member --
@@ -54,11 +52,12 @@ CREATE TABLE club_member (
 -- project --
 DROP TABLE IF EXISTS project;
 CREATE TABLE project (
-  project_id INT                                                                                               NOT NULL UNIQUE AUTO_INCREMENT,
-  title      VARCHAR(100)                                                                                      NOT NULL,
-  type       ENUM ('Single', 'EP', 'Album', 'Video', 'Other')                                                  NOT NULL,
-  status     ENUM ('Unconfirmed', 'Confirmed', 'In-Progress', 'Completed', 'On Hold', 'Cancelled', 'Released') NOT NULL,
-  rep_id     INT                                                                                               NULL,
+  project_id INT                                                                   NOT NULL UNIQUE AUTO_INCREMENT,
+  title      VARCHAR(100)                                                          NOT NULL,
+  type       ENUM ('Single', 'EP', 'Album', 'Video', 'Other')                      NOT NULL,
+  status     ENUM ('Unconfirmed', 'Confirmed', 'Scheduled',
+                   'In-Progress', 'Completed', 'On Hold', 'Cancelled', 'Released') NOT NULL,
+  rep_id     INT                                                                   NULL,
   PRIMARY KEY (project_id),
   INDEX project_rep_idx (rep_id ASC),
   FOREIGN KEY (rep_id)
@@ -159,7 +158,8 @@ CREATE TABLE recording_assignment (
 );
 
 ALTER TABLE recording_assignment
-    ADD COLUMN role ENUM ('Assistant', 'Lead', 'EIT') NOT NULL AFTER engineer_id;
+  ADD COLUMN role ENUM ('Assistant', 'Lead', 'EIT') NOT NULL
+  AFTER engineer_id;
 
 -- location --
 DROP TABLE IF EXISTS location;
@@ -174,14 +174,14 @@ CREATE TABLE location (
 -- live_recording --
 DROP TABLE IF EXISTS live_recording;
 CREATE TABLE live_recording (
-  live_session_id INT          NOT NULL UNIQUE AUTO_INCREMENT,
-  show_name       VARCHAR(150) NOT NULL,
-  date            DATE         NOT NULL,
-  start_time      TIME         NOT NULL,
-  end_time        TIME         NULL,
-  location_id     INT          NOT NULL,
-  PRIMARY KEY (live_session_id),
-  INDEX live_recording_idx (live_session_id ASC),
+  live_recording_id INT          NOT NULL UNIQUE AUTO_INCREMENT,
+  show_name         VARCHAR(150) NOT NULL,
+  date              DATE         NOT NULL,
+  start_time        TIME         NOT NULL,
+  end_time          TIME         NULL,
+  location_id       INT          NOT NULL,
+  PRIMARY KEY (live_recording_id),
+  INDEX live_recording_idx (live_recording_id ASC),
   INDEX live_recording_name_idx (show_name ASC),
   INDEX live_recording_date_idx (date DESC),
   FOREIGN KEY (location_id)
@@ -213,15 +213,15 @@ CREATE TABLE booking (
   REFERENCES artist (artist_id)
 );
 
--- assigned_live_session --
-DROP TABLE IF EXISTS assigned_live_session;
-CREATE TABLE assigned_live_session (
-  live_session_id INT NOT NULL,
-  engineer_id     INT NULL,
-  INDEX assigned_live_session_engineer_idx (engineer_id ASC),
-  INDEX assigned_live_session_live_session_idx (live_session_id ASC),
-  FOREIGN KEY (live_session_id)
-  REFERENCES live_recording (live_session_id),
+-- assigned_live_recording --
+DROP TABLE IF EXISTS assigned_live_recording;
+CREATE TABLE assigned_live_recording (
+  live_recording_id INT NOT NULL,
+  engineer_id       INT NULL,
+  INDEX assigned_live_recording_engineer_idx (engineer_id ASC),
+  INDEX assigned_live_recording_live_recording_idx (live_recording_id ASC),
+  FOREIGN KEY (live_recording_id)
+  REFERENCES live_recording (live_recording_id),
   FOREIGN KEY (engineer_id)
   REFERENCES engineer (engineer_id)
 );
@@ -231,7 +231,6 @@ DROP TABLE IF EXISTS `release`;
 CREATE TABLE `release` (
   release_id   INT  NOT NULL UNIQUE AUTO_INCREMENT,
   project_id   INT  NOT NULL,
-  plays        INT  NOT NULL        DEFAULT 0,
   release_date DATE NOT NULL,
   PRIMARY KEY (release_id),
   INDEX release_project_idx (project_id ASC),
@@ -245,7 +244,7 @@ CREATE TABLE department (
   department_id INT         NOT NULL UNIQUE AUTO_INCREMENT,
   dept_head_id  INT         NOT NULL,
   title         VARCHAR(30) NULL,
-  PRIMARY KEY (department_id, dept_head_id),
+  PRIMARY KEY (department_id),
   INDEX department_club_member_idx (dept_head_id ASC),
   FOREIGN KEY (dept_head_id)
   REFERENCES club_member (member_id)
@@ -280,10 +279,11 @@ CREATE TABLE eboard_member (
 -- link --
 DROP TABLE IF EXISTS link;
 CREATE TABLE link (
-  type       ENUM ('Bandcamp', 'Soundcloud', 'Spotify', 'Apple Music', 'Tidal', 'Pandora', 'YouTube', 'Google Play', 'Amazon Music', 'Other') NOT NULL,
-  url        VARCHAR(300)                                                                                                                     NOT NULL,
-  link_id    INT                                                                                                                              NOT NULL AUTO_INCREMENT,
-  release_id INT                                                                                                                              NOT NULL,
+  type       ENUM ('Bandcamp', 'Soundcloud', 'Spotify', 'Apple Music', 'Tidal',
+                   'Pandora', 'YouTube', 'Google Play', 'Amazon Music', 'Other') NOT NULL,
+  url        VARCHAR(300)                                                        NOT NULL,
+  link_id    INT                                                                 NOT NULL AUTO_INCREMENT,
+  release_id INT                                                                 NOT NULL,
   PRIMARY KEY (link_id),
   INDEX fk_Link_Release1_idx (release_id ASC),
   FOREIGN KEY (release_id)
