@@ -174,14 +174,14 @@ CREATE TABLE location (
 -- live_recording --
 DROP TABLE IF EXISTS live_recording;
 CREATE TABLE live_recording (
-  live_session_id INT          NOT NULL UNIQUE AUTO_INCREMENT,
+  live_recording_id INT          NOT NULL UNIQUE AUTO_INCREMENT,
   show_name       VARCHAR(150) NOT NULL,
   date            DATE         NOT NULL,
   start_time      TIME         NOT NULL,
   end_time        TIME         NULL,
   location_id     INT          NOT NULL,
-  PRIMARY KEY (live_session_id),
-  INDEX live_recording_idx (live_session_id ASC),
+  PRIMARY KEY (live_recording_id),
+  INDEX live_recording_idx (live_recording_id ASC),
   INDEX live_recording_name_idx (show_name ASC),
   INDEX live_recording_date_idx (date DESC),
   FOREIGN KEY (location_id)
@@ -213,15 +213,15 @@ CREATE TABLE booking (
   REFERENCES artist (artist_id)
 );
 
--- assigned_live_session --
-DROP TABLE IF EXISTS assigned_live_session;
-CREATE TABLE assigned_live_session (
-  live_session_id INT NOT NULL,
+-- assigned_live_recording --
+DROP TABLE IF EXISTS assigned_live_recording;
+CREATE TABLE assigned_live_recording (
+  live_recording_id INT NOT NULL,
   engineer_id     INT NULL,
-  INDEX assigned_live_session_engineer_idx (engineer_id ASC),
-  INDEX assigned_live_session_live_session_idx (live_session_id ASC),
-  FOREIGN KEY (live_session_id)
-  REFERENCES live_recording (live_session_id),
+  INDEX assigned_live_recording_engineer_idx (engineer_id ASC),
+  INDEX assigned_live_recording_live_recording_idx (live_recording_id ASC),
+  FOREIGN KEY (live_recording_id)
+  REFERENCES live_recording (live_recording_id),
   FOREIGN KEY (engineer_id)
   REFERENCES engineer (engineer_id)
 );
@@ -231,7 +231,6 @@ DROP TABLE IF EXISTS `release`;
 CREATE TABLE `release` (
   release_id   INT  NOT NULL UNIQUE AUTO_INCREMENT,
   project_id   INT  NOT NULL,
-  plays        INT  NOT NULL        DEFAULT 0,
   release_date DATE NOT NULL,
   PRIMARY KEY (release_id),
   INDEX release_project_idx (project_id ASC),
