@@ -17,7 +17,7 @@ var hideDrop = function(menu) {
 
 const tableParameters = {
   'location' : [],
-  'live_session' : [],
+  'live_recording' : [],
   'artist' : [],
   'member' : [],
 }

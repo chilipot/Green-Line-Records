@@ -5,7 +5,7 @@ var logger = require('morgan');
 // Query Routes
 var indexRouter = require('./routes/index');
 var locationsRouter = require('./routes/locations');
-var sessionRouter = require('./routes/live_sessions');
+var sessionRouter = require('./routes/live_recordings');
 var artistRouter = require('./routes/artists');
 var memberRouter = require('./routes/members');
 
@@ -35,7 +35,7 @@ app.use(express.static('public'));
 // Routes
 app.use('/', indexRouter);
 app.use('/location', locationsRouter);
-app.use('/live_session', sessionRouter);
+app.use('/live_recording', sessionRouter);
 app.use('/artist', artistRouter);
 app.use('/club_member', memberRouter);
 
