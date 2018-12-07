@@ -1,11 +1,5 @@
 USE green_line_records;
 
-SET FOREIGN_KEY_CHECKS = 0;
-
-TRUNCATE TABLE live_session;
-
-SET FOREIGN_KEY_CHECKS = 1;
-
 DROP function if exists find_live_session_id;
 
 DELIMITER //

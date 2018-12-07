@@ -181,6 +181,12 @@ values ('Chow', 'Aaron'),
        ('Eagle', 'Delaney'),
        ('Dobine', 'Cheyenne');
 
+insert into club_member (lastname, firstname)
+values ('Mike', 'Gentile');
+
+insert into engineer (member_id, `level`)
+values (find_member_id('Mike', 'Gentile'), 'Assistant');
+
 
 drop function if exists find_member_id;
 DELIMITER //
@@ -320,73 +326,3 @@ values (find_member_id('Zac', 'Kerwin'), 'Lead'),
        (find_member_id('Thomas', 'Ward'), 'EIT'),
        (find_member_id('Jaime', 'Gomez Diez'), 'EIT'),
        (find_member_id('Joey', 'Molloy'), 'EIT');
-
-
-insert into ar_member (club_member_id)
-values (find_member_id('Sagar', 'Kumar')),
-       (find_member_id('Jonathan', 'Prus')),
-       (find_member_id('Candace', 'Reyes')),
-       (find_member_id('Melanie', 'Senk')),
-       (find_member_id('Sebastian', 'De Arestegui')),
-       (find_member_id('Ryan', 'Stelmach')),
-       (find_member_id('Veronica', 'Bettio')),
-       (find_member_id('Aidan', 'Fox')),
-       (find_member_id('Jack', 'Kerwin')),
-       (find_member_id('Lindsay', 'Masterson')),
-       (find_member_id('James', 'Barden')),
-       (find_member_id('Elliot', 'Efrat')),
-       (find_member_id('Luke', 'Osenberg')),
-       (find_member_id('Pavan', 'Hirpara')),
-       (find_member_id('Ryan', 'Busse')),
-       (find_member_id('Joey', 'Molloy')),
-       (find_member_id('Ibra', 'Youm')),
-       (find_member_id('Alexis', 'Hamner'));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

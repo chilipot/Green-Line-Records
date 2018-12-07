@@ -30,7 +30,7 @@ create function find_engineer_id
   END //
 DELIMITER ;
 
-insert into project_assignment
+insert into recording_assignment
 values (find_project_id('Mike Morrissey single'), find_engineer_id('Zac', 'Kerwin')),
        (find_project_id('Mike Morrissey single'), find_engineer_id('Gabriel', 'Pino')),
        (find_project_id('Mike Morrissey single'), find_engineer_id('Ryan', 'Busse')),

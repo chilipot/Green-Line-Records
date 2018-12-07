@@ -24,10 +24,10 @@ values ('Marketing', find_head('Marketing')),
        ('Events', find_head('Events')),
        ('Video', find_head('Video'));
 
-insert into department_membership (member_id, department_id)
-    (select club_member_id, department_id
-     from ar_member join department
-     where title like 'Artists & Repertoire');
+# insert into department_membership (member_id, department_id)
+#     (select club_member_id, department_id
+#      from ar_member join department
+#      where title like 'Artists & Repertoire');
 
 insert into department_membership (member_id, department_id)
     (select member_id, department_id
@@ -55,4 +55,22 @@ values (find_member_id('Shannon', 'Pires'), 1),
        (find_member_id('Julia', 'Aguam'), 3),
        (find_member_id('Oriana', 'Timsit'), 3),
        (find_member_id('Elias', 'Karikas'), 3),
-       (find_member_id('Matt', 'Canary'), 3);
+       (find_member_id('Matt', 'Canary'), 3),
+       (find_member_id('Sagar', 'Kumar'), 2),
+       (find_member_id('Jonathan', 'Prus'), 2),
+       (find_member_id('Candace', 'Reyes'), 2),
+       (find_member_id('Melanie', 'Senk'), 2),
+       (find_member_id('Sebastian', 'De Arestegui'), 2),
+       (find_member_id('Ryan', 'Stelmach'), 2),
+       (find_member_id('Veronica', 'Bettio'), 2),
+       (find_member_id('Aidan', 'Fox'), 2),
+       (find_member_id('Jack', 'Kerwin'), 2),
+       (find_member_id('Lindsay', 'Masterson'), 2),
+       (find_member_id('James', 'Barden'), 2),
+       (find_member_id('Elliot', 'Efrat'), 2),
+       (find_member_id('Luke', 'Osenberg'), 2),
+       (find_member_id('Pavan', 'Hirpara'), 2),
+       (find_member_id('Ryan', 'Busse'), 2),
+       (find_member_id('Joey', 'Molloy'), 2),
+       (find_member_id('Ibra', 'Youm'), 2),
+       (find_member_id('Alexis', 'Hamner'), 2);

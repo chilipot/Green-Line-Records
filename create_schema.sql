@@ -4,11 +4,23 @@ CREATE DATABASE green_line_records;
 USE green_line_records;
 
 /** TODO:
+
+*instead of contributions table, we could break contributions into separate tables:
+-member_produces_video ~~release date of video
+-member_works_event ~~event date
+-recording_assignment ~~date of master completion
+-member_publicizes_artist ~~release date
+-member_designs_something? ~~date of completed design
+-(ar_rep attribute of artist/project) ~~release date
+
 project assignment
 dept membership for video & events
 add more releases
 booking
+project ar_reps
+projects need a "date added"
 play count CURRENTLY ALL NULL
+add 'scheduled' to project status enum
 (remove plays as an attribute of releases for the class submission)
 add contributions
 login credentials (not a priority for class submission)
@@ -20,19 +32,37 @@ scrape and update play counts
 set active members based on who has made a contribution this semester?
 update voting privileges based on projects/contributions
 update engineer roles/send email to head of recording
+stuff from presentation that's not here
+
+TRIGGERS?:
+when a release is added, update project status
 
 PROBLEMS:
 looking for the lead/assistant/EIT from a certain project, since the ranks of those who worked on the project may have changed since the recording
- */
+*/
+
+-- club_member --
+DROP TABLE IF EXISTS club_member;
+CREATE TABLE club_member (
+  member_id INT         NOT NULL UNIQUE AUTO_INCREMENT,
+  email     VARCHAR(50) NULL UNIQUE,
+  lastname  VARCHAR(50) NOT NULL,
+  firstname VARCHAR(50) NOT NULL,
+  PRIMARY KEY (member_id)
+);
 
 -- project --
 DROP TABLE IF EXISTS project;
 CREATE TABLE project (
-  project_id INT                                                                                   NOT NULL UNIQUE AUTO_INCREMENT,
-  title      VARCHAR(100)                                                                          NOT NULL,
-  type       ENUM ('Single', 'EP', 'Album', 'Video', 'Other')                                      NOT NULL,
-  status     ENUM ('Unconfirmed', 'Confirmed', 'In-Progress', 'Completed', 'On Hold', 'Cancelled') NOT NULL,
-  PRIMARY KEY (project_id)
+  project_id INT                                                                                               NOT NULL UNIQUE AUTO_INCREMENT,
+  title      VARCHAR(100)                                                                                      NOT NULL,
+  type       ENUM ('Single', 'EP', 'Album', 'Video', 'Other')                                                  NOT NULL,
+  status     ENUM ('Unconfirmed', 'Confirmed', 'In-Progress', 'Completed', 'On Hold', 'Cancelled', 'Released') NOT NULL,
+  rep_id     INT                                                                                               NULL,
+  PRIMARY KEY (project_id),
+  INDEX project_rep_idx (rep_id ASC),
+  FOREIGN KEY (rep_id)
+  REFERENCES club_member (member_id)
 );
 
 -- genre --
@@ -55,37 +85,37 @@ CREATE TABLE genre_of_project (
   REFERENCES genre (genre_id)
 );
 
--- member --
-DROP TABLE IF EXISTS club_member;
-CREATE TABLE club_member (
-  member_id INT         NOT NULL UNIQUE AUTO_INCREMENT,
-  email     VARCHAR(50) NULL UNIQUE,
-  lastname  VARCHAR(50) NOT NULL,
-  firstname VARCHAR(50) NOT NULL,
-  PRIMARY KEY (member_id)
+-- marketing_assignment --
+DROP TABLE IF EXISTS marketing_assignment;
+CREATE TABLE marketing_assignment (
+  project_id          INT NOT NULL,
+  campaign_manager_id INT NOT NULL,
+  PRIMARY KEY (project_id, campaign_manager_id),
+  INDEX marketing_assignment_project_idx (project_id ASC),
+  INDEX marketing_assignment_member_id_idx (campaign_manager_id ASC),
+  FOREIGN KEY (project_id)
+  REFERENCES project (project_id),
+  FOREIGN KEY (campaign_manager_id)
+  REFERENCES club_member (member_id)
 );
 
 -- ar_member --
-DROP TABLE IF EXISTS ar_member;
-CREATE TABLE ar_member (
-  ar_member_id   INT NOT NULL UNIQUE AUTO_INCREMENT,
-  club_member_id INT NOT NULL UNIQUE,
-  PRIMARY KEY (ar_member_id),
-  INDEX ar_member_club_member (club_member_id ASC),
-  FOREIGN KEY (club_member_id)
-  REFERENCES club_member (member_id)
-);
+# DROP TABLE IF EXISTS ar_member;
+# CREATE TABLE ar_member (
+#   ar_member_id   INT NOT NULL UNIQUE AUTO_INCREMENT,
+#   club_member_id INT NOT NULL UNIQUE,
+#   PRIMARY KEY (ar_member_id),
+#   INDEX ar_member_club_member (club_member_id ASC),
+#   FOREIGN KEY (club_member_id)
+#   REFERENCES club_member (member_id)
+# );
 
 -- artist --
 DROP TABLE IF EXISTS artist;
 CREATE TABLE artist (
   artist_id   INT         NOT NULL UNIQUE AUTO_INCREMENT,
-  rep_id      INT         NULL,
   artist_name VARCHAR(80) NOT NULL,
-  PRIMARY KEY (artist_id),
-  INDEX artist (rep_id ASC),
-  FOREIGN KEY (rep_id)
-  REFERENCES ar_member (ar_member_id)
+  PRIMARY KEY (artist_id)
 );
 
 -- artist_writes_project --
@@ -114,19 +144,22 @@ CREATE TABLE engineer (
   REFERENCES club_member (member_id)
 );
 
--- project_assignment --
-DROP TABLE IF EXISTS project_assignment;
-CREATE TABLE project_assignment (
+-- recording_assignment --
+DROP TABLE IF EXISTS recording_assignment;
+CREATE TABLE recording_assignment (
   project_id  INT NOT NULL,
   engineer_id INT NOT NULL,
   PRIMARY KEY (project_id, engineer_id),
-  INDEX project_assignment_engineer_idx (engineer_id ASC),
-  INDEX project_assignment_project_idx (project_id ASC),
+  INDEX recording_assignment_engineer_idx (engineer_id ASC),
+  INDEX recording_assignment_project_idx (project_id ASC),
   FOREIGN KEY (project_id)
   REFERENCES project (project_id),
   FOREIGN KEY (engineer_id)
   REFERENCES engineer (engineer_id)
 );
+
+ALTER TABLE recording_assignment
+    ADD COLUMN role ENUM ('Assistant', 'Lead', 'EIT') NOT NULL AFTER engineer_id;
 
 -- location --
 DROP TABLE IF EXISTS location;
@@ -138,9 +171,9 @@ CREATE TABLE location (
   INDEX location_name_idx (location_name ASC)
 );
 
--- live_session --
-DROP TABLE IF EXISTS live_session;
-CREATE TABLE live_session (
+-- live_recording --
+DROP TABLE IF EXISTS live_recording;
+CREATE TABLE live_recording (
   live_session_id INT          NOT NULL UNIQUE AUTO_INCREMENT,
   show_name       VARCHAR(150) NOT NULL,
   date            DATE         NOT NULL,
@@ -148,9 +181,9 @@ CREATE TABLE live_session (
   end_time        TIME         NULL,
   location_id     INT          NOT NULL,
   PRIMARY KEY (live_session_id),
-  INDEX live_session_idx (live_session_id ASC),
-  INDEX live_session_name_idx (show_name ASC),
-  INDEX live_session_date_idx (date DESC),
+  INDEX live_recording_idx (live_session_id ASC),
+  INDEX live_recording_name_idx (show_name ASC),
+  INDEX live_recording_date_idx (date DESC),
   FOREIGN KEY (location_id)
   REFERENCES location (location_id)
 );
@@ -188,7 +221,7 @@ CREATE TABLE assigned_live_session (
   INDEX assigned_live_session_engineer_idx (engineer_id ASC),
   INDEX assigned_live_session_live_session_idx (live_session_id ASC),
   FOREIGN KEY (live_session_id)
-  REFERENCES live_session (live_session_id),
+  REFERENCES live_recording (live_session_id),
   FOREIGN KEY (engineer_id)
   REFERENCES engineer (engineer_id)
 );

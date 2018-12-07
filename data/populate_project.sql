@@ -1,20 +1,7 @@
 use green_line_records;
 
-set foreign_key_checks = 0;
-
-truncate project;
 insert into project (title, type, status)
-values ('Mike Morrissey single', 'Single', 'On Hold'),
-       ('Leo Son & The Q-tip Bandits single', 'Single', 'In-Progress'),
-       ('Henry Mccal single', 'Single', 'In-Progress'),
-       ('Devvey single', 'Single', 'Confirmed'),
-       ('Brandie Blaze single', 'Single', 'Confirmed'),
-       ('Maya Lucia EP', 'EP', 'In-Progress'),
-       ('Twelveyes single', 'Single', 'Confirmed'),
-       ('D $oundz single', 'Single', 'Confirmed'),
-       ('Avi Jacob single', 'Single', 'Confirmed'),
-       ('Brennan single', 'Single', 'Confirmed'),
-       ('Atlas Lab single', 'Single', 'Completed'),
+values ('Atlas Lab single', 'Single', 'Completed'),
        ('3-song EP by Du Vide', 'EP', 'Completed'),
        ('Maggie Whitlock single', 'Single', 'Completed'),
        ('Grace & The Carnivore EP', 'EP', 'Completed'),
@@ -58,12 +45,25 @@ values ('Mike Morrissey single', 'Single', 'On Hold'),
        ('Till You Run Out of Time', 'Single', 'Completed'),
        ('NU Stage single', 'Single', 'Completed'),
        ('Reckless', 'Single', 'Completed'),
-       ('Cosmic Johnny single', 'Single', 'Completed'),
        ('Broken by the Fix', 'Single', 'Completed'),
        ('I Have No Time', 'Single', 'Completed'),
        ('NU Songwriting Club Compilation 2018', 'Album', 'Completed'),
        ('Brother Be Wise', 'Single', 'Completed');
--- need to include Glass Arrowhead project
+-- TODO: add to include Glass Arrowhead project, rename or delete unnamed projects
+
+insert into project (title, type, status, rep_id)
+values ('Cosmic Johnny single', 'Single', 'Completed', find_member_id('Sagar', 'Kumar')),
+       ('Twelveyes single', 'Single', 'Confirmed', find_member_id('Ryan', 'Stelmach')),
+       ('Maya Lucia EP', 'EP', 'In-Progress', find_member_id('Sagar', 'Kumar')),
+       ('Mike Morrissey single', 'Single', 'Confirmed', find_member_id('Lindsay', 'Masterson')),
+       ('Leo Son & The Q-tip Bandits single', 'Single', 'In-Progress', find_member_id('Jonathon', 'Prus')),
+       ('Brandie Blaze single', 'Single', 'Confirmed', find_member_id('Veronica', 'Bettio')),
+       ('Henry Mccal single', 'Single', 'In-Progress', find_member_id('Sebastian', 'De Arestegui')),
+       ('D $oundz single', 'Single', 'In-Progress', find_member_id('Aidan', 'Fox')),
+       ('Brennan Wedl single', 'Single', 'In-Progress', find_member_id('Jack', 'Kerwin')),
+       ('Devvey single', 'Single', 'In-Progress', find_member_id('Melanie', 'Senk')),
+       ('Avi Jacob single', 'Single', 'Confirmed', find_member_id('Jonathon', 'Prus'));
+
 
 drop function if exists find_project_id;
 DELIMITER //
@@ -188,7 +188,7 @@ values (find_project_id('Broken by the Fix'), find_artist_id('ColorGrave')),
        (find_project_id('Brother Be Wise'), find_artist_id('Harry Jay Smith and The Bling'));
 
 
-truncate `release`;
+
 insert into `release` (project_id, release_date)
 values (find_project_id('Broken by the Fix'), '2018-06-02'),
        (find_project_id('Reckless'), '2018-05-04'),
@@ -209,7 +209,7 @@ values (find_project_id('Broken by the Fix'), '2018-06-02'),
        (find_project_id('Take Care'), '2017-04-7'),
        (find_project_id('Brother Be Wise'), '2017-02-03');
 
-truncate `link`;
+
 insert into link (type, url, release_id)
 values ('SoundCloud',
         'https://soundcloud.com/colorgrave/broken-by-the-fix?fbclid=IwAR0NYqqX-U1cwDFRhNS80pNNhpg2bN3fjOI_hYAJ5oIYMDs1-tav67GB0Os',
@@ -271,10 +271,94 @@ values ('SoundCloud',
         'https://soundcloud.com/sweepsbeats/sweeps-a-tale-from-tomorrow',
         find_release_id('a tale from tomorrow'));
 
-truncate project_assignment;
-insert into project_assignment (project_id, engineer_id)
-values (find_project_id('Able Days EP'), find_engineer_id('Paul', 'Kouris'));
 
+set foreign_key_checks = 0;
+truncate recording_assignment;
+insert into recording_assignment (project_id, engineer_id, role)
+values (find_project_id('Mike Morrissey single'), find_engineer_id('Zac', 'Kerwin'), 'Lead'),
+       (find_project_id('Mike Morrissey single'), find_engineer_id('Gabriel', 'Pino'), 'Assistant'),
+       (find_project_id('Mike Morrissey single'), find_engineer_id('Ryan', 'Busse'), 'EIT'),
+       (find_project_id('Mike Morrissey single'), find_engineer_id('Pavan', 'Hirpara'), 'EIT'),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Zac', 'Kerwin'), 'Lead'),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Mike', 'Gentile'), 'Assistant');
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Spencer', 'Birch'), 'Assistant'),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Christian', 'Bobowicz'), 'EIT'),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Ben', 'Harrold'), 'EIT'),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Alex', 'Teitler'), 'EIT'),
+       (find_project_id('Henry Mccal single'), find_engineer_id('Zac', 'Kerwin'), 'Lead'),
+       (find_project_id('Henry Mccal single'), find_engineer_id('Greg', 'Leo'), 'Assistant'),
+       (find_project_id('Henry Mccal single'), find_engineer_id('Spencer', 'Webb'), 'EIT'),
+       (find_project_id('Henry Mccal single'), find_engineer_id('Alia', 'Newman-Boulle'), 'EIT'),
+       (find_project_id('Henry Mccal single'), find_engineer_id('Bella', 'Raponi'), 'EIT'),
+       (find_project_id('Devvey single'), find_engineer_id('Zac', 'Kerwin'), 'Lead'),
+       (find_project_id('Devvey single'), find_engineer_id('Gabriel', 'Pino'), 'Assistant'),
+       (find_project_id('Devvey single'), find_engineer_id('Hunter', 'Wenglikowski'), 'EIT'),
+       (find_project_id('Devvey single'), find_engineer_id('Nicholas', 'Harper'), 'EIT'),
+       (find_project_id('Devvey single'), find_engineer_id('James', 'Barden'), 'EIT'),
+       (find_project_id('Brandie Blaze single'), find_engineer_id('Zac', 'Kerwin'), 'Lead'),
+       (find_project_id('Brandie Blaze single'), find_engineer_id('Connor', 'Modugno'), 'Assistant'),
+       (find_project_id('Brandie Blaze single'), find_engineer_id('Mina', 'Fletch'), 'EIT'),
+       (find_project_id('Brandie Blaze single'), find_engineer_id('Lucas', 'Espada'), 'EIT'),
+       (find_project_id('Brandie Blaze single'), find_engineer_id('Hannah', 'Lowicki'), 'EIT'),
+       (find_project_id('Maya Lucia EP'), find_engineer_id('Dan', 'Mulligan'), 'Lead'),
+       (find_project_id('Maya Lucia EP'), find_engineer_id('Walker', 'Lambrecht'), 'Assistant'),
+       (find_project_id('Maya Lucia EP'), find_engineer_id('Jonathon', 'Prus'), 'EIT'),
+       (find_project_id('Maya Lucia EP'), find_engineer_id('Christina', 'Carol'), 'EIT'),
+       (find_project_id('Maya Lucia EP'), find_engineer_id('Vivienne', 'Gao'), 'EIT'),
+       (find_project_id('Twelveyes single'), find_engineer_id('Dan', 'Mulligan'), 'Lead'),
+       (find_project_id('Twelveyes single'), find_engineer_id('Mike', 'Gentile'), 'Assistant'),
+       (find_project_id('Twelveyes single'), find_engineer_id('Ryan', 'Busse'), 'EIT'),
+       (find_project_id('Twelveyes single'), find_engineer_id('Elias', 'Karikas'), 'EIT'),
+       (find_project_id('Twelveyes single'), find_engineer_id('Adam', 'Doucette'), 'EIT'),
+       (find_project_id('D $oundz single'), find_engineer_id('Walker', 'Lambrect'), 'Lead'),
+       (find_project_id('D $oundz single'), find_engineer_id('Spencer', 'Birch'), 'Assistant'),
+       (find_project_id('D $oundz single'), find_engineer_id('Simon', 'Aber'), 'EIT'),
+       (find_project_id('D $oundz single'), find_engineer_id('Adam', 'Doucette'), 'EIT'),
+       (find_project_id('D $oundz single'), find_engineer_id('Jared', 'Zimiroski'), 'EIT'),
+       (find_project_id('Avi Jacob single'), find_engineer_id('Cairo', 'Marques-Neto'), 'Lead'),
+       (find_project_id('Avi Jacob single'), find_engineer_id('Vivienne', 'Gao'), 'EIT'),
+       (find_project_id('Avi Jacob single'), find_engineer_id('Chuck', 'Stein'), 'EIT'),
+       (find_project_id('Avi Jacob single'), find_engineer_id('Christian', 'Bobowicz'), 'EIT'),
+       (find_project_id('Brennan Wedl single'), find_engineer_id('Kathryn', 'Theobalds'), 'EIT'),
+       (find_project_id('Brennan Wedl single'), find_engineer_id('Isabella', 'Raponi'), 'EIT'),
+       (find_project_id('Brennan Wedl single'), find_engineer_id('Jonathon', 'Prus'), 'EIT'),
+       (find_project_id('Brennan Wedl single'), find_engineer_id('Chris', 'Miller'), 'Assistant'),
+       (find_project_id('Brennan Wedl single'), find_engineer_id('Zac', 'Kerwin'), 'Lead');
+
+
+
+
+
+insert into marketing_assignment (project_id, campaign_manager_id)
+values (find_project_id('Cosmic Johnny single'), find_member_id('Sofia', 'Botti')),
+       (find_project_id('Twelveyes single'), find_member_id('Gianna', 'Barleta')),
+       (find_project_id('Twelveyes single'), find_member_id('Euvin', 'Lee')),
+       (find_project_id('Twelveyes single'), find_member_id('Kathryn', 'Richards')),
+       (find_project_id('Maya Lucia EP'), find_member_id('Liz', 'Markow')),
+       (find_project_id('Maya Lucia EP'), find_member_id('Kasey', 'Arko')),
+       (find_project_id('Maya Lucia EP'), find_member_id('Maya', 'Roberts')),
+       (find_project_id('Mike Morrissey single'), find_member_id('Liz', 'Markow')),
+       (find_project_id('Mike Morrissey single'), find_member_id('Kasey', 'Arko')),
+       (find_project_id('Mike Morrissey single'), find_member_id('Maya', 'Roberts')),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_member_id('Shannon', 'Pires')),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_member_id('Delaney', 'Eagle')),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_member_id('Cheyenne', 'Dobine')),
+       (find_project_id('Brandie Blaze single'), find_member_id('Gianna', 'Barletta')),
+       (find_project_id('Brandie Blaze single'), find_member_id('Darren', 'Lee')),
+       (find_project_id('Brandie Blaze single'), find_member_id('Aidan', 'Fox')),
+       (find_project_id('Henry Mccal single'), find_member_id('Gianna', 'Barletta')),
+       (find_project_id('Henry Mccal single'), find_member_id('Euvin', 'Lee')),
+       (find_project_id('Henry Mccal single'), find_member_id('Kathryn', 'Richards')),
+       (find_project_id('D $oundz single'), find_member_id('Shannon', 'Pires')),
+       (find_project_id('D $oundz single'), find_member_id('Delaney', 'Eagle')),
+       (find_project_id('D $oundz single'), find_member_id('Cheyenne', 'Dobine')),
+       (find_project_id('Brennan Wedl single'), find_member_id('Liz', 'Markow')),
+       (find_project_id('Brennan Wedl single'), find_member_id('Kasey', 'Arko')),
+       (find_project_id('Brennan Wedl single'), find_member_id('Maya', 'Roberts')),
+       (find_project_id('Devvey single'), find_member_id('Gianna', 'Barletta')),
+       (find_project_id('Devvey single'), find_member_id('Euvin', 'Lee')),
+       (find_project_id('Devvey single'), find_member_id('Kathryn', 'Richards')),
+       (find_project_id('Avi Jacob single'), find_member_id('Liz', 'Markow'));
 
 -- TODO: add a column concating all genre names for each release
 select artist_name as 'artist', title, p.type as 'type', status, l.type as 'platform', url
@@ -317,7 +401,7 @@ select concat(firstname, ' ', lastname) as 'lead_engineer',
        avg(plays)                       as 'average_play_count'
 from `release`
        join project using (project_id)
-       join project_assignment using (project_id)
+       join recording_assignment using (project_id)
        join engineer using (engineer_id)
        join club_member using (member_id)
 where level = 'Lead'
@@ -337,7 +421,7 @@ from `release`
        join artist using (artist_id)
        left join genre_of_project using (project_id)
        left join genre using (genre_id)
-       left join project_assignment using (project_id)
+       left join recording_assignment using (project_id)
        left join engineer using (engineer_id)
        left join club_member using (member_id)
 where level = 'Lead'
@@ -366,7 +450,7 @@ from `release`
        join artist using (artist_id)
        left join genre_of_project using (project_id)
        left join genre using (genre_id)
-       left join project_assignment using (project_id)
+       left join recording_assignment using (project_id)
        left join engineer using (engineer_id)
        left join club_member using (member_id)
        left join link using (release_id)
