@@ -3,11 +3,11 @@ USE green_line_records;
 
 TRUNCATE TABLE assigned_live_session;
 INSERT INTO assigned_live_session (live_session_id, engineer_id)
-VALUES (find_live_session_id2('Solo Euphonium and NU Wind Ensemble', '2018-10-04', '19:20:00'),
+VALUES (find_live_session_id('Solo Euphonium and NU Wind Ensemble', '2018-10-04', '19:20:00'),
         find_engineer_id('Gabriel', 'Pino')),
-       (find_live_session_id2('Solo Euphonium and NU Wind Ensemble', '2018-10-04', '19:20:00'),
+       (find_live_session_id('Solo Euphonium and NU Wind Ensemble', '2018-10-04', '19:20:00'),
         find_engineer_id('Mike', 'Econ')),
-       (find_live_session_id2('Solo Euphonium and NU Wind Ensemble', '2018-10-04', '19:20:00'),
+       (find_live_session_id('Solo Euphonium and NU Wind Ensemble', '2018-10-04', '19:20:00'),
         find_engineer_id('Spencer', 'Webb')),
        (find_live_session_id('Four Wind Ensembles (Bands of the Beanpot)', '2018-10-28', '15:00:00'),
         find_engineer_id('Alex', 'Teitler')),
