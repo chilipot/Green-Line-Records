@@ -272,15 +272,13 @@ values ('SoundCloud',
         find_release_id('a tale from tomorrow'));
 
 
-set foreign_key_checks = 0;
-truncate recording_assignment;
 insert into recording_assignment (project_id, engineer_id, role)
 values (find_project_id('Mike Morrissey single'), find_engineer_id('Zac', 'Kerwin'), 'Lead'),
        (find_project_id('Mike Morrissey single'), find_engineer_id('Gabriel', 'Pino'), 'Assistant'),
        (find_project_id('Mike Morrissey single'), find_engineer_id('Ryan', 'Busse'), 'EIT'),
        (find_project_id('Mike Morrissey single'), find_engineer_id('Pavan', 'Hirpara'), 'EIT'),
        (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Zac', 'Kerwin'), 'Lead'),
-       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Mike', 'Gentile'), 'Assistant');
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Mike', 'Gentile'), 'Assistant'),
        (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Spencer', 'Birch'), 'Assistant'),
        (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Christian', 'Bobowicz'), 'EIT'),
        (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Ben', 'Harrold'), 'EIT'),
@@ -302,7 +300,7 @@ values (find_project_id('Mike Morrissey single'), find_engineer_id('Zac', 'Kerwi
        (find_project_id('Brandie Blaze single'), find_engineer_id('Hannah', 'Lowicki'), 'EIT'),
        (find_project_id('Maya Lucia EP'), find_engineer_id('Dan', 'Mulligan'), 'Lead'),
        (find_project_id('Maya Lucia EP'), find_engineer_id('Walker', 'Lambrecht'), 'Assistant'),
-       (find_project_id('Maya Lucia EP'), find_engineer_id('Jonathon', 'Prus'), 'EIT'),
+       (find_project_id('Maya Lucia EP'), find_engineer_id('Jonathan', 'Prus'), 'EIT'),
        (find_project_id('Maya Lucia EP'), find_engineer_id('Christina', 'Carol'), 'EIT'),
        (find_project_id('Maya Lucia EP'), find_engineer_id('Vivienne', 'Gao'), 'EIT'),
        (find_project_id('Twelveyes single'), find_engineer_id('Dan', 'Mulligan'), 'Lead'),
@@ -310,7 +308,7 @@ values (find_project_id('Mike Morrissey single'), find_engineer_id('Zac', 'Kerwi
        (find_project_id('Twelveyes single'), find_engineer_id('Ryan', 'Busse'), 'EIT'),
        (find_project_id('Twelveyes single'), find_engineer_id('Elias', 'Karikas'), 'EIT'),
        (find_project_id('Twelveyes single'), find_engineer_id('Adam', 'Doucette'), 'EIT'),
-       (find_project_id('D $oundz single'), find_engineer_id('Walker', 'Lambrect'), 'Lead'),
+       (find_project_id('D $oundz single'), find_engineer_id('Walker', 'Lambrecht'), 'Lead'),
        (find_project_id('D $oundz single'), find_engineer_id('Spencer', 'Birch'), 'Assistant'),
        (find_project_id('D $oundz single'), find_engineer_id('Simon', 'Aber'), 'EIT'),
        (find_project_id('D $oundz single'), find_engineer_id('Adam', 'Doucette'), 'EIT'),
@@ -321,23 +319,20 @@ values (find_project_id('Mike Morrissey single'), find_engineer_id('Zac', 'Kerwi
        (find_project_id('Avi Jacob single'), find_engineer_id('Christian', 'Bobowicz'), 'EIT'),
        (find_project_id('Brennan Wedl single'), find_engineer_id('Kathryn', 'Theobalds'), 'EIT'),
        (find_project_id('Brennan Wedl single'), find_engineer_id('Isabella', 'Raponi'), 'EIT'),
-       (find_project_id('Brennan Wedl single'), find_engineer_id('Jonathon', 'Prus'), 'EIT'),
+       (find_project_id('Brennan Wedl single'), find_engineer_id('Jonathan', 'Prus'), 'EIT'),
        (find_project_id('Brennan Wedl single'), find_engineer_id('Chris', 'Miller'), 'Assistant'),
        (find_project_id('Brennan Wedl single'), find_engineer_id('Zac', 'Kerwin'), 'Lead');
 
-
-
-
-
+truncate marketing_assignment;
 insert into marketing_assignment (project_id, campaign_manager_id)
 values (find_project_id('Cosmic Johnny single'), find_member_id('Sofia', 'Botti')),
-       (find_project_id('Twelveyes single'), find_member_id('Gianna', 'Barleta')),
+       (find_project_id('Twelveyes single'), find_member_id('Gianna', 'Barletta')),
        (find_project_id('Twelveyes single'), find_member_id('Euvin', 'Lee')),
        (find_project_id('Twelveyes single'), find_member_id('Kathryn', 'Richards')),
-       (find_project_id('Maya Lucia EP'), find_member_id('Liz', 'Markow')),
+       (find_project_id('Maya Lucia EP'), find_member_id('Elizabeth', 'Markow')),
        (find_project_id('Maya Lucia EP'), find_member_id('Kasey', 'Arko')),
        (find_project_id('Maya Lucia EP'), find_member_id('Maya', 'Roberts')),
-       (find_project_id('Mike Morrissey single'), find_member_id('Liz', 'Markow')),
+       (find_project_id('Mike Morrissey single'), find_member_id('Elizabeth', 'Markow')),
        (find_project_id('Mike Morrissey single'), find_member_id('Kasey', 'Arko')),
        (find_project_id('Mike Morrissey single'), find_member_id('Maya', 'Roberts')),
        (find_project_id('Leo Son & The Q-tip Bandits single'), find_member_id('Shannon', 'Pires')),
@@ -352,110 +347,10 @@ values (find_project_id('Cosmic Johnny single'), find_member_id('Sofia', 'Botti'
        (find_project_id('D $oundz single'), find_member_id('Shannon', 'Pires')),
        (find_project_id('D $oundz single'), find_member_id('Delaney', 'Eagle')),
        (find_project_id('D $oundz single'), find_member_id('Cheyenne', 'Dobine')),
-       (find_project_id('Brennan Wedl single'), find_member_id('Liz', 'Markow')),
+       (find_project_id('Brennan Wedl single'), find_member_id('Elizabeth', 'Markow')),
        (find_project_id('Brennan Wedl single'), find_member_id('Kasey', 'Arko')),
        (find_project_id('Brennan Wedl single'), find_member_id('Maya', 'Roberts')),
        (find_project_id('Devvey single'), find_member_id('Gianna', 'Barletta')),
        (find_project_id('Devvey single'), find_member_id('Euvin', 'Lee')),
        (find_project_id('Devvey single'), find_member_id('Kathryn', 'Richards')),
-       (find_project_id('Avi Jacob single'), find_member_id('Liz', 'Markow'));
-
--- TODO: add a column concating all genre names for each release
-select artist_name as 'artist', title, p.type as 'type', status, l.type as 'platform', url
-from artist_writes_project
-       join project p using (project_id)
-       join artist a using (artist_id)
-       left join `release` r using (project_id)
-       left join link l using (release_id);
-
--- how many releases of each genre?
-select genre_name, count(release_id) as num_releases
-from genre
-       left join genre_of_project using (genre_id)
-       left join `release` using (project_id)
-group by genre_name
-order by num_releases desc;
-
--- genres with most popular releases
-select title, group_concat(genre_name) as 'genres', plays
-from `release`
-       join project using (project_id)
-       join genre_of_project using (project_id)
-       join genre using (genre_id)
-group by title
-order by plays desc;
-
--- most popular genres?
-select genre_name as 'genre',
-       avg(plays) as 'average_play_count'
-from `release`
-       join project using (project_id)
-       join genre_of_project using (project_id)
-       join genre using (genre_id)
-group by genre_name
-order by avg(plays) desc
-limit 10;
-
--- most popular engineers?
-select concat(firstname, ' ', lastname) as 'lead_engineer',
-       avg(plays)                       as 'average_play_count'
-from `release`
-       join project using (project_id)
-       join recording_assignment using (project_id)
-       join engineer using (engineer_id)
-       join club_member using (member_id)
-where level = 'Lead'
-group by concat(firstname, ' ', lastname)
-order by avg(plays) desc
-limit 10;
-
--- most popular releases?
-select plays                            as 'play_count',
-       artist_name                      as 'artist',
-       title                            as 'release',
-       group_concat(genre_name)         as 'genres',
-       concat(firstname, ' ', lastname) as 'lead_engineer'
-from `release`
-       join project using (project_id)
-       join artist_writes_project using (project_id)
-       join artist using (artist_id)
-       left join genre_of_project using (project_id)
-       left join genre using (genre_id)
-       left join recording_assignment using (project_id)
-       left join engineer using (engineer_id)
-       left join club_member using (member_id)
-where level = 'Lead'
-group by title
-order by plays desc
-limit 10;
-
--- how many projects were released in the Spring 2017 semester?
-select count(release_id) as 'num_releases',
-       min(release_date) as 'first_release',
-       max(release_date) as 'last_release'
-from `release`
-where release_date >= '2017-01-01'
-       and release_date <= '2017-04-31';
-
--- what projects released in the Fall 2017 semester?
-select release_date,
-       artist_name                       as 'artist',
-       title                             as 'release',
-       group_concat(distinct genre_name) as 'genres',
-       concat(firstname, ' ', lastname)  as 'lead_engineer',
-       group_concat(url)                 as 'links'
-from `release`
-       join project using (project_id)
-       join artist_writes_project using (project_id)
-       join artist using (artist_id)
-       left join genre_of_project using (project_id)
-       left join genre using (genre_id)
-       left join recording_assignment using (project_id)
-       left join engineer using (engineer_id)
-       left join club_member using (member_id)
-       left join link using (release_id)
-where release_date >= '2017-09-01'
-  and release_date <= '2017-12-31'
-  and level = 'Lead'
-group by title
-order by release_date;
+       (find_project_id('Avi Jacob single'), find_member_id('Elizabeth', 'Markow'));
