@@ -13,15 +13,6 @@ var hideDrop = function(menu) {
   menu.parent().removeClass('show');
 }
 
-// Analyzes Search string
-
-const tableParameters = {
-  'location' : [],
-  'live_recording' : [],
-  'artist' : [],
-  'member' : [],
-}
-
 /**
  * var analyzeSearch - Builds the endpoint using the given search string.
  *
@@ -41,10 +32,9 @@ var analyzeSearch = function(search) {
     paramDict[kv[0]] = kv[1];
   }
   var keys = Object.keys(paramDict);
-  console.log(keys);
   for (k in keys) {
     var val = paramDict[keys[k]];
-    switch(keys[k]) {
+    switch (keys[k]) {
       case "id":
         endpoint += '/id/' + val;
         break;
@@ -64,8 +54,14 @@ var analyzeSearch = function(search) {
 }
 
 
-// Helpers
+// Forms
 
+
+
+
+
+
+// Helpers
 
 /**
  * var convertToDict - Converts a JSON string into a dictionary structure.
@@ -77,7 +73,12 @@ var convertToDict = function(json) {
   var result = JSON.parse(json);
   var dict = {};
   for (var i = 0; i < result.length; i++) {
-    dict[i] = result[i];
+    if (isNaN(result[i])) {
+      dict[i] = result[i];
+    } else {
+      console.log(result[i]);
+      dict[i] = parseInt(result[i]);
+    }
   }
   return dict;
 }
@@ -90,7 +91,6 @@ var convertToDict = function(json) {
  * @return {String}      Table headers.
  */
 var getHeaders = function(dict) {
-  console.log(dict);
   const keys = Object.keys(dict);
   var html = "";
   for (header in keys) {
@@ -144,8 +144,7 @@ var updateTable = function(dict) {
  *
  * @return {Void}  Updates the value of the html heights.
  */
-var updateHeight = function() {
-  var height = $('.table-wrap').height();
+var updateHeight = function(height) {
   $('.data-table').height(height + 200);
 }
 
@@ -163,22 +162,57 @@ var sendQuery = function(endpoint, table) {
   table = table.replace(" ", "_");
   var url = host + table + endpoint;
   console.log(url);
+  async () => {
+    await fetch(url)
+      .then((response) => {
+        if (response.ok && (response.status == 200)) {
+          return response.json();
+        }
+        throw new Error('Network response failure.');
+      })
+      .then((myJson) => {
+        var str = JSON.stringify(myJson);
+        var dict = convertToDict(str);
+        return dict;
+      })
+      .then((dict) => {
+
+        console.log("Dictionary Q " + dict);
+        updateTable(dict);
+        $('.form-wrap').css('display', 'none');
+        $('.table-wrap').css('display', 'block');
+        updateHeight($('.table-wrap').height());
+
+
+        $('#response-table tr').click(
+          function() {
+            const id = $(this).children(':first-child').text();
+            console.log(table);
+            displayForm(table, $(this));
+            $('.table-wrap').css('display', 'none');
+            $('.form-wrap').css('display', 'block');
+            updateHeight($('.form-wrap').height());
+          }
+        );
+      });
+  }
+}
+
+var deleteEntry = function(endpoint, table) {
+  const host = "https://cors-anywhere.herokuapp.com/https://green-line-records-api.herokuapp.com/";
+  // const host = "http://localhost:3000/";
+  table = table.replace(" ", "_");
+  var url = host + table + endpoint;
+  console.log(url);
   fetch(url)
     .then((response) => {
       if (response.ok && (response.status == 200)) {
-        return response.json();
+        $('.form-wrap').css('display', 'none');
+        updateHeight($('.form-wrap').height());
+        updateHeight($('.table-wrap').height());
+      } else {
+        throw new Error('Network response failure.');
       }
-      throw new Error('Network response failure.');
-    })
-    .then((myJson) => {
-      var str = JSON.stringify(myJson);
-      var dict = convertToDict(str);
-      return dict;
-    })
-    .then((dict) => {
-      updateTable(dict);
-
-      updateHeight();
     });
 }
 
@@ -186,7 +220,7 @@ var sendQuery = function(endpoint, table) {
 // Runtime functionality
 $('body').ready(function() {
 
-  var table;
+  var table = $('#table').text();
   var type = "SELECT";
 
   // Dropdown Listeners
@@ -206,31 +240,53 @@ $('body').ready(function() {
     }
   )
   $('.dropdown-item').click(
-    function() {
+    function(event) {
+      event.preventDefault();
       var t = $(this).text();
-      table = t;
       var g = $(this).parent().parent();
       $(g).children('.dropdown-toggle').text(t);
+      table = t;
       hideDrop($(this).parent());
     }
   )
 
   // Input Listener
-  $('body').keypress(function(event) {
-    if (event.keyCode == 13) {
-      var str = $('.text-input').val();
-      if (str.length == 0) {
-        str = "";
-      }
-      event.preventDefault();
+  $('.text-input').focus(function() {
+    $('body').keypress(function(event) {
 
-      if (table == null) {
-        console.error("No table selected.");
-      } else {
-        var endpoint = analyzeSearch(str);
-        sendQuery(endpoint, table);
+      // Act if keypress is 'Enter'
+      if (event.keyCode == 13) {
+        event.preventDefault();
+
+        if ($('#type').text() == "Search") {
+          // Check for valid dropdown inputs
+          if (table == 'Query' || table == 'Table') {
+            console.error("No table selected.");
+          } else {
+            var endpoint = analyzeSearch(str);
+            // sendQuery(endpoint, table);
+
+            var anal = new AnalyzeSearch(str, table);
+            var s = anal.normalizeString();
+            console.log("n string = ");
+            console.log(s);
+            var a = anal.sendQuery(s);
+
+          }
+        } else {
+          // Check that a table is selected to add to.
+          if (table == null) {
+            console.error("No table selected.");
+          } else {
+            const qtable = table.replace(" ", "_");
+            console.log('add', qtable);
+            displayForm(qtable, null);
+            $('.table-wrap').css('display', 'none');
+            $('.form-wrap').css('display', 'block');
+            updateHeight($('.form-wrap').height());
+          }
+        }
       }
-    }
+    });
   });
-
 });
