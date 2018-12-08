@@ -13,18 +13,6 @@ var hideDrop = function(menu) {
   menu.parent().removeClass('show');
 }
 
-<<<<<<< HEAD
-=======
-// Analyzes Search string
-
-const tableParameters = {
-  'location' : [],
-  'live_recording' : [],
-  'artist' : [],
-  'member' : [],
-}
-
->>>>>>> d0a7eec6fec46471188f3c41a85cc6b1c0107f39
 /**
  * var analyzeSearch - Builds the endpoint using the given search string.
  *
