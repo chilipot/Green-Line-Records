@@ -1,18 +1,8 @@
 use green_line_records;
 
 insert into project (title, type, status)
-values ('Mike Morrissey single', 'Single', 'On Hold'),
-       ('Leo Son & The Q-tip Bandits single', 'Single', 'In-Progress'),
-       ('Henry Mccal single', 'Single', 'In-Progress'),
-       ('Devvey single', 'Single', 'Confirmed'),
-       ('Brandie Blaze single', 'Single', 'Confirmed'),
-       ('Maya Lucia EP', 'EP', 'In-Progress'),
-       ('Twelveyes single', 'Single', 'Confirmed'),
-       ('D $oundz single', 'Single', 'Confirmed'),
-       ('Avi Jacob single', 'Single', 'Confirmed'),
-       ('Brennan single', 'Single', 'Confirmed'),
-       ('Atlas Lab single', 'Single', 'Completed'),
-       ('3 songs by Du Vide', 'EP', 'Completed'),
+values ('Atlas Lab single', 'Single', 'Completed'),
+       ('3-song EP by Du Vide', 'EP', 'Completed'),
        ('Maggie Whitlock single', 'Single', 'Completed'),
        ('Grace & The Carnivore EP', 'EP', 'Completed'),
        ('Grey Season single', 'Single', 'Completed'),
@@ -34,15 +24,16 @@ values ('Mike Morrissey single', 'Single', 'On Hold'),
        ('Bedbug single', 'Single', 'Completed'),
        ('Sam Haiman Band single', 'Single', 'Completed'),
        ('Migrant Motel single', 'Single', 'Cancelled'),
-       ('Mint Green single', 'Single', 'Completed'),
+       ('Take Care', 'Single', 'Completed'),
        ('Able Days EP', 'EP', 'Completed'),
-       ('Maggie Whitlock EP', 'EP', 'Completed'),
-       ('Red Mill single', 'Single', 'Completed'),
+       ('the seams', 'EP', 'Completed'),
+       ('Your Book', 'Single', 'Completed'),
        ('Flamingo Club single', 'Single', 'Completed'),
        ('Systematic single', 'Single', 'Cancelled'),
        ('Mandy Kessler single', 'Single', 'Cancelled'),
        ('Trevor Dering single', 'Single', 'Cancelled'),
-       ('Gentle Temper single', 'Single', 'Completed'),
+       ('Hurt Nobody by Tashawn Taylor', 'Single', 'Cancelled'),
+       ('Sugar', 'Single', 'Completed'),
        ('a tale from tomorrow', 'Single', 'Completed'),
        ('Old Enough', 'Single', 'Completed'),
        ('Give It Up', 'Single', 'Completed'),
@@ -54,11 +45,24 @@ values ('Mike Morrissey single', 'Single', 'On Hold'),
        ('Till You Run Out of Time', 'Single', 'Completed'),
        ('NU Stage single', 'Single', 'Completed'),
        ('Reckless', 'Single', 'Completed'),
-       ('Cosmic Johnny single', 'Single', 'Completed'),
        ('Broken by the Fix', 'Single', 'Completed'),
        ('I Have No Time', 'Single', 'Completed'),
-       ('NU Songwriting Club Compilation 2018', 'Album', 'Completed');
-        -- need to include Glass Arrowhead project
+       ('NU Songwriting Club Compilation 2018', 'Album', 'Completed'),
+       ('Brother Be Wise', 'Single', 'Completed');
+-- TODO: add to include Glass Arrowhead project, rename or delete unnamed projects
+
+insert into project (title, type, status, rep_id)
+values ('Cosmic Johnny single', 'Single', 'Completed', find_member_id('Sagar', 'Kumar')),
+       ('Twelveyes single', 'Single', 'Confirmed', find_member_id('Ryan', 'Stelmach')),
+       ('Maya Lucia EP', 'EP', 'In-Progress', find_member_id('Sagar', 'Kumar')),
+       ('Mike Morrissey single', 'Single', 'Confirmed', find_member_id('Lindsay', 'Masterson')),
+       ('Leo Son & The Q-tip Bandits single', 'Single', 'In-Progress', find_member_id('Jonathon', 'Prus')),
+       ('Brandie Blaze single', 'Single', 'Confirmed', find_member_id('Veronica', 'Bettio')),
+       ('Henry Mccal single', 'Single', 'In-Progress', find_member_id('Sebastian', 'De Arestegui')),
+       ('D $oundz single', 'Single', 'In-Progress', find_member_id('Aidan', 'Fox')),
+       ('Brennan Wedl single', 'Single', 'In-Progress', find_member_id('Jack', 'Kerwin')),
+       ('Devvey single', 'Single', 'In-Progress', find_member_id('Melanie', 'Senk')),
+       ('Avi Jacob single', 'Single', 'Confirmed', find_member_id('Jonathon', 'Prus'));
 
 
 drop function if exists find_project_id;
@@ -98,6 +102,37 @@ create function find_release_id
   END //
 DELIMITER ;
 
+drop function if exists find_genre_id;
+DELIMITER //
+create function find_genre_id
+  (
+    name varchar(50)
+  )
+  returns int
+  BEGIN
+    return (select genre_id from genre where genre_name like name limit 1);
+  END //
+DELIMITER ;
+
+drop function if exists find_engineer_id;
+DELIMITER //
+create function find_engineer_id
+  (
+    first varchar(50),
+    last  varchar(50)
+  )
+  returns int
+  BEGIN
+    return (select engineer_id
+            from engineer
+                   join club_member using (member_id)
+            where firstname like first
+              and lastname like last
+            limit 1);
+  END //
+DELIMITER ;
+
+truncate genre_of_project;
 insert into genre_of_project (project_id, genre_id)
 values (find_project_id('Broken by the Fix'), find_genre_id('Electronic')),
        (find_project_id('Broken by the Fix'), find_genre_id('Rock')),
@@ -118,8 +153,20 @@ values (find_project_id('Broken by the Fix'), find_genre_id('Electronic')),
        (find_project_id('Old Enough'), find_genre_id('Indie')),
        (find_project_id('Old Enough'), find_genre_id('Rock')),
        (find_project_id('a tale from tomorrow'), find_genre_id('Electronic')),
-       (find_project_id('a tale from tomorrow'), find_genre_id('Rap'));
+       (find_project_id('a tale from tomorrow'), find_genre_id('Hip-hop')),
+       (find_project_id('Sugar'), find_genre_id('Folk')),
+       (find_project_id('Your Book'), find_genre_id('Rock')),
+       (find_project_id('the seams'), find_genre_id('Singer-songwriter')),
+       (find_project_id('Able Days EP'), find_genre_id('Alternative')),
+       (find_project_id('Able Days EP'), find_genre_id('Indie')),
+       (find_project_id('Able Days EP'), find_genre_id('Rock')),
+       (find_project_id('Take Care'), find_genre_id('Rock')),
+       (find_project_id('Take Care'), find_genre_id('Punk')),
+       (find_project_id('Brother Be Wise'), find_genre_id('R&B')),
+       (find_project_id('Brother Be Wise'), find_genre_id('Funk')),
+       (find_project_id('Brother Be Wise'), find_genre_id('Soul'));
 
+truncate artist_writes_project;
 insert into artist_writes_project (project_id, artist_id)
 values (find_project_id('Broken by the Fix'), find_artist_id('ColorGrave')),
        (find_project_id('Reckless'), find_artist_id('Julie Cira & The Wake')),
@@ -132,7 +179,15 @@ values (find_project_id('Broken by the Fix'), find_artist_id('ColorGrave')),
        (find_project_id('Till You Run Out of Time'), find_artist_id('Groundlift')),
        (find_project_id('Heart of the Sun'), find_artist_id('Kid Wolf')),
        (find_project_id('Old Enough'), find_artist_id('The Water Cycle')),
-       (find_project_id('a tale from tomorrow'), find_artist_id('Sweeps'));
+       (find_project_id('a tale from tomorrow'), find_artist_id('Sweeps')),
+       (find_project_id('Sugar'), find_artist_id('Gentle Temper')),
+       (find_project_id('Your Book'), find_artist_id('Red Mill')),
+       (find_project_id('the seams'), find_artist_id('Maggie Whitlock')),
+       (find_project_id('Able Days EP'), find_artist_id('Able Days')),
+       (find_project_id('Take Care'), find_artist_id('Mint Green')),
+       (find_project_id('Brother Be Wise'), find_artist_id('Harry Jay Smith and The Bling'));
+
+
 
 insert into `release` (project_id, release_date)
 values (find_project_id('Broken by the Fix'), '2018-06-02'),
@@ -146,7 +201,14 @@ values (find_project_id('Broken by the Fix'), '2018-06-02'),
        (find_project_id('Till You Run Out of Time'), '2018-05-04'),
        (find_project_id('Heart of the Sun'), '2017-12-29'),
        (find_project_id('Old Enough'), '2017-12-15'),
-       (find_project_id('a tale from tomorrow'), '2017-12-01');
+       (find_project_id('a tale from tomorrow'), '2017-12-01'),
+       (find_project_id('Sugar'), '2017-11-10'),
+       (find_project_id('Your Book'), '2017-08-25'),
+       (find_project_id('the seams'), '2017-04-28'),
+       (find_project_id('Able Days EP'), '2017-04-14'),
+       (find_project_id('Take Care'), '2017-04-7'),
+       (find_project_id('Brother Be Wise'), '2017-02-03');
+
 
 insert into link (type, url, release_id)
 values ('SoundCloud',
@@ -168,40 +230,127 @@ values ('SoundCloud',
        ('Spotify',
         'https://open.spotify.com/track/3WFZULbf7WD0r07D5oXKQM',
         find_release_id('Till You Run Out of Time')),
-       ('Spotify',
-        'https://open.spotify.com/track/3FDtd6SvIsg5Jk7XguQ3pS',
-        find_release_id('I Have No Time')),
+       ('Spotify', 'https://open.spotify.com/track/3FDtd6SvIsg5Jk7XguQ3pS', find_release_id('I Have No Time')),
        ('Apple Music',
         'https://itunes.apple.com/us/album/i-have-no-time-single/1375123700',
         find_release_id('I Have No Time')),
-       ('Tidal',
-        'https://tidal.com/track/87802225',
-        find_release_id('I Have No Time')),
+       ('Tidal', 'https://tidal.com/track/87802225', find_release_id('I Have No Time')),
        ('Pandora',
         'https://www.pandora.com/artist/james-burke/i-have-no-time-single/AL5tvgqrZ7xnVpw',
         find_release_id('I Have No Time')),
        ('Bandcamp',
         'https://maggierosenberg.bandcamp.com/track/angry-4evr-greenline-version',
         find_release_id('~*Angry 4evr*~')),
-       ('Bandcamp',
-        'https://kidwolf.bandcamp.com/album/heart-of-the-sun-single',
-        find_release_id('Heart of the Sun')),
-       ('YouTube',
-        'https://www.youtube.com/watch?v=jVHIXA_uNTw',
-        find_release_id('Old Enough')),
-       ('Spotify',
-        'https://open.spotify.com/track/5azFS5RgqOfDaZcA5oj25Q',
-        find_release_id('Old Enough')),
-       ('Bandcamp',
-        'https://thewatercyclemusic.bandcamp.com/track/old-enough-2',
-        find_release_id('Old Enough'));
+       ('Bandcamp', 'https://kidwolf.bandcamp.com/album/heart-of-the-sun-single', find_release_id('Heart of the Sun')),
+       ('YouTube', 'https://www.youtube.com/watch?v=jVHIXA_uNTw', find_release_id('Old Enough')),
+       ('Spotify', 'https://open.spotify.com/track/5azFS5RgqOfDaZcA5oj25Q', find_release_id('Old Enough')),
+       ('Bandcamp', 'https://thewatercyclemusic.bandcamp.com/track/old-enough-2', find_release_id('Old Enough')),
+       ('YouTube', 'https://www.youtube.com/watch?v=8nOE0I-f7ec', find_release_id('Sugar')),
+       ('Bandcamp', 'https://gentletemper.bandcamp.com/track/sugar', find_release_id('Sugar')),
+       ('Spotify', 'https://open.spotify.com/track/7HvhELsUJQkORjvUoDTeNz', find_release_id('Sugar')),
+       ('Google Play',
+        'https://play.google.com/music/preview/Tychqp5u6dlx2nd3o2uy5j6z5lu?play=1&u=0',
+        find_release_id('Sugar')),
+       ('Bandcamp', 'https://redmill.bandcamp.com/track/your-book-single', find_release_id('Your Book')),
+       ('Bandcamp', 'https://maggiewhitlock.bandcamp.com/album/the-seams-ep', find_release_id('the seams')),
+       ('Bandcamp', 'https://abledays.bandcamp.com/album/able-days-ep', find_release_id('Able Days EP')),
+       ('Bandcamp', 'https://mintgreenma.bandcamp.com/track/take-care', find_release_id('Take Care')),
+       ('Spotify', 'https://open.spotify.com/track/64AgLnL40kvuVIGPuFSMC2', find_release_id('Take Care')),
+       ('Google Play',
+        'https://play.google.com/music/preview/T24kbtzdtwtakk56pt34fslgcey?play=1&u=0',
+        find_release_id('Take Care')),
+       ('Google Play',
+        'https://play.google.com/music/preview/To77xpupliwyucrcnhfzrw32wrm?play=1&u=0',
+        find_release_id('Brother Be Wise')),
+       ('YouTube', 'https://www.youtube.com/watch?v=tOcgmlVbV6A', find_release_id('Brother Be Wise')),
+       ('Amazon Music',
+        'https://www.amazon.com/Brother-Wise-Harry-Smith-Bling/dp/B06XDTZNH2',
+        find_release_id('Brother Be Wise')),
+       ('Bandcamp', 'https://harryjayblings.bandcamp.com/track/brother-be-wise', find_release_id('Brother Be Wise')),
+       ('SoundCloud',
+        'https://soundcloud.com/sweepsbeats/sweeps-a-tale-from-tomorrow',
+        find_release_id('a tale from tomorrow'));
 
 
+insert into recording_assignment (project_id, engineer_id, role)
+values (find_project_id('Mike Morrissey single'), find_engineer_id('Zac', 'Kerwin'), 'Lead'),
+       (find_project_id('Mike Morrissey single'), find_engineer_id('Gabriel', 'Pino'), 'Assistant'),
+       (find_project_id('Mike Morrissey single'), find_engineer_id('Ryan', 'Busse'), 'EIT'),
+       (find_project_id('Mike Morrissey single'), find_engineer_id('Pavan', 'Hirpara'), 'EIT'),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Zac', 'Kerwin'), 'Lead'),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Mike', 'Gentile'), 'Assistant'),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Spencer', 'Birch'), 'Assistant'),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Christian', 'Bobowicz'), 'EIT'),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Ben', 'Harrold'), 'EIT'),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_engineer_id('Alex', 'Teitler'), 'EIT'),
+       (find_project_id('Henry Mccal single'), find_engineer_id('Zac', 'Kerwin'), 'Lead'),
+       (find_project_id('Henry Mccal single'), find_engineer_id('Greg', 'Leo'), 'Assistant'),
+       (find_project_id('Henry Mccal single'), find_engineer_id('Spencer', 'Webb'), 'EIT'),
+       (find_project_id('Henry Mccal single'), find_engineer_id('Alia', 'Newman-Boulle'), 'EIT'),
+       (find_project_id('Henry Mccal single'), find_engineer_id('Bella', 'Raponi'), 'EIT'),
+       (find_project_id('Devvey single'), find_engineer_id('Zac', 'Kerwin'), 'Lead'),
+       (find_project_id('Devvey single'), find_engineer_id('Gabriel', 'Pino'), 'Assistant'),
+       (find_project_id('Devvey single'), find_engineer_id('Hunter', 'Wenglikowski'), 'EIT'),
+       (find_project_id('Devvey single'), find_engineer_id('Nicholas', 'Harper'), 'EIT'),
+       (find_project_id('Devvey single'), find_engineer_id('James', 'Barden'), 'EIT'),
+       (find_project_id('Brandie Blaze single'), find_engineer_id('Zac', 'Kerwin'), 'Lead'),
+       (find_project_id('Brandie Blaze single'), find_engineer_id('Connor', 'Modugno'), 'Assistant'),
+       (find_project_id('Brandie Blaze single'), find_engineer_id('Mina', 'Fletch'), 'EIT'),
+       (find_project_id('Brandie Blaze single'), find_engineer_id('Lucas', 'Espada'), 'EIT'),
+       (find_project_id('Brandie Blaze single'), find_engineer_id('Hannah', 'Lowicki'), 'EIT'),
+       (find_project_id('Maya Lucia EP'), find_engineer_id('Dan', 'Mulligan'), 'Lead'),
+       (find_project_id('Maya Lucia EP'), find_engineer_id('Walker', 'Lambrecht'), 'Assistant'),
+       (find_project_id('Maya Lucia EP'), find_engineer_id('Jonathan', 'Prus'), 'EIT'),
+       (find_project_id('Maya Lucia EP'), find_engineer_id('Christina', 'Carol'), 'EIT'),
+       (find_project_id('Maya Lucia EP'), find_engineer_id('Vivienne', 'Gao'), 'EIT'),
+       (find_project_id('Twelveyes single'), find_engineer_id('Dan', 'Mulligan'), 'Lead'),
+       (find_project_id('Twelveyes single'), find_engineer_id('Mike', 'Gentile'), 'Assistant'),
+       (find_project_id('Twelveyes single'), find_engineer_id('Ryan', 'Busse'), 'EIT'),
+       (find_project_id('Twelveyes single'), find_engineer_id('Elias', 'Karikas'), 'EIT'),
+       (find_project_id('Twelveyes single'), find_engineer_id('Adam', 'Doucette'), 'EIT'),
+       (find_project_id('D $oundz single'), find_engineer_id('Walker', 'Lambrecht'), 'Lead'),
+       (find_project_id('D $oundz single'), find_engineer_id('Spencer', 'Birch'), 'Assistant'),
+       (find_project_id('D $oundz single'), find_engineer_id('Simon', 'Aber'), 'EIT'),
+       (find_project_id('D $oundz single'), find_engineer_id('Adam', 'Doucette'), 'EIT'),
+       (find_project_id('D $oundz single'), find_engineer_id('Jared', 'Zimiroski'), 'EIT'),
+       (find_project_id('Avi Jacob single'), find_engineer_id('Cairo', 'Marques-Neto'), 'Lead'),
+       (find_project_id('Avi Jacob single'), find_engineer_id('Vivienne', 'Gao'), 'EIT'),
+       (find_project_id('Avi Jacob single'), find_engineer_id('Chuck', 'Stein'), 'EIT'),
+       (find_project_id('Avi Jacob single'), find_engineer_id('Christian', 'Bobowicz'), 'EIT'),
+       (find_project_id('Brennan Wedl single'), find_engineer_id('Kathryn', 'Theobalds'), 'EIT'),
+       (find_project_id('Brennan Wedl single'), find_engineer_id('Isabella', 'Raponi'), 'EIT'),
+       (find_project_id('Brennan Wedl single'), find_engineer_id('Jonathan', 'Prus'), 'EIT'),
+       (find_project_id('Brennan Wedl single'), find_engineer_id('Chris', 'Miller'), 'Assistant'),
+       (find_project_id('Brennan Wedl single'), find_engineer_id('Zac', 'Kerwin'), 'Lead');
 
--- TODO: add GENRE to this query!
-select artist_name as 'artist', title, p.type as 'type', status, l.type as 'platform', url
-from artist_writes_project
-       join project p using (project_id)
-       join artist a using (artist_id)
-       left join `release` r using (project_id)
-       left join link l using (release_id);
+truncate marketing_assignment;
+insert into marketing_assignment (project_id, campaign_manager_id)
+values (find_project_id('Cosmic Johnny single'), find_member_id('Sofia', 'Botti')),
+       (find_project_id('Twelveyes single'), find_member_id('Gianna', 'Barletta')),
+       (find_project_id('Twelveyes single'), find_member_id('Euvin', 'Lee')),
+       (find_project_id('Twelveyes single'), find_member_id('Kathryn', 'Richards')),
+       (find_project_id('Maya Lucia EP'), find_member_id('Elizabeth', 'Markow')),
+       (find_project_id('Maya Lucia EP'), find_member_id('Kasey', 'Arko')),
+       (find_project_id('Maya Lucia EP'), find_member_id('Maya', 'Roberts')),
+       (find_project_id('Mike Morrissey single'), find_member_id('Elizabeth', 'Markow')),
+       (find_project_id('Mike Morrissey single'), find_member_id('Kasey', 'Arko')),
+       (find_project_id('Mike Morrissey single'), find_member_id('Maya', 'Roberts')),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_member_id('Shannon', 'Pires')),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_member_id('Delaney', 'Eagle')),
+       (find_project_id('Leo Son & The Q-tip Bandits single'), find_member_id('Cheyenne', 'Dobine')),
+       (find_project_id('Brandie Blaze single'), find_member_id('Gianna', 'Barletta')),
+       (find_project_id('Brandie Blaze single'), find_member_id('Darren', 'Lee')),
+       (find_project_id('Brandie Blaze single'), find_member_id('Aidan', 'Fox')),
+       (find_project_id('Henry Mccal single'), find_member_id('Gianna', 'Barletta')),
+       (find_project_id('Henry Mccal single'), find_member_id('Euvin', 'Lee')),
+       (find_project_id('Henry Mccal single'), find_member_id('Kathryn', 'Richards')),
+       (find_project_id('D $oundz single'), find_member_id('Shannon', 'Pires')),
+       (find_project_id('D $oundz single'), find_member_id('Delaney', 'Eagle')),
+       (find_project_id('D $oundz single'), find_member_id('Cheyenne', 'Dobine')),
+       (find_project_id('Brennan Wedl single'), find_member_id('Elizabeth', 'Markow')),
+       (find_project_id('Brennan Wedl single'), find_member_id('Kasey', 'Arko')),
+       (find_project_id('Brennan Wedl single'), find_member_id('Maya', 'Roberts')),
+       (find_project_id('Devvey single'), find_member_id('Gianna', 'Barletta')),
+       (find_project_id('Devvey single'), find_member_id('Euvin', 'Lee')),
+       (find_project_id('Devvey single'), find_member_id('Kathryn', 'Richards')),
+       (find_project_id('Avi Jacob single'), find_member_id('Elizabeth', 'Markow'));

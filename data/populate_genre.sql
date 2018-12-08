@@ -1,6 +1,5 @@
 use green_line_records;
 
-
 insert into genre (genre_name)
 values ('Indie'),
        ('Post-Hardcore'),
@@ -37,15 +36,3 @@ values ('Indie'),
        ('Metal'),
        ('Drone'),
        ('Progressive Rock');
-
-drop function if exists find_genre_id;
-DELIMITER //
-create function find_genre_id
-  (
-    genre varchar(50)
-  )
-  returns int
-  BEGIN
-    return (select genre_id from genre where genre_name like genre limit 1);
-  END //
-DELIMITER ;

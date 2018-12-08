@@ -24,16 +24,53 @@ values ('Marketing', find_head('Marketing')),
        ('Events', find_head('Events')),
        ('Video', find_head('Video'));
 
-insert into department_membership(member_id, department_id)
-(select a.club_member_id, d.department_id
-           from ar_member a
-           join department d
-            where d.title like 'Artists & Repertoire');
+# insert into department_membership (member_id, department_id)
+#     (select club_member_id, department_id
+#      from ar_member join department
+#      where title like 'Artists & Repertoire');
 
-insert into department_membership(member_id, department_id)
-(select e.member_id, d.department_id
-           from engineer e
-           join department d
-            where d.title like 'Recording');
+insert into department_membership (member_id, department_id)
+    (select member_id, department_id
+     from engineer join department
+     where title like 'Recording');
 
-select * from department_membership;
+insert into department_membership (member_id, department_id)
+values (find_member_id('Shannon', 'Pires'), 1),
+       (find_member_id('Elizabeth', 'Markow'), 1),
+       (find_member_id('Kathryn', 'Richards'), 1),
+       (find_member_id('Euvin', 'Lee'), 1),
+       (find_member_id('Kasey', 'Arko'), 1),
+       (find_member_id('Darren', 'Lee'), 1),
+       (find_member_id('Delaney', 'Eagle'), 1),
+       (find_member_id('Cheyenne', 'Dobine'), 1),
+       (find_member_id('Aidan', 'Fox'), 1),
+       (find_member_id('Kailey', 'Williams'), 3),
+       (find_member_id('Colin', 'Thompson'), 3),
+       (find_member_id('Zacharie', 'Mega'), 3),
+       (find_member_id('Mary', 'Evans'), 3),
+       (find_member_id('Alexander', 'Ernst'), 3),
+       (find_member_id('Stephanie', 'Jung'), 3),
+       (find_member_id('Zoe', 'Weiman'), 3),
+       (find_member_id('Alia', 'Newman-Boulle'), 3),
+       (find_member_id('Julia', 'Aguam'), 3),
+       (find_member_id('Oriana', 'Timsit'), 3),
+       (find_member_id('Elias', 'Karikas'), 3),
+       (find_member_id('Matt', 'Canary'), 3),
+       (find_member_id('Sagar', 'Kumar'), 2),
+       (find_member_id('Jonathan', 'Prus'), 2),
+       (find_member_id('Candace', 'Reyes'), 2),
+       (find_member_id('Melanie', 'Senk'), 2),
+       (find_member_id('Sebastian', 'De Arestegui'), 2),
+       (find_member_id('Ryan', 'Stelmach'), 2),
+       (find_member_id('Veronica', 'Bettio'), 2),
+       (find_member_id('Aidan', 'Fox'), 2),
+       (find_member_id('Jack', 'Kerwin'), 2),
+       (find_member_id('Lindsay', 'Masterson'), 2),
+       (find_member_id('James', 'Barden'), 2),
+       (find_member_id('Elliot', 'Efrat'), 2),
+       (find_member_id('Luke', 'Osenberg'), 2),
+       (find_member_id('Pavan', 'Hirpara'), 2),
+       (find_member_id('Ryan', 'Busse'), 2),
+       (find_member_id('Joey', 'Molloy'), 2),
+       (find_member_id('Ibra', 'Youm'), 2),
+       (find_member_id('Alexis', 'Hamner'), 2);
