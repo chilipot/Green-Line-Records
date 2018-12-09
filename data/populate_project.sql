@@ -190,23 +190,23 @@ values (find_project_id('Broken by the Fix'), find_artist_id('ColorGrave')),
 
 
 insert into `release` (project_id, release_date)
-values (find_project_id('Broken by the Fix'), '2018-06-02'),
-       (find_project_id('Reckless'), '2018-05-04'),
-       (find_project_id('frog.png'), '2018-04-13'),
-       (find_project_id('NU Songwriting Club Compilation 2018'), '2018-04-06'),
-       (find_project_id('Time Out of Mind'), '2018-03-23'),
-       (find_project_id('Give It Up'), '2017-12-08'),
-       (find_project_id('I Have No Time'), '2018-04-20'),
-       (find_project_id('~*Angry 4evr*~'), '2018-03-31'),
-       (find_project_id('Till You Run Out of Time'), '2018-05-04'),
-       (find_project_id('Heart of the Sun'), '2017-12-29'),
+values (find_project_id('Broken by the Fix'), '2018-06-02'), 
+       (find_project_id('Reckless'), '2018-05-04'), 
+       (find_project_id('frog.png'), '2018-04-13'), 
+       (find_project_id('NU Songwriting Club Compilation 2018'), '2018-04-06'), -- TODO contribution
+       (find_project_id('Time Out of Mind'), '2018-03-23'), 
+       (find_project_id('Give It Up'), '2017-12-08'), 
+       (find_project_id('I Have No Time'), '2018-04-20'), 
+       (find_project_id('~*Angry 4evr*~'), '2018-03-31'), 
+       (find_project_id('Till You Run Out of Time'), '2018-05-04'), 
+       (find_project_id('Heart of the Sun'), '2017-12-29'), 
        (find_project_id('Old Enough'), '2017-12-15'),
        (find_project_id('a tale from tomorrow'), '2017-12-01'),
        (find_project_id('Sugar'), '2017-11-10'),
        (find_project_id('Your Book'), '2017-08-25'),
        (find_project_id('the seams'), '2017-04-28'),
        (find_project_id('Able Days EP'), '2017-04-14'),
-       (find_project_id('Take Care'), '2017-04-7'),
+       (find_project_id('Take Care'), '2017-04-07'),
        (find_project_id('Brother Be Wise'), '2017-02-03');
 
 
