@@ -6,11 +6,13 @@ $password = "charlesstein";
 $dbname = "green_line_records";
 $table = $_POST['table'];
 
+// Try to connect to the Database and send a Query
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // Determine what table is being modified
     switch ($table) {
       case 'location':
         $id = $_POST['ID'];
@@ -37,6 +39,7 @@ try {
         $location_id = $_POST['Location'];
         $transaction = $_POST['transaction'];
 
+        // Convert String to PK Value
         $convert = "select convert_string_to_pk('location', '$location_id') as 'pk';";
         // Prepare statement
         $stmt = $conn->prepare($convert);
@@ -100,6 +103,7 @@ try {
         $rep = $_POST['Rep'];
         $transaction = $_POST['transaction'];
 
+        // Convert String to PK Value
         $convert = "select convert_string_to_pk('club_member', '$rep') as 'pk';";
         // Prepare statement
         $stmt = $conn->prepare($convert);
@@ -138,6 +142,7 @@ try {
         $release = $_POST['Date'];
         $transaction = $_POST['transaction'];
 
+        // Convert String to PK Value : Projects
         $convert = "select convert_string_to_pk('project', '$project_id') as 'pk';";
         // Prepare statement
         $stmt = $conn->prepare($convert);
@@ -147,6 +152,7 @@ try {
         // execute the query
         $location_id = $stmt->fetchColumn();
 
+        // Convert String to PK Value : Links
         $convert = "select convert_string_to_pk('link', '$link_val') as 'pk';";
         // Prepare statement
         $stmt = $conn->prepare($convert);

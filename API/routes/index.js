@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+// Not a valid endpoint
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.send("You shouldn't be here!");
 });
 
 module.exports = router;

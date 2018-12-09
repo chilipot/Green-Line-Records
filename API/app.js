@@ -5,9 +5,13 @@ var logger = require('morgan');
 // Query Routes
 var indexRouter = require('./routes/index');
 var locationsRouter = require('./routes/locations');
-var sessionRouter = require('./routes/live_recordings');
+var recordingRouter = require('./routes/live_recordings');
 var artistRouter = require('./routes/artists');
 var memberRouter = require('./routes/members');
+var releaseRouter = require('./routes/releases');
+var projectRouter = require('./routes/projects');
+var eventRouter = require('./routes/events');
+var procedureRouter = require('./routes/modules/procedure');
 
 var app = express();
 
@@ -35,9 +39,13 @@ app.use(express.static('public'));
 // Routes
 app.use('/', indexRouter);
 app.use('/location', locationsRouter);
-app.use('/live_recording', sessionRouter);
+app.use('/live_recording', recordingRouter);
 app.use('/artist', artistRouter);
 app.use('/club_member', memberRouter);
+app.use('/release', releaseRouter);
+app.use('/project', projectRouter);
+app.use('/event', eventRouter);
+app.use('/util', procedureRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -48,13 +56,10 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get('env') === 'production' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
 });
-
-
 
 module.exports = app;
