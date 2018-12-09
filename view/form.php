@@ -36,6 +36,16 @@ try {
         $end_time = $_POST['End'];
         $location_id = $_POST['Location'];
         $transaction = $_POST['transaction'];
+
+        $convert = "select convert_string_to_pk('location', '$location_id') as 'pk';";
+        // Prepare statement
+        $stmt = $conn->prepare($convert);
+
+        $stmt->execute();
+
+        // execute the query
+        $location_id = $stmt->fetchColumn();
+
         switch ($transaction) {
           case 'update':
             $sql = "update $table set show_name='$show_name', date='$date', start_time='$start_time', end_time='$end_time', location_id='$location_id' where live_recording_id=$id;";
@@ -89,6 +99,16 @@ try {
         $status = $_POST['Status'];
         $rep = $_POST['Rep'];
         $transaction = $_POST['transaction'];
+
+        $convert = "select convert_string_to_pk('club_member', '$rep') as 'pk';";
+        // Prepare statement
+        $stmt = $conn->prepare($convert);
+
+        $stmt->execute();
+
+        // execute the query
+        $rep = $stmt->fetchColumn();
+
         switch ($transaction) {
           case 'update':
             if ($rep == 'null') {
@@ -114,14 +134,59 @@ try {
       case 'release':
         $id = $_POST['ID'];
         $project_id = $_POST['Project'];
-        $release = $_POST['Release'];
+        $link_val = $_POST['Link'];
+        $release = $_POST['Date'];
         $transaction = $_POST['transaction'];
+
+        $convert = "select convert_string_to_pk('project', '$project_id') as 'pk';";
+        // Prepare statement
+        $stmt = $conn->prepare($convert);
+
+        $stmt->execute();
+
+        // execute the query
+        $location_id = $stmt->fetchColumn();
+
+        $convert = "select convert_string_to_pk('link', '$link_val') as 'pk';";
+        // Prepare statement
+        $stmt = $conn->prepare($convert);
+
+        $stmt->execute();
+
+        // execute the query
+        $link_id = $stmt->fetchColumn();
+
+        $update_link = "update `link` set url='$link_val' where link_id='$link_id';";
+
+        $stmt = $conn->prepare($update_link);
+        $stmt->execute();
+
         switch ($transaction) {
           case 'update':
             $sql = "update `$table` set project_id='$project_id', release_date='$release' where release_id=$id;";
             break;
           case 'insert':
             $sql = "insert into `$table`(project_id, release_date) values ('$project_id', '$release');";
+            break;
+          default:
+            throw new \Exception("Error Processing Request", 1);
+            break;
+        }
+      break;
+      break;
+      case 'event':
+        $id = $_POST['ID'];
+        $date = $_POST['Date'];
+        $title = $_POST['Title'];
+        $desc = $_POST['Description'];
+        $turnout = $_POST['Turnout'];
+        $transaction = $_POST['transaction'];
+        switch ($transaction) {
+          case 'update':
+            $sql = "update `$table` set date='$date', title='$title', description='$desc', turnout='$turnout' where event_id=$id;";
+            break;
+          case 'insert':
+            $sql = "insert into `$table`(date, title, description, turnout) values ('$date', '$title', '$desc', '$turnout');";
             break;
           default:
             throw new \Exception("Error Processing Request", 1);
