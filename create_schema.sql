@@ -13,6 +13,10 @@ USE green_line_records;
 -member_designs_something? ~~date of completed design
 -(ar_rep attribute of artist/project) ~~release date
 
+
+
+-eboard name identifier should be title/role, not member name (update conversion function and get data stored procedure)
+
 dept membership for video & events
 add more releases
 projects need a "date added"

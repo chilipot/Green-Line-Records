@@ -21,8 +21,6 @@ select * from project;
 select * from recording_assignment;
 select * from `release`;
 
-
-
 -- TODO: add a column concating all genre names for each release
 -- all project info
 select artist_name as 'artist', title, p.type as 'type', status, l.type as 'platform', url
@@ -119,3 +117,5 @@ where release_date >= '2017-09-01'
   and level = 'Lead'
 group by title
 order by release_date;
+
+
