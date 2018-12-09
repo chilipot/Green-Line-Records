@@ -1,3 +1,7 @@
+const host = "https://cors-anywhere.herokuapp.com/https://green-line-records-api.herokuapp.com/";
+
+
+
 /**
  * Handles the inputs for the Form.
  */
@@ -70,23 +74,55 @@ class FormLayouts {
     return inputs;
   }
 
+  /**
+   * buildProject - Returns the inputs for a Project Table
+   *
+   * @return {Object}  A dictionary of columns and row values;
+   */
   buildProject() {
     const inputs = {
       'ID': $(this.row).children(':nth-child(1)').text() || "",
       'Title': $(this.row).children(':nth-child(2)').text() || "",
       'Type': $(this.row).children(':nth-child(3)').text() || "",
       'Status': $(this.row).children(':nth-child(4)').text() || "",
-      'Rep': $(this.row).children(':nth-child(5)').text() || "",
+      'Genre': $(this.row).children(':nth-child(5)').text() || "",
+      'Project Manager': $(this.row).children(':nth-child(6)').text() || "",
+      'Campaign Manager': $(this.row).children(':nth-child(7)').text() || "",
+      'Engineers': $(this.row).children(':nth-child(8)').text() || "",
     }
 
     return inputs;
   }
 
+  /**
+   * buildRelease - Returns the inputs for a Release Table
+   *
+   * @return {Object}  A dictionary of columns and row values;
+   */
   buildRelease() {
     const inputs = {
       'ID': $(this.row).children(':nth-child(1)').text() || "",
       'Project': $(this.row).children(':nth-child(2)').text() || "",
-      'Release': $(this.row).children(':nth-child(3)').text() || "",
+      'Date': $(this.row).children(':nth-child(3)').text() || "",
+      'Link': $(this.row).children(':nth-child(4)').text() || "",
+    }
+
+    return inputs;
+  }
+
+  /**
+   * buildEvent - Returns the inputs for am Event Table
+   *
+   * @return {Object}  A dictionary of columns and row values;
+   */
+  buildEvent() {
+    const inputs = {
+      'ID': $(this.row).children(':nth-child(1)').text() || "",
+      'Date': $(this.row).children(':nth-child(2)').text() || "",
+      'Title': $(this.row).children(':nth-child(3)').text() || "",
+      'Description': $(this.row).children(':nth-child(4)').text() || "",
+      'Turnout': $(this.row).children(':nth-child(5)').text() || "",
+      'GLR Artist': $(this.row).children(':nth-child(6)').text() || "",
     }
 
     return inputs;
@@ -102,6 +138,88 @@ class TableLayouts {
     this.tableData = tableData;
   }
 
+
+  /**
+   * parseTime - Converts Time format into a more readable format with am/pm.
+   *
+   * @param  {String} time SQL Time format.
+   * @return {String}      Time in 12-hr format.
+   */
+  parseTime(timeStr) {
+    timeStr = timeStr.split(':');
+    var time;
+
+    var timeString = "";
+
+    function hourOverflow(hour) {
+      hour = parseInt(hour);
+      if (hour == 12) {
+        time = 'pm';
+      } else
+      if (hour > 11) {
+        hour -= 12;
+        time = 'pm';
+      } else {
+        time = 'am';
+      }
+      return hour;
+    }
+
+    if (!(timeStr[1] == '00' && timeStr[0] == '00')) {
+      timeString = `${hourOverflow(timeStr[0])}:${timeStr[1]} ${time}`;
+    }
+
+    return timeString;
+  }
+
+
+  /**
+   * parseDateTime - Converts DateTime format into a more readable format.
+   *
+   * @param  {String} datetime SQL DateTime format.
+   * @return {String}          Date Time in a more user friendly format.
+   */
+  parseDateTime(datetime) {
+    const numToStr = {
+      '01': "January",
+      '02': "February",
+      '03': "March",
+      '04': "April",
+      '05': "May",
+      '06': "June",
+      '07': "July",
+      '08': "August",
+      '09': "September",
+      '10': "October",
+      '11': "November",
+      '12': "December",
+    }
+
+    var values = datetime.split(/\D/);
+    const dateString = `${numToStr[values[1]]} ${values[2]}, ${values[0]} `;
+    const timeString = this.parseTime(`${values[3]}:${values[4]}:${values[5]}`);
+    return dateString + timeString;
+  }
+
+
+  /**
+   * parseURL - Parses the domain out of the
+   *
+   * @return {type}  description
+   */
+  parseURL(url) {
+    const urls = url.split(",");
+    var hyperlink = "";
+    for (var i in urls) {
+      const segments = urls[i].match(/:\/\/(.[^\/]+)(.*)/);
+      hyperlink += `<a class="url-link" href="${url}" target="_blank">${segments[1]}</a>`;
+      if (i < (urls.length - 1)) {
+        hyperlink += '<br>';
+      }
+    }
+    return hyperlink;
+  }
+
   /**
    * var getHeaders - Grabs the headers of the dictionary.
    *
@@ -111,14 +229,18 @@ class TableLayouts {
     const keys = Object.keys(this.tableData[0]);
     var html = "";
     for (var header in keys) {
-      html += '<th>' + keys[header] + '</th>';
+      if (header == 0) {
+        html += '<th style="display:none">' + keys[header] + '</th>';
+      } else {
+        html += '<th>' + keys[header] + '</th>';
+      }
     }
     html = '<tr>' + html + '</tr>';
     return html;
   }
 
   /**
-   * var getRows - Grabs the data from this.tableDataionary rows.
+   * var getRows - Grabs the data from this.tableData rows.
    *
    * @return {String} HTML Table rows.
    */
@@ -131,7 +253,23 @@ class TableLayouts {
       var rowHTML = "";
       for (var headerRow in rowKeys) {
         var rowVal = rowDict[rowKeys[headerRow]];
-        rowHTML += '<td>' + rowVal + '</td>';
+        if (/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z/.test(rowVal)) {
+          rowVal = this.parseDateTime(rowVal);
+        }
+        if (/[0-9]{2}:[0-9]{2}:[0-9]{2}/.test(rowVal)) {
+          rowVal = this.parseTime(rowVal);
+        }
+        if (/^http.*[a-z]{3}\/.*/.test(rowVal)) {
+          rowVal = this.parseURL(rowVal);
+        }
+        if (rowVal == null) {
+          rowVal = '<b>N/A</b>';
+        }
+        if (headerRow == 0) {
+          rowHTML += '<td style="display:none">' + rowVal + '</td>';
+        } else {
+          rowHTML += '<td>' + rowVal + '</td>';
+        }
       }
       html += '<tr>' + rowHTML + '</tr>';
     }
@@ -152,6 +290,11 @@ class TableLayouts {
     var rows = this.getRows();
 
     table.html(header + rows);
+
+    // Add Event Handlers
+    $('.url-link').click((event) => {
+      event.stopPropagation();
+    })
   }
 }
 
@@ -243,7 +386,7 @@ class AnalyzeSearch {
         throw new Error('Network response failure.');
       })
       .then((myJson) => {
-        var str = JSON.stringify(myJson);
+        var str = JSON.stringify(myJson[0]);
         var dict = this.convertToDict(str);
         return dict;
       })
@@ -256,6 +399,8 @@ class AnalyzeSearch {
         $('.form-wrap').css('display', 'none');
         $('.table-wrap').css('display', 'block');
         updateHeight($('.table-wrap').height());
+        $('.loading-bar').removeClass('color');
+
 
 
         $('#response-table tr').click(
@@ -267,6 +412,11 @@ class AnalyzeSearch {
             updateHeight($('.form-wrap').height());
           }
         );
+      })
+      .catch((e) => {
+        $('.loading-bar').removeClass('color');
+        alert("Data Fetch Error");
+        console.log(e);
       });
   }
 
@@ -278,7 +428,6 @@ class AnalyzeSearch {
    * @return {void} The request gets handed over to another method to handle the response.
    */
   sendQuery(dataInput) {
-    const host = "https://cors-anywhere.herokuapp.com/https://green-line-records-api.herokuapp.com/";
     const tableURL = host + this.table.replace(" ", "_").toLowerCase();
 
     for (const [key, value] of Object.entries(dataInput)) {
@@ -322,7 +471,6 @@ class AnalyzeSearch {
    * @return {void}  Sends a delete request and resets the page to a default view.
    */
   deleteEntry() {
-    const host = "https://cors-anywhere.herokuapp.com/https://green-line-records-api.herokuapp.com/";
     var url = host + this.table + this.inputStr;
     console.log(url);
     fetch(url)
@@ -336,6 +484,10 @@ class AnalyzeSearch {
         } else {
           throw new Error('Network response failure.');
         }
+      })
+      .catch((e) => {
+        alert("Deletion Failed");
+        console.log("Deletion Failed: " + e);
       });
   }
 }
@@ -401,6 +553,11 @@ class FormControl {
         formInputs = layout.buildProject();
         this.table = 'project';
         break;
+        break;
+      case 'Event':
+        formInputs = layout.buildEvent();
+        this.table = 'event';
+        break;
       default:
         console.error("Table Error");
     }
@@ -420,6 +577,7 @@ class FormControl {
     console.log("Values for the Form Layout: ", formInputs);
     for (var i in keys) {
       var key = keys[i];
+      if (formInputs[key] == "N/A") {formInputs[key] = ''};
       if (key == 'ID') {
         html += `${key}<br>
       <input class=\'form-control text-input\' type=\'text\' value=\'${formInputs[key]}\' name=\'${key}\' readonly=\'readonly\'/><br>`;
@@ -468,7 +626,6 @@ class InputControl {
     this.table = $('#table').text();
   }
 
-
   /**
    * handleSubmission - Determines what request is being made and routes it through
    * the proper methods
@@ -484,6 +641,7 @@ class InputControl {
     var str = this.input;
     if (this.type == "Search") {
       // Search for the table
+      $('.loading-bar').addClass('color');
       var anal = new AnalyzeSearch(str, this.table);
       var s = anal.normalizeString();
       anal.sendQuery(s);
@@ -498,7 +656,6 @@ class InputControl {
     }
   }
 }
-
 
 /**
  * body - The main control that listens for specific events occuring in the DOM.
@@ -537,16 +694,13 @@ $('body').ready(function() {
   )
 
   // Input Listener
-  $('.text-input').focus(function() {
-    $('body').keypress(function(event) {
+  $('.text-input').keypress(function(event) {
 
-      // Act if keypress is 'Enter'
-      if (event.keyCode == 13) {
-        event.preventDefault();
-
-        var inputCtrl = new InputControl();
-        inputCtrl.handleSubmission();
-      }
-    });
+    // Act if keypress is 'Enter'
+    if (event.keyCode == 13) {
+      event.preventDefault();
+      var inputCtrl = new InputControl();
+      inputCtrl.handleSubmission();
+    }
   });
 });
