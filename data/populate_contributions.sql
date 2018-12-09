@@ -16,6 +16,7 @@ create function find_department_id
   END //
 DELIMITER ;
 
+
 select * from department;
 
 insert into contribution(date, description, member_id, department_id)
