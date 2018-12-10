@@ -493,13 +493,13 @@ class AnalyzeSearch {
           break;
         case 'str':
           if (value != [""]) {
-            for (var i = 0; i < dataInput['str'].length; ++i) {
-              var nameURL = `${tableURL}/name/${dataInput['str'][i]}`;
+              const str = dataInput['str'].join("%20");
+              var nameURL = `${tableURL}/name/${str}`;
               console.log(nameURL);
               console.log("Loading from Name: " + value);
               this.dataFetch(nameURL);
               return;
-            }
+
           }
           break;
         default:
