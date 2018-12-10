@@ -179,7 +179,6 @@ try {
             break;
         }
       break;
-      break;
       case 'event':
         $id = $_POST['ID'];
         $date = $_POST['Date'];
@@ -193,6 +192,81 @@ try {
             break;
           case 'insert':
             $sql = "insert into `$table`(date, title, description, turnout) values ('$date', '$title', '$desc', '$turnout');";
+            break;
+          default:
+            throw new \Exception("Error Processing Request", 1);
+            break;
+        }
+      break;
+      case 'engineer':
+        $id = $_POST['ID'];
+        $date = $_POST['Date'];
+        $level = $_POST['Level'];]
+        $transaction = $_POST['transaction'];
+        switch ($transaction) {
+          case 'update':
+            $sql = "update `$table` set date='$date', level='$level' where engineer_id=$id;";
+            break;
+          case 'insert':
+            $sql = "insert into `$table`(date, title, description, turnout) values ('$date', '$level');";
+            break;
+          default:
+            throw new \Exception("Error Processing Request", 1);
+            break;
+        }
+      break;
+      case 'contribution':
+        $id = $_POST['ID'];
+        $name = $_POST['Name'];
+        $date = $_POST['Date'];
+        $desc = $_POST['Description'];
+        $dep = $_POST['Department'];
+
+        // Convert String to PK Value : Links
+        $convert = "select convert_string_to_pk('club_member', '$name') as 'pk';";
+        // Prepare statement
+        $stmt = $conn->prepare($convert);
+
+        $stmt->execute();
+
+        // execute the query
+        $name = $stmt->fetchColumn();
+
+        $transaction = $_POST['transaction'];
+        switch ($transaction) {
+          case 'update':
+            $sql = "update `$table` set club_member='$name', date='$date', description='$desc', department='$dep' where contribution_id=$id;";
+            break;
+          case 'insert':
+            $sql = "insert into `$table`(club_member, date, description, department) values ('$name', '$date', '$desc', '$dep');";
+            break;
+          default:
+            throw new \Exception("Error Processing Request", 1);
+            break;
+        }
+      break;
+      case 'eboard':
+        $id = $_POST['ID'];
+        $role = $_POST['Role'];
+        $name = $_POST['Name'];
+        $transaction = $_POST['transaction'];
+
+        // Convert String to PK Value : Links
+        $convert = "select convert_string_to_pk('club_member', '$name') as 'pk';";
+        // Prepare statement
+        $stmt = $conn->prepare($convert);
+
+        $stmt->execute();
+
+        // execute the query
+        $name = $stmt->fetchColumn();
+        
+        switch ($transaction) {
+          case 'update':
+            $sql = "update `$table` set club_member='$name', role='$role' where eboard_member_id=$id;";
+            break;
+          case 'insert':
+            $sql = "insert into `$table`(role, club_member) values ('$role', '$name');";
             break;
           default:
             throw new \Exception("Error Processing Request", 1);

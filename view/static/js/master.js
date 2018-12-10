@@ -127,6 +127,53 @@ class FormLayouts {
 
     return inputs;
   }
+
+  /**
+   * buildEngineer - Returns the inputs for am Engineer Table
+   *
+   * @return {Object}  A dictionary of columns and row values;
+   */
+  buildEngineer() {
+    const inputs = {
+      'ID': $(this.row).children(':nth-child(1)').text() || "",
+      'Date': $(this.row).children(':nth-child(2)').text() || "",
+      'Level': $(this.row).children(':nth-child(3)').text() || "",
+    }
+
+    return inputs;
+  }
+
+  /**
+   * buildContribution - Returns the inputs for am Contribution Table
+   *
+   * @return {Object}  A dictionary of columns and row values;
+   */
+  buildContribution() {
+    const inputs = {
+      'ID': $(this.row).children(':nth-child(1)').text() || "",
+      'Name': $(this.row).children(':nth-child(2)').text() || "",
+      'Date': $(this.row).children(':nth-child(3)').text() || "",
+      'Department': $(this.row).children(':nth-child(4)').text() || "",
+      'Description': $(this.row).children(':nth-child(5)').text() || "",
+    }
+
+    return inputs;
+  }
+
+  /**
+   * buildEBoard - Returns the inputs for am EBoard Table
+   *
+   * @return {Object}  A dictionary of columns and row values;
+   */
+  buildEBoard() {
+    const inputs = {
+      'ID': $(this.row).children(':nth-child(1)').text() || "",
+      'Role': $(this.row).children(':nth-child(2)').text() || "",
+      'Name': $(this.row).children(':nth-child(3)').text() || "",
+    }
+
+    return inputs;
+  }
 }
 
 
@@ -558,6 +605,18 @@ class FormControl {
         formInputs = layout.buildEvent();
         this.table = 'event';
         break;
+      case 'Engineer':
+        formInputs = layout.buildEngineer();
+        this.table = 'engineer';
+        break;
+      case 'Contribution':
+        formInputs = layout.buildContribution();
+        this.table = 'contribution';
+        break;
+      case 'EBoard':
+        formInputs = layout.buildEBoard();
+        this.table = 'eboard_member';
+        break;
       default:
         console.error("Table Error");
     }
@@ -689,6 +748,8 @@ $('body').ready(function() {
       var g = $(this).parent().parent();
       $(g).children('.dropdown-toggle').text(t);
       table = t;
+      var temp = new AnalyzeSearch();
+      temp.dataFetch(host + table.replace(" ", "_"));
       hideDrop($(this).parent());
     }
   )
@@ -697,7 +758,7 @@ $('body').ready(function() {
   $('.text-input').keypress(function(event) {
 
     // Act if keypress is 'Enter'
-    if (event.keyCode == 13) {
+    if (event.keyCode == 13 ) {
       event.preventDefault();
       var inputCtrl = new InputControl();
       inputCtrl.handleSubmission();
