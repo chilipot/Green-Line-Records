@@ -12,6 +12,7 @@ class DevelopmentConfig(Config):
     """
 
     SQLALCHEMY_ECHO = True
+    CACHE_TYPE = "null"
 
 
 class ProductionConfig(Config):
