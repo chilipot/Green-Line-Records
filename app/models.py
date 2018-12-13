@@ -24,6 +24,8 @@ class Employee(UserMixin, db.Model):
     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     is_admin = db.Column(db.Boolean, default=False)
+    representative = db.relationship('Project', backref='employee',
+                                     lazy='dynamic')
 
     @property
     def password(self):
@@ -98,9 +100,10 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
     type = db.Column(db.Enum('Single', 'EP', 'Album', 'Video', 'Other'))
-    status = db.Column(db.Enum('Unconfirmed', 'Confirmed', 'Scheduled', 'In-Progress','Completed', 'On-Hold', 'Cancelled', 'Released'))
-    representative = db.relationship('Employee', backref='project',
-                                     lazy='dynamic')
+    status = db.Column(db.Enum('Unconfirmed', 'Confirmed', 'Scheduled',
+                               'In-Progress','Completed', 'On-Hold',
+                               'Cancelled', 'Released'))
+    rep_id = db.Column(db.Integer, db.ForeignKey('employees.id'), nullable=True)
 
     def __repr__(self):
         return '<Project: {}>'.format(self.name)
