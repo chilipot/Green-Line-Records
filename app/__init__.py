@@ -58,3 +58,6 @@ def create_app(config_name):
         return render_template('errors/500.html', title='Server Error'), 500
 
     return app
+
+config_name = os.getenv('FLASK_CONFIG')
+app = create_app(config_name)
