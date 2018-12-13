@@ -72,7 +72,7 @@ def edit_project(id):
     form.type.data = project.type
     form.title.data = project.title
     return render_template('management/projects/project.html', action='Edit',
-                           add_project=add_department, form=form,
+                           add_project=add_project, form=form,
                            project=project, title="Edit Project")
 
 @management.route('/projects/delete/<int:id>', methods=['GET', 'POST'])
