@@ -89,6 +89,12 @@ class Role(db.Model):
 
     def __repr__(self):
         return '<Role: {}>'.format(self.name)
+    
+# Project
+
+marketing = db.Table('marketing',
+                     db.Column('project_id', db.Integer, db.ForeignKey('projects.id'), primary_key=True),
+                     db.Column('employee_id', db.Integer, db.ForeignKey('employees.id'), primary_key=True))
 
 class Project(db.Model):
     """
@@ -104,6 +110,19 @@ class Project(db.Model):
                                'In-Progress','Completed', 'On-Hold',
                                'Cancelled', 'Released'))
     rep_id = db.Column(db.Integer, db.ForeignKey('employees.id'), nullable=True)
+    release = db.relationship('Release', backref='project', lazy='dynamic')
+    marketes = db.relationship('Employee', secondary=marketing, lazy='subquery', backref=db.backref('projects', lazy=True))
 
     def __repr__(self):
         return '<Project: {}>'.format(self.name)
+    
+class Release(db.Model):
+    """
+    Create a Release table
+    """
+    
+    __tablename__ = 'releases'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)
+    
