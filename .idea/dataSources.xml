@@ -29,11 +29,5 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="flask_jwt_auth@localhost" uuid="504860ac-0f25-4469-b346-63bf71e87696">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/flask_jwt_auth</jdbc-url>
-    </data-source>
   </component>
 </project>

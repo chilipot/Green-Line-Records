@@ -88,26 +88,6 @@ class Role(db.Model):
     def __repr__(self):
         return '<Role: {}>'.format(self.name)
 
-
-# PROJECT
-
-# class Types(sqlalchemy.types.Enum):
-#     SINGLE = "Single"
-#     EP = "EP"
-#     ALBUM = "Album"
-#     VIDEO = "Video"
-#     OTHER = "Other"
-#
-# class Status(sqlalchemy.types.Enum):
-#     UNCONFIRMED = "Unconfirmed"
-#     CONFIRMED = "Confirmed"
-#     SCHEDULED = "Scheduled"
-#     INPROGRESS = "In-Progress"
-#     COMPLETED = "Completed"
-#     ONHOLD = "On Hold"
-#     CANCELLED = "Cancelled"
-#     RELEASED = "Released"
-
 class Project(db.Model):
     """
     Create a Project table
@@ -118,7 +98,7 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
     type = db.Column(db.Enum('Single', 'EP', 'Album', 'Video', 'Other'))
-    status = db.Column(db.Enum('Unconfirmed', 'Confirmed', 'Scheduled', 'In-Progress','Completed', 'On Hold', 'Cancelled', 'Released'))
+    status = db.Column(db.Enum('Unconfirmed', 'Confirmed', 'Scheduled', 'In-Progress','Completed', 'On-Hold', 'Cancelled', 'Released'))
     representative = db.relationship('Employee', backref='project',
                                      lazy='dynamic')
 
