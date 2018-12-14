@@ -24,7 +24,7 @@ class Employee(UserMixin, db.Model):
     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     is_admin = db.Column(db.Boolean, default=False)
-    representative = db.relationship('Project', backref='employee',
+    representative = db.relationship('Project', backref='employees',
                                      lazy='dynamic')
 
     @property
@@ -67,7 +67,7 @@ class Department(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60), unique=True)
     description = db.Column(db.String(200))
-    employees = db.relationship('Employee', backref='department',
+    employees = db.relationship('Employee', backref='Department',
                                 lazy='dynamic')
 
     def __repr__(self):
@@ -84,7 +84,7 @@ class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60), unique=True)
     description = db.Column(db.String(200))
-    employees = db.relationship('Employee', backref='role',
+    employees = db.relationship('Employee', backref='roles',
                                 lazy='dynamic')
 
     def __repr__(self):
@@ -133,15 +133,15 @@ class Project(db.Model):
                                'In-Progress','Completed', 'On-Hold',
                                'Cancelled', 'Released'))
     rep_id = db.Column(db.Integer, db.ForeignKey('employees.id'), nullable=True)
-    release = db.relationship('Release', backref='project', lazy='dynamic')
+    release = db.relationship('Release', backref='release_projects', lazy='dynamic')
     marketers = db.relationship('Employee', secondary=marketing, lazy='subquery',
-                                backref='projects')
+                                backref='marketer_projects')
     engineers = db.relationship('Employee', secondary=recording, lazy='subquery',
-                                backref='projects')
+                                backref='engineer_projects')
     genres = db.relationship('Genre', secondary=has_genre, lazy='subquery',
-                             backref='projects')
+                             backref='genre_projects')
     artists = db.relationship('Artist', secondary=works, lazy='subquery',
-                              backref='projects')
+                              backref='artist_projects')
 
     def __repr__(self):
         return '<Project: {}>'.format(self.name)
@@ -155,7 +155,7 @@ class Release(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)
-    links = db.relationship('Link', backref='Release', lazy='dynamic')
+    links = db.relationship('Link', backref='link_releases', lazy='dynamic')
 
     def __repr__(self):
         return '<Release {}>'.format(self.name)
@@ -204,9 +204,9 @@ class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     projects = db.relationship('Project', secondary=works, lazy='subquery',
-                               backref='artists')
+                               backref='project_artists')
     events = db.relationship('Event', secondary=booking, lazy='subquery',
-                             backref='artists')
+                             backref='event_artists')
 
     def __repr__(self):
         return '<Artist {}>'.format(self.name)
@@ -223,7 +223,7 @@ class Event(db.Model):
     title = db.Column(db.String(100))
     description = db.Column(db.String(255))
     artists = db.relationship('Artist', secondary=booking, lazy='subquery',
-                              backref='events')
+                              backref='artist_events')
 
     def __repr__(self):
         return '<Event {}>'.format(self.name)
@@ -243,7 +243,7 @@ class LiveRecording(db.Model):
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
     engineers = db.relationship('Employee', secondary=live_recording,
                                 lazy='subquery',
-                                backref='liverecordings')
+                                backref='engineer_liverecordings')
 
     def __repr__(self):
         return '<Live Recording {}>'.format(self.name)
