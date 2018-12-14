@@ -89,12 +89,35 @@ class Role(db.Model):
 
     def __repr__(self):
         return '<Role: {}>'.format(self.name)
-    
+
 # Project
 
 marketing = db.Table('marketing',
                      db.Column('project_id', db.Integer, db.ForeignKey('projects.id'), primary_key=True),
                      db.Column('employee_id', db.Integer, db.ForeignKey('employees.id'), primary_key=True))
+
+recording = db.Table('recording',
+                     db.Column('project_id', db.Integer, db.ForeignKey('projects.id'), primary_key=True),
+                     db.Column('employee_id', db.Integer, db.ForeignKey('employees.id'), primary_key=True))
+
+has_genre = db.Table('has_genre',
+                     db.Column('project_id', db.Integer, db.ForeignKey('projects.id'), primary_key=True),
+                     db.Column('genre_id', db.Integer, db.ForeignKey('genres.id'), primary_key=True))
+
+works = db.Table('works',
+                 db.Column('project_id', db.Integer, db.ForeignKey('projects.id'), primary_key=True),
+                 db.Column('artist_id', db.Integer, db.ForeignKey('artists.id'), primary_key=True))
+
+booking = db.Table('booking',
+                 db.Column('artist_id', db.Integer, db.ForeignKey('artists.id'), primary_key=True),
+                 db.Column('event_id', db.Integer, db.ForeignKey('events.id'), primary_key=True))
+
+live_recording = db.Table('live_recording',
+                          db.Column('liverecording_id', db.Integer,
+                                    db.ForeignKey('liverecordings.id'), primary_key=True),
+                          db.Column('employee_id', db.Integer,
+                                    db.ForeignKey('employees.id'), primary_key=True))
+
 
 class Project(db.Model):
     """
@@ -111,18 +134,129 @@ class Project(db.Model):
                                'Cancelled', 'Released'))
     rep_id = db.Column(db.Integer, db.ForeignKey('employees.id'), nullable=True)
     release = db.relationship('Release', backref='project', lazy='dynamic')
-    marketes = db.relationship('Employee', secondary=marketing, lazy='subquery', backref=db.backref('projects', lazy=True))
+    marketers = db.relationship('Employee', secondary=marketing, lazy='subquery',
+                                backref=db.backref('projects', lazy=True))
+    engineers = db.relationship('Employee', secondary=recording, lazy='subquery',
+                                backref=db.backref('projects', lazy=True))
+    genres = db.relationship('Genre', secondary=has_genre, lazy='subquery',
+                             backref=db.backref('projects', lazy=True))
+    artists = db.relationship('Artist', secondary=works, lazy='subquery',
+                              backref=db.backref('projects', lazy=True))
 
     def __repr__(self):
         return '<Project: {}>'.format(self.name)
-    
+
 class Release(db.Model):
     """
     Create a Release table
     """
-    
+
     __tablename__ = 'releases'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)
-    
+    links = db.relationship('Link', backref='Release', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Release {}>'.format(self.name)
+
+# Attributes
+
+class Link(db.Model):
+    """
+    Create a Link Table
+    """
+
+    __tablename__ = 'links'
+
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String(300))
+    type = db.Column(db.Enum('Bandcamp', 'Soundcloud', 'Spotify', 'Apple Music',
+                             'Tidal','Pandora', 'YouTube', 'Google Play',
+                             'Amazon Music', 'Other'), nullable=False)
+    release_id = db.Column(db.Integer, db.ForeignKey('releases.id'))
+
+    def __repr__(self):
+        return '<Link {}>'.format(self.name)
+
+class Genre(db.Model):
+    """
+    Create a Genre table
+    """
+
+    __tablename__ = 'genres'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+
+    def __repr__(self):
+        return '<Genre {}>'.format(self.name)
+
+# Artists
+
+class Artist(db.Model):
+    """
+    Create a Artist table
+    """
+
+    __tablename__ = 'artists'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+    projects = db.relationship('Project', secondary=works, lazy='subquery',
+                               backref=db.backref('artists', lazy=True))
+    events = db.relationship('Event', secondary=booking, lazy='subquery',
+                             backref=db.backref('artists', lazy=True))
+
+    def __repr__(self):
+        return '<Artist {}>'.format(self.name)
+
+class Event(db.Model):
+    """
+    Create an Event table
+    """
+
+    __tablename__ = 'events'
+
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime)
+    title = db.Column(db.String(100))
+    description = db.Column(db.String(255))
+    artists = db.relationship('Artist', secondary=booking, lazy='subquery',
+                              backref=db.backref('events', lazy=True))
+
+    def __repr__(self):
+        return '<Event {}>'.format(self.name)
+
+
+# Recording
+
+class LiveRecording(db.Model):
+    """
+    Create a Live Session table
+    """
+
+    __tablename__ = 'liverecordings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime)
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
+    engineers = db.relationship('Employee', secondary=live_recording,
+                                lazy='subquery',
+                                backref=db.backref('liverecordings', lazy=True))
+
+    def __repr__(self):
+        return '<Live Recording {}>'.format(self.name)
+
+class Location(db.Model):
+    """
+    Create a Location table
+    """
+
+    __tablename__ = 'locations'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(75))
+
+    def __repr__(self):
+        return '<Location {}>'.format(self.name)
