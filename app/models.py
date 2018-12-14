@@ -135,13 +135,13 @@ class Project(db.Model):
     rep_id = db.Column(db.Integer, db.ForeignKey('employees.id'), nullable=True)
     release = db.relationship('Release', backref='project', lazy='dynamic')
     marketers = db.relationship('Employee', secondary=marketing, lazy='subquery',
-                                backref=db.backref('projects', lazy=True))
+                                backref='projects')
     engineers = db.relationship('Employee', secondary=recording, lazy='subquery',
-                                backref=db.backref('projects', lazy=True))
+                                backref='projects')
     genres = db.relationship('Genre', secondary=has_genre, lazy='subquery',
-                             backref=db.backref('projects', lazy=True))
+                             backref='projects')
     artists = db.relationship('Artist', secondary=works, lazy='subquery',
-                              backref=db.backref('projects', lazy=True))
+                              backref='projects')
 
     def __repr__(self):
         return '<Project: {}>'.format(self.name)
@@ -204,9 +204,9 @@ class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     projects = db.relationship('Project', secondary=works, lazy='subquery',
-                               backref=db.backref('artists', lazy=True))
+                               backref='artists')
     events = db.relationship('Event', secondary=booking, lazy='subquery',
-                             backref=db.backref('artists', lazy=True))
+                             backref='artists')
 
     def __repr__(self):
         return '<Artist {}>'.format(self.name)
@@ -223,7 +223,7 @@ class Event(db.Model):
     title = db.Column(db.String(100))
     description = db.Column(db.String(255))
     artists = db.relationship('Artist', secondary=booking, lazy='subquery',
-                              backref=db.backref('events', lazy=True))
+                              backref='events')
 
     def __repr__(self):
         return '<Event {}>'.format(self.name)
@@ -243,7 +243,7 @@ class LiveRecording(db.Model):
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
     engineers = db.relationship('Employee', secondary=live_recording,
                                 lazy='subquery',
-                                backref=db.backref('liverecordings', lazy=True))
+                                backref='liverecordings')
 
     def __repr__(self):
         return '<Live Recording {}>'.format(self.name)
