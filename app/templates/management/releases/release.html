@@ -1,0 +1,47 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}
+{% if add_release %}
+Add Release
+{% else %}
+Edit Release
+{% endif %}
+{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <div class="center">
+          {% if add_release %}
+          <h1>Add Release</h1>
+          {% else %}
+          <h1>Edit Release</h1>
+          {% endif %}
+          <br />
+          <span style="color: #aec251;">
+            <h3>{{ project.title }}</h3>
+          </span>
+          <br />
+          <form action class="form" method="post" role="form">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.date) }}
+            <div class="form-group">
+              <ul class="" style="list-style: none" id="url">
+                {% for link in form.url %}
+                <li>
+                  <div class="form-group "><label class="control-label" for="url-{{ loop.index }}">URL #{{ loop.index }}</label>
+                    <input class="form-control" id="url-{{ loop.index }}" name="url-{{ loop.index }}" type="text" value="{{ links[loop.index - 1].url }}">
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            {{ wtf.form_field(form.submit) }}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

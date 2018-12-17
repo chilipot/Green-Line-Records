@@ -1,25 +1,40 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% extends "base.html" %}
 {% block title %}
-    {% if add_project %}
-        Add Project
-    {% else %}
-        Edit Project
-    {% endif %}
+{% if add_project %}
+Add Project
+{% else %}
+Edit Project
+{% endif %}
 {% endblock %}
 {% block body %}
 <div class="content-section">
- <div class="outer">
+  <div class="outer">
     <div class="middle">
       <div class="inner">
         <div class="center">
-            {% if add_project %}
-                <h1>Add Project</h1>
-            {% else %}
-                <h1>Edit Project</h1>
-            {% endif %}
-            <br/>
-            {{ wtf.quick_form(form) }}
+          {% if add_project %}
+          <h1>Add Project</h1>
+          {% else %}
+          <h1>Edit Project</h1>
+          {% endif %}
+          <br />
+          <form action class="form" method="post" role="form">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.title) }}
+            {{ wtf.form_field(form.type) }}
+            {{ wtf.form_field(form.status) }}
+            {{ wtf.form_field(form.representative) }}
+            <div class="form-group ">
+              <label class="control-label" for="genres">Genres</label>
+              <ul class="" style="list-style:none" id="genres">
+                {% for checkbox in form.genres %}
+                  {{ wtf.form_field(checkbox) }}
+                {% endfor %}
+              </ul>
+            </div>
+            {{ wtf.form_field(form.submit) }}
+          </form>
         </div>
       </div>
     </div>
