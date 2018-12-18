@@ -26,6 +26,10 @@ class Employee(UserMixin, db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     representative = db.relationship('Project', backref='employees',
                                      lazy='dynamic')
+    department = db.relationship('Department', backref='department_employees',
+                                     lazy=True)
+    role = db.relationship('Role', backref='role_employees',
+                                     lazy=True)
 
     @property
     def password(self):
@@ -223,6 +227,7 @@ class Event(db.Model):
     description = db.Column(db.String(255))
     artists = db.relationship('Artist', secondary=booking, lazy='subquery',
                               backref='artist_events')
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
 
     def __repr__(self):
         return '<Event {}>'.format(self.title)
@@ -240,6 +245,8 @@ class LiveRecording(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
+    location = db.relationship('Location', backref='liverecording_location',
+                               lazy=True)
     engineers = db.relationship('Employee', secondary=live_recording,
                                 lazy='subquery',
                                 backref='engineer_liverecordings')
@@ -256,6 +263,10 @@ class Location(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(75))
+    recordings = db.relationship('LiveRecording', backref='liverecording_locations',
+                                 lazy='dynamic')
+    events = db.relationship('Event', backref='event_locations',
+                             lazy='dynamic')
 
     def __repr__(self):
         return '<Location {}>'.format(self.name)

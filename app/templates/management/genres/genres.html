@@ -17,7 +17,7 @@
             <thead>
               <tr>
                 <th width="50%"> Tag </th>
-                <th width="20"> Amount</th>
+                <th width="20%"> Amount</th>
                 <th width="15%"> Edit </th>
                 <th width="15%"> Delete </th>
               </tr>
@@ -27,11 +27,11 @@
               <tr>
                 <td> {{ genre.name }} </td>
                 <td>
-                  <!-- {% if genre.projects %} -->
-                    {{ genre.projects|length }}
-                  <!-- {% else %} -->
-                    <!-- 0 -->
-                  <!-- {% endif %} -->
+                  {% if genre.projects %}
+                  {{ genre.projects|length }}
+                  {% else %}
+                  0
+                  {% endif %}
                 </td>
                 <td>
                   <a href="{{ url_for('management.edit_genre', id=genre.id) }}">
@@ -56,7 +56,7 @@
             {% endif %}
             <a href="{{ url_for('management.add_genre') }}" class="btn btn-default btn-lg">
               <i class="fa fa-plus"></i>
-              Add Project
+              Add Genre
             </a>
           </div>
         </div>

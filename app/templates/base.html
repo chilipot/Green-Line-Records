@@ -7,7 +7,11 @@
   <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
   <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
+  <style media="screen">
+    div.center {
+      width: 75%;
+    }
+  </style>
 </head>
 
 <body>
@@ -22,9 +26,9 @@
       <a class="navbar-brand topnav" href="{{ url_for('home.homepage') }}">Green Line Records</a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      {% if current_user.is_authenticated %}
       <!-- Modify nav bar menu -->
       <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Tables
@@ -33,6 +37,9 @@
             <li><a class="dropdown-item" href="{{ url_for('management.list_projects') }}">Project</a></li>
             <li><a class="dropdown-item" href="{{ url_for('management.list_releases') }}">Release</a></li>
             <li><a class="dropdown-item" href="{{ url_for('management.list_genres') }}">Genres</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('management.list_events') }}">Events</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('management.list_liverecordings') }}">Live Recording</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('management.list_locations') }}">Locations</a></li>
           </ul>
         </li>
         {% if current_user.is_admin %}

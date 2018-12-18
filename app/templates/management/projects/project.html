@@ -40,4 +40,14 @@ Edit Project
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  var labels = document.getElementsByTagName('label');
+  checked = {{ checked }};
+  var input = document.getElementsByTagName('input');
+  for (var i = 0; i < input.length; ++i) {
+    if (checked.includes(Number(input[i].value))) {
+      input[i].checked = true;
+    }
+  }
+</script>
 {% endblock %}

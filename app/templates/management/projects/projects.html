@@ -19,8 +19,8 @@
                   <th width="20%"> Title </th>
                   <th width="10%"> Type </th>
                   <th width="10%"> Status </th>
-                  <th width="10%"> Representative </th>
-                  <th width="20%"> Release </th>
+                  <th width="15%"> Representative </th>
+                  <th width="15%"> Release </th>
                   <th width="15%"> Edit </th>
                   <th width="15%"> Delete </th>
                 </tr>
@@ -34,7 +34,7 @@
                   <td> {{ employee.query.get(project.rep_id).username }} </td>
                   <td>
                     <a href="{{ url_for('management.release_project', id=project.id) }}">
-                      <i class="fa fa-pencil"></i> Release
+                      <i class="fa fa-rocket"></i> Release
                     </a>
                   </td>
                   <td>

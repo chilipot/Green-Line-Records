@@ -216,7 +216,6 @@ def list_employees():
     return render_template('admin/employees/employees.html',
                            employees=employees, title='Employees')
 
-
 @admin.route('/employees/assign/<int:id>', methods=['GET', 'POST'])
 @login_required
 def assign_employee(id):

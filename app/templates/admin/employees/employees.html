@@ -33,7 +33,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                      <td> {{ employee.first_name }} {{ employee.last_name }} </td>
+                      <td> {{ employee.first_name }}, {{ employee.last_name }} </td>
                       <td>
                         {% if employee.department %}
                           {{ employee.department.name }}
