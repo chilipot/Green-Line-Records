@@ -1,5 +1,5 @@
 *.pyc
 instance/
-env/
+venv3/
 .idea/
 migrations/
